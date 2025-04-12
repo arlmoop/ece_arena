@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #include "map.h"
-#include "map.c"
 
 void menu(BITMAP *buffer) {
     t_spriteimmo logo=initspriteimmo();

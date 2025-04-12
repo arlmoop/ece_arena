@@ -2,6 +2,7 @@
 #define HEADER_H
 
 #include <allegro.h>
+#include <stdio.h>
 
 #define TAILLE_MAP 19
 #define NB_IMG_PERSOS 10
