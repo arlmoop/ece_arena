@@ -1,17 +1,17 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <stdio.h>
-#include <allegro.h>
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <allegro.h>
 
 #define TAILLE_MAP 19 //Impair pr bien placer les spawns d'equipe
 #define NB_IMG_PERSOS 10 //Nb de sprite par perso (mieux si tt pareil)
 #define NB_CASES 10 //Nb de cases hors spawns
 #define NB_OBS 8
 #define Y_DEPART 60
-#define PRCNT_OBS 9
+#define PRCNT_OBS 8
 
 
 typedef struct {

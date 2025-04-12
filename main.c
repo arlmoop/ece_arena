@@ -1,6 +1,12 @@
 #include "header.h"
 
-int main(void) {
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <allegro.h>
+
+
+int main() {
     srand(time(NULL));
     initialisation_allegro();
 

@@ -1,5 +1,11 @@
 #include "header.h"
 
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <allegro.h>
+
+
 void initialisation_allegro() {
     allegro_init();
     install_keyboard();
@@ -20,26 +26,6 @@ t_spriteimmo init_spriteimmo() {
     s.tx=s.img->w;
     s.ty=s.img->h;
     return s;
-}
-
-t_perso init_perso(){
-    t_perso b;
-    b.x=0, b.y=0;
-    b.imgcourante=0;
-    b.cptimg=0;
-    b.tmpimg=4;
-    b.dx=0;
-    b.dy=0;
-    for(int i=0; i<NB_IMG_PERSOS; i++) {
-        char filename[20];
-        sprintf(filename, "bonh_transp%d.bmp", i);
-        b.img[i]=load_bitmap(filename, NULL);
-    }
-    b.tx=b.img[0]->w;
-    b.ty=b.img[0]->h;
-    b.xcentre=b.x+b.tx/2;
-    b.ycentre=b.y+b.ty/2;
-    return b;
 }
 
 t_case init_case(int n, int i, int j) {
@@ -81,10 +67,10 @@ t_obstacle init_obstacle(int n, int i, int j) {
         obs.img=load_bitmap("gem_box.bmp", NULL);
         obs.type=2;
     }
-    else if (n==3) {
+    /*else if (n==3) {
         obs.img=load_bitmap("pierre.bmp", NULL);
         obs.type=2;
-    }
+    }*/
     else {
         obs.img=load_bitmap("sapin.bmp", NULL);
         obs.type=1;
