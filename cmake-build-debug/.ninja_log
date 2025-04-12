@@ -1,3 +1,10 @@
 # ninja log v6
-2	248	7661577783264026	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
-251	619	7661577785747321	ece_arena.exe	72f08db16bccbb0f
+3	246	7661593153775250	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
+247	439	7661593156210703	ece_arena.exe	72f08db16bccbb0f
+11	175	7661596271933048	CMakeFiles/ece_arena.dir/map.c.obj	9828492e17e91cf0
+3	265	7661596271851784	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
+265	476	7661596274470730	ece_arena.exe	2840fb1de6977126
+16	243	7661597993844320	CMakeFiles/ece_arena.dir/map.c.obj	9828492e17e91cf0
+3	232	7661599316746076	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
+11	259	7661599316832389	CMakeFiles/ece_arena.dir/map.c.obj	9828492e17e91cf0
+260	461	7661599319319046	ece_arena.exe	2840fb1de6977126

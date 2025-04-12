@@ -55,6 +55,12 @@ build CMakeFiles/ece_arena.dir/main.c.obj: C_COMPILER__ece_arena_unscanned_Debug
   OBJECT_DIR = CMakeFiles\ece_arena.dir
   OBJECT_FILE_DIR = CMakeFiles\ece_arena.dir
 
+build CMakeFiles/ece_arena.dir/map.c.obj: C_COMPILER__ece_arena_unscanned_Debug C$:/Users/aurel/CLionProjects/ece_arena/map.c || cmake_object_order_depends_target_ece_arena
+  DEP_FILE = CMakeFiles\ece_arena.dir\map.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\ece_arena.dir
+  OBJECT_FILE_DIR = CMakeFiles\ece_arena.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target ece_arena
@@ -63,7 +69,7 @@ build CMakeFiles/ece_arena.dir/main.c.obj: C_COMPILER__ece_arena_unscanned_Debug
 #############################################
 # Link the executable ece_arena.exe
 
-build ece_arena.exe: C_EXECUTABLE_LINKER__ece_arena_Debug CMakeFiles/ece_arena.dir/main.c.obj
+build ece_arena.exe: C_EXECUTABLE_LINKER__ece_arena_Debug CMakeFiles/ece_arena.dir/main.c.obj CMakeFiles/ece_arena.dir/map.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lmingw32  -lalleg44  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ece_arena.dir
