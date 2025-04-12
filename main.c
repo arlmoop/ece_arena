@@ -14,7 +14,7 @@ int main() {
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
 
-    BITMAP *fond=load_bitmap("fond2.bmp", NULL);
+    BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
     BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
