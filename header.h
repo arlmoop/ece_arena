@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 #define TAILLE_MAP 19
-#define NB_IMG_PERSOS 10
+#define NB_IMG_PERSOS 9
 #define NB_CASES 10
 #define NB_OBS 5
 #define NB_IMG_EAU 5
