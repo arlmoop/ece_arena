@@ -3,7 +3,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-#include "header.h"
+#include "map.h"
 #include "map.c"
 
 void menu(BITMAP *buffer) {

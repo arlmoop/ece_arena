@@ -1,17 +1,10 @@
-//
-// Created by aurel on 12/04/2025.
-//
-
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <stdio.h>
 #include <allegro.h>
-#include <time.h>
-#include <stdlib.h>
 
 #define TAILLE_MAP 19
-#define NB_IMG_PERSOS 9
+#define NB_IMG_PERSOS 10
 #define NB_CASES 10
 #define NB_OBS 5
 #define NB_IMG_EAU 5

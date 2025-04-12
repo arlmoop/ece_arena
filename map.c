@@ -1,7 +1,4 @@
-//
-// Created by aurel on 12/04/2025.
-//
-#include "header.h"
+#include "map.h"
 
 void initialisation_allegro() {
     allegro_init();
