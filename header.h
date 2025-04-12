@@ -1,9 +1,6 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <time.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <allegro.h>
 
 #define TAILLE_MAP 19 //Impair pr bien placer les spawns d'equipe
