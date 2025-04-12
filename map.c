@@ -67,10 +67,10 @@ t_obstacle init_obstacle(int n, int i, int j) {
         obs.img=load_bitmap("Images\\gem_box.bmp", NULL);
         obs.type=2;
     }
-    /*else if (n==3) {
-        obs.img=load_bitmap("pierre.bmp", NULL);
+    else if (n==3) {
+        obs.img=load_bitmap("Images\\pierre.bmp", NULL);
         obs.type=2;
-    }*/
+    }
     else {
         obs.img=load_bitmap("Images\\sapin.bmp", NULL);
         obs.type=1;
