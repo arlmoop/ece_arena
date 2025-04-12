@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <allegro.h>
 
-
 void initialisation_allegro() {
     allegro_init();
     install_keyboard();
