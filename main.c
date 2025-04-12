@@ -1,17 +1,12 @@
-#include <stdio.h>
-#include <allegro.h>
+#include "header.h"
+
 #include <time.h>
 #include <stdlib.h>
-
-#include "map.h"
-
-void menu(BITMAP *buffer) {
-    t_spriteimmo logo=initspriteimmo();
-    stretch_sprite(buffer, logo.img, 0, 0, buffer->w, buffer->h);
-}
+#include <stdio.h>
+#include <allegro.h>
 
 
-int main(void) {
+int main() {
     srand(time(NULL));
     initialisation_allegro();
 
@@ -28,20 +23,12 @@ int main(void) {
     charger_fichier(tab_map);
     creer_map(tab_map, c);
     creer_obstacles(c, obs);
-    /*
-    while(!key[KEY_ESC]) {
-        clear_bitmap(buffer);
-        blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
-        menu(buffer);
-        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-    }
-    rest(100);
-    */
+
     while(!key[KEY_ESC]) {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
         afficher_map(buffer, c);
-        //afficher_obstacles(buffer, obs);
+        afficher_obstacles(buffer, obs);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
