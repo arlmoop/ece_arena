@@ -1,0 +1,5 @@
+ToolSet: 5.0 (local)@C:\Windows\MinGW
+Ninja: 1.12.0@C:\Users\aurel\OneDrive\Bureau\ECE\CLion 2024.2.1\bin\ninja\win\x64\ninja.exe
+Options: 
+
+Options:-DCMAKE_MAKE_PROGRAM=C:/Users/aurel/OneDrive/Bureau/ECE/CLion 2024.2.1/bin/ninja/win/x64/ninja.exe
