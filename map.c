@@ -22,7 +22,7 @@ void initialisation_allegro() {
 t_spriteimmo init_spriteimmo() {
     t_spriteimmo s;
     s.x=0, s.y=0;
-    s.img=load_bitmap("logo_final.bmp", NULL);
+    s.img=load_bitmap("Images\\logo_final.bmp", NULL);
     s.tx=s.img->w;
     s.ty=s.img->h;
     return s;
@@ -33,19 +33,19 @@ t_case init_case(int n, int i, int j) {
     c.x=i, c.y=j;
     c.e=0;
     if (n==1) {
-        c.img=load_bitmap("spawn_barbare.bmp", NULL);
+        c.img=load_bitmap("Images\\spawn_barbare.bmp", NULL);
         c.type=2;
     }
     else if (n==2) {
-        c.img=load_bitmap("spawn_archer.bmp", NULL);
+        c.img=load_bitmap("Images\\spawn_archer.bmp", NULL);
         c.type=2;
     }
     else if (n==3) {
-        c.img=load_bitmap("bloc_glace.bmp", NULL);
+        c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
         c.type=2;
     }
     else {
-        c.img=load_bitmap("bloc_terre.bmp", NULL);
+        c.img=load_bitmap("Images\\bloc_terre.bmp", NULL);
         c.type=1;
     }
     c.tx=c.img->w;
@@ -60,11 +60,11 @@ t_obstacle init_obstacle(int n, int i, int j) {
     obs.x=i, obs.y=j;
     obs.e=0;
     if (n==1) {
-        obs.img=load_bitmap("tronc.bmp", NULL);
+        obs.img=load_bitmap("Images\\tronc.bmp", NULL);
         obs.type=1;
     }
     else if (n==2) {
-        obs.img=load_bitmap("gem_box.bmp", NULL);
+        obs.img=load_bitmap("Images\\gem_box.bmp", NULL);
         obs.type=2;
     }
     /*else if (n==3) {
@@ -72,7 +72,7 @@ t_obstacle init_obstacle(int n, int i, int j) {
         obs.type=2;
     }*/
     else {
-        obs.img=load_bitmap("sapin.bmp", NULL);
+        obs.img=load_bitmap("Images\\sapin.bmp", NULL);
         obs.type=1;
     }
     obs.tx=obs.img->w;
