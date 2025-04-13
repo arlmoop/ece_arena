@@ -24,14 +24,14 @@ int main() {
     charger_fichier(tab_map);
     creer_map(tab_map, c);
     creer_obstacles(c, obs);
-    placer_persos(c, p, 1);
+    placer_persos(c, p);
+
 
     while(!key[KEY_ESC]) {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
         afficher_map(buffer, c);
-        afficher_obstacles(buffer, obs);
-        afficher_persos(buffer, p);
+        afficher_obstacles_persos(buffer, c, obs, p);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 

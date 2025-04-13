@@ -22,7 +22,8 @@ void initialisation_allegro() {
 t_case init_case(int n, int i, int j) {
     t_case c;
     c.x=i, c.y=j;
-    c.e=0;
+    c.o=0;
+    c.p=0;
     if (n==1) {
         c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
         c.type=2;
@@ -48,6 +49,7 @@ t_obstacle init_obstacle(int n, int i, int j) {
     t_obstacle obs;
     obs.x=i, obs.y=j;
     obs.e=0;
+    obs.a=0;
     if (n==1) {
         obs.img=load_bitmap("Images\\tronc.bmp", NULL);
     }
@@ -100,14 +102,23 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
     int m;
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
-
-            // EN EQUIPE
-            if (j==TAILLE_MAP/2+1 || j==TAILLE_MAP/2-1) {
-                if (i==0) {
+            if (i==0) {
+                if (j==TAILLE_MAP/2+1) {
                     m=NB_CASES+1;
                 }
-                else if (i==TAILLE_MAP-1) {
+                else if (j==TAILLE_MAP/2-1) {
                     m=NB_CASES+2;
+                }
+                else {
+                    m=tab_map[i][j];
+                }
+            }
+            else if (i==TAILLE_MAP-1) {
+                if (j==TAILLE_MAP/2+1) {
+                    m=NB_CASES+3;
+                }
+                else if (j==TAILLE_MAP/2-1) {
+                    m=NB_CASES+4;
                 }
                 else {
                     m=tab_map[i][j];
@@ -134,19 +145,36 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
             obs[i][j]=init_obstacle(1+rand()%NB_OBS, c[i][j].x, c[i][j].y-20);
-            if(c[i][j].type==1 && 1+rand()%100>100-PRCNT_OBS) {
+            if(c[i][j].type==1 && 1+rand()%100>100-PRCNT_OBS && c[i][j].p==0) {
                 obs[i][j].e=1;
-                c[i][j].e=1;
+                c[i][j].o=1;
             }
         }
     }
 }
 
-void afficher_obstacles(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP]) {
+void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
-            if(obs[i][j].e==1) {
+            obs[i][j].a=0;
+        }
+    }
+    for(int i=0;i<TAILLE_MAP;i++){
+        for(int j=0;j<TAILLE_MAP;j++){
+            if(obs[i][j].e==1 && ((i==0 || j==0) || (c[i][j+1].p==1 && c[i+1][j+1].p==1 && c[i+1][j].p==1))) {
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
+                obs[i][j].a=1;
+            }
+        }
+    }
+    for(int k=0;k<NB_PERSOS;k++){
+        draw_sprite(buffer, p[k].img, p[k].x, p[k].y);
+    }
+    for(int i=0;i<TAILLE_MAP;i++){
+        for(int j=0;j<TAILLE_MAP;j++){
+            if(obs[i][j].e==1 && obs[i][j].a==0) {
+                draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
+                obs[i][j].a=1;
             }
         }
     }
