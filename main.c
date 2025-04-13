@@ -10,6 +10,7 @@ int main() {
     srand(time(NULL));
     initialisation_allegro();
 
+    t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
@@ -23,12 +24,14 @@ int main() {
     charger_fichier(tab_map);
     creer_map(tab_map, c);
     creer_obstacles(c, obs);
+    placer_persos(c, p, 1);
 
     while(!key[KEY_ESC]) {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
         afficher_map(buffer, c);
         afficher_obstacles(buffer, obs);
+        afficher_persos(buffer, p);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 

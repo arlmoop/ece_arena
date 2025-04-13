@@ -19,34 +19,23 @@ void initialisation_allegro() {
     show_mouse(screen);
 }
 
-t_spriteimmo init_spriteimmo() {
-    t_spriteimmo s;
-    s.x=0, s.y=0;
-    s.img=load_bitmap("Images\\logo_final.bmp", NULL);
-    s.tx=s.img->w;
-    s.ty=s.img->h;
-    return s;
-}
-
 t_case init_case(int n, int i, int j) {
     t_case c;
     c.x=i, c.y=j;
     c.e=0;
     if (n==1) {
-        c.img=load_bitmap("Images\\spawn_barbare.bmp", NULL);
-        c.type=2;
-    }
-    else if (n==2) {
-        c.img=load_bitmap("Images\\spawn_archer.bmp", NULL);
-        c.type=2;
-    }
-    else if (n==3) {
         c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
         c.type=2;
     }
-    else {
+    else if (n>1 && n<=NB_CASES){
         c.img=load_bitmap("Images\\bloc_terre.bmp", NULL);
         c.type=1;
+    }
+    else {
+        char filename[20];
+        sprintf(filename, "Images\\spawn_%d.bmp", n-NB_CASES);
+        c.img=load_bitmap(filename, NULL);
+        c.type=n;
     }
     c.tx=c.img->w;
     c.ty=c.img->h;
@@ -61,19 +50,15 @@ t_obstacle init_obstacle(int n, int i, int j) {
     obs.e=0;
     if (n==1) {
         obs.img=load_bitmap("Images\\tronc.bmp", NULL);
-        obs.type=1;
     }
     else if (n==2) {
         obs.img=load_bitmap("Images\\gem_box.bmp", NULL);
-        obs.type=2;
     }
     else if (n==3) {
         obs.img=load_bitmap("Images\\pierre.bmp", NULL);
-        obs.type=2;
     }
     else {
         obs.img=load_bitmap("Images\\sapin.bmp", NULL);
-        obs.type=1;
     }
     obs.tx=obs.img->w;
     obs.ty=obs.img->h;
@@ -90,7 +75,7 @@ void creer_fichier() {
     }
     for(int i=0;i<TAILLE_MAP;i++) {
         for(int j=0;j<TAILLE_MAP;j++) {
-            fprintf(fichier,"%d ", 3+rand()%NB_CASES); // 1+2 Spawns
+            fprintf(fichier,"%d ", 1+rand()%NB_CASES);
         }
         fprintf(fichier, "\n");
     }
@@ -115,12 +100,14 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
     int m;
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
+
+            // EN EQUIPE
             if (j==TAILLE_MAP/2+1 || j==TAILLE_MAP/2-1) {
                 if (i==0) {
-                    m=1;
+                    m=NB_CASES+1;
                 }
                 else if (i==TAILLE_MAP-1) {
-                    m=2;
+                    m=NB_CASES+2;
                 }
                 else {
                     m=tab_map[i][j];
@@ -146,13 +133,10 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]) {
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]) {
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
+            obs[i][j]=init_obstacle(1+rand()%NB_OBS, c[i][j].x, c[i][j].y-20);
             if(c[i][j].type==1 && 1+rand()%100>100-PRCNT_OBS) {
-                obs[i][j]=init_obstacle(1+rand()%NB_OBS, c[i][j].x, c[i][j].y-20);
                 obs[i][j].e=1;
                 c[i][j].e=1;
-            }
-            else {
-                obs[i][j]=init_obstacle(1+rand()%NB_OBS, c[i][j].x, c[i][j].y-20);
             }
         }
     }
