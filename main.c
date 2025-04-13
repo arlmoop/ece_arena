@@ -24,7 +24,7 @@ int main() {
 
     creer_fichier();
     charger_fichier(tab_map);
-    creer_map(tab_map, c);
+    creer_map(tab_map, c, 1);
     creer_obstacles(c, obs);
     placer_persos(c, p);
 
