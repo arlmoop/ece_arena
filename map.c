@@ -97,37 +97,43 @@ void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]) {
     }
 }
 
-void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP]){
+void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe){
     t_case case1=init_case(1,0,0);
     int m;
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++){
-            if (i==0) {
-                if (j==TAILLE_MAP/2+1) {
+    // 2V2
+    if (equipe==1) {
+        for(int i=0;i<TAILLE_MAP;i++){
+            for(int j=0;j<TAILLE_MAP;j++){
+                if (i==0 && (j==TAILLE_MAP/2+1 || j==TAILLE_MAP/2-1)) {
                     m=NB_CASES+1;
                 }
-                else if (j==TAILLE_MAP/2-1) {
+                else if (i==TAILLE_MAP-1 && (j==TAILLE_MAP/2+1 || j==TAILLE_MAP/2-1)) {
                     m=NB_CASES+2;
                 }
                 else {
                     m=tab_map[i][j];
                 }
+                c[i][j]=init_case(m,SCREEN_W/2-case1.tx/2+(case1.tx/2)*j-(case1.tx/2)*i,Y_DEPART+(case1.y+12)*j+(case1.y+12)*i);
             }
-            else if (i==TAILLE_MAP-1) {
-                if (j==TAILLE_MAP/2+1) {
-                    m=NB_CASES+3;
-                }
-                else if (j==TAILLE_MAP/2-1) {
-                    m=NB_CASES+4;
-                }
-                else {
-                    m=tab_map[i][j];
-                }
+        }
+    }
+    // SOLO
+    else {
+        for(int i=0;i<TAILLE_MAP;i++) {
+            for(int j=0;j<TAILLE_MAP;j++) {
+                m=tab_map[i][j];
+                c[i][j]=init_case(m,SCREEN_W/2-case1.tx/2+(case1.tx/2)*j-(case1.tx/2)*i,Y_DEPART+(case1.y+12)*j+(case1.y+12)*i);
+            }
+        }
+        for(int k=0; k<NB_PERSOS; k++) {
+            m=NB_CASES+1+k;
+            int i=rand()%TAILLE_MAP, j=rand()%TAILLE_MAP;
+            if (c[i][j].type<=NB_CASES) {
+                c[i][j]=init_case(m,SCREEN_W/2-case1.tx/2+(case1.tx/2)*j-(case1.tx/2)*i,Y_DEPART+(case1.y+12)*j+(case1.y+12)*i);
             }
             else {
-                m=tab_map[i][j];
+                k--;
             }
-            c[i][j]=init_case(m,SCREEN_W/2-case1.tx/2+(case1.tx/2)*j-(case1.tx/2)*i,Y_DEPART+(case1.y+12)*j+(case1.y+12)*i);
         }
     }
 }
@@ -153,6 +159,7 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
     }
 }
 
+// Bug daffichage pas grave
 void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
@@ -161,7 +168,7 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
     }
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
-            if(obs[i][j].e==1 && ((i==0 || j==0) || (c[i][j+1].p==1 && c[i+1][j+1].p==1 && c[i+1][j].p==1))) {
+            if(obs[i][j].e==1 && (i==0 || j==0 || (c[i][j+1].p==1 || c[i+1][j+1].p==1 || c[i+1][j].p==1))) {
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
                 obs[i][j].a=1;
             }

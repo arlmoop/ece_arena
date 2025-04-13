@@ -44,13 +44,13 @@ typedef struct {
 
 void initialisation_allegro();
 t_spriteimmo initspriteimmo();
-t_perso init_perso();
+t_perso init_perso(int n, int i, int j);
 t_case init_case(int n, int i, int j);
 t_obstacle init_obstacle(int n, int i, int j);
 
 void creer_fichier();
 void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
-void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP]);
+void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
