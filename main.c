@@ -10,6 +10,8 @@ int main() {
     srand(time(NULL));
     initialisation_allegro();
 
+    int degats = 100;
+
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
@@ -31,6 +33,8 @@ int main() {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
         afficher_map(buffer, c);
+        afficher_inventaire(buffer,p, degats);
+        souris(buffer,p);
         afficher_obstacles_persos(buffer, c, obs, p);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }

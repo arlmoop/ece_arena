@@ -1,4 +1,4 @@
-set(CMAKE_C_COMPILER "C:/Users/isiah/MinGW/bin/gcc.exe")
+set(CMAKE_C_COMPILER "C:/Windows/MinGW/bin/gcc.exe")
 set(CMAKE_C_COMPILER_ARG1 "")
 set(CMAKE_C_COMPILER_ID "GNU")
 set(CMAKE_C_COMPILER_VERSION "6.3.0")
@@ -21,14 +21,14 @@ set(CMAKE_C_SIMULATE_VERSION "")
 
 
 
-set(CMAKE_AR "C:/Users/isiah/MinGW/bin/ar.exe")
-set(CMAKE_C_COMPILER_AR "C:/Users/isiah/MinGW/bin/gcc-ar.exe")
-set(CMAKE_RANLIB "C:/Users/isiah/MinGW/bin/ranlib.exe")
-set(CMAKE_C_COMPILER_RANLIB "C:/Users/isiah/MinGW/bin/gcc-ranlib.exe")
-set(CMAKE_LINKER "C:/Users/isiah/MinGW/bin/ld.exe")
+set(CMAKE_AR "C:/Windows/MinGW/bin/ar.exe")
+set(CMAKE_C_COMPILER_AR "C:/Windows/MinGW/bin/gcc-ar.exe")
+set(CMAKE_RANLIB "C:/Windows/MinGW/bin/ranlib.exe")
+set(CMAKE_C_COMPILER_RANLIB "C:/Windows/MinGW/bin/gcc-ranlib.exe")
+set(CMAKE_LINKER "C:/Windows/MinGW/bin/ld.exe")
 set(CMAKE_LINKER_LINK "")
 set(CMAKE_LINKER_LLD "")
-set(CMAKE_C_COMPILER_LINKER "c:/users/isiah/mingw/mingw32/bin/ld.exe")
+set(CMAKE_C_COMPILER_LINKER "c:/windows/mingw/mingw32/bin/ld.exe")
 set(CMAKE_C_COMPILER_LINKER_ID "GNU")
 set(CMAKE_C_COMPILER_LINKER_VERSION 2.28)
 set(CMAKE_C_COMPILER_LINKER_FRONTEND_VARIANT GNU)
@@ -74,7 +74,7 @@ endif()
 
 
 
-set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/isiah/MinGW/lib/gcc/mingw32/6.3.0/include;C:/Users/isiah/MinGW/include;C:/Users/isiah/MinGW/lib/gcc/mingw32/6.3.0/include-fixed;C:/Users/isiah/MinGW/mingw32/include")
+set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "C:/Windows/MinGW/lib/gcc/mingw32/6.3.0/include;C:/Windows/MinGW/include;C:/Windows/MinGW/lib/gcc/mingw32/6.3.0/include-fixed;C:/Windows/MinGW/mingw32/include")
 set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "mingw32;gcc;moldname;mingwex;advapi32;shell32;user32;kernel32;mingw32;gcc;moldname;mingwex")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "C:/Users/isiah/MinGW/lib/gcc/mingw32/6.3.0;C:/Users/isiah/MinGW/lib/gcc;C:/Users/isiah/MinGW/mingw32/lib;C:/Users/isiah/MinGW/lib")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "C:/Windows/MinGW/lib/gcc/mingw32/6.3.0;C:/Windows/MinGW/lib/gcc;C:/Windows/MinGW/mingw32/lib;C:/Windows/MinGW/lib")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

@@ -6,7 +6,7 @@
 #include <allegro.h>
 
 
-void initialisation_allegro() {
+void initialisation_allegro(){
     allegro_init();
     install_keyboard();
     install_mouse();
@@ -138,7 +138,6 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]) {
             draw_sprite(buffer,c[i][j].img, c[i][j].x, c[i][j].y);
         }
     }
-
 }
 
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]) {
@@ -177,5 +176,57 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                 obs[i][j].a=1;
             }
         }
+    }
+}
+
+t_potion init_inventaire (char nom_potion[20], int i) {
+    // initialisation des potions
+    t_potion p;
+    p.x = 0;
+    p.y = 0;
+    p.xf = 0;
+    p.yf = 0;
+    sprintf(nom_potion, "Images\\potion_%d.bmp", i+1);
+    p.img = load_bitmap(nom_potion, NULL);
+    return p;
+}
+
+void creer_potion (t_potion p[NB_POTION], char nom_potion[20]) {
+    for (int i = 0; i < NB_POTION; i++) {
+        p[i] = init_inventaire(nom_potion, i);
+        // fonctions pour que ca soit dans des cases de l'inventaire
+        p[i].x = i*102+22;
+        p[i].y = SCREEN_H-92;
+        p[i].xf = p[i].x+68;
+        p[i].yf = p[i].y+68;
+    }
+}
+
+void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats) {
+    // il faudra remplacer les degats par les pv des joueurs dans les structures
+    textprintf_ex(buffer, font, 724, SCREEN_H-70, makecol(0,0,0), -1, "%d", degats);
+}
+
+void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats) {
+    BITMAP* inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
+    blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
+    for (int i = 0; i < NB_POTION; i++) {
+        draw_sprite(buffer, p[i].img,  p[i].x, p[i].y);
+    }
+    point_vie(buffer, p, degats);
+}
+
+void souris (BITMAP* buffer, t_potion p[NB_POTION]) {// manque la structure personnage qui permetterait de recuperer me type de perso
+    int souris = 0;
+    // test pour savoir si les potions sont appuyées dans l'inventaire
+    for (int i = 0; i < NB_POTION; i++) {
+        if ((mouse_b & 1 || mouse_b & 2) && mouse_x>p[i].x && mouse_x<p[i].xf && mouse_y>p[i].y && mouse_y<p[i].yf) {
+            souris = i+1;
+        }
+    }
+    if (souris > 0) {
+        // pour voir si ca fonctionne bien les boutons a changer plus tard
+        BITMAP* image = load_bitmap("potion_1.bmp", NULL);
+        blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
     }
 }

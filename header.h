@@ -9,9 +9,10 @@
 #define NB_CASES 10 //Nb de cases hors spawns
 #define NB_OBS 8
 #define NB_SPAWNS 4
-#define Y_DEPART 60
+#define Y_DEPART 10
 #define PRCNT_OBS 8
 #define NB_PERSOS 1
+#define NB_POTION 4 // nombre de potion par perso
 
 
 typedef struct {
@@ -41,12 +42,18 @@ typedef struct {
     BITMAP *img;
 }t_perso;
 
+typedef struct {
+    int x, y, xf, yf;
+    //xf et yf les coordonnees de la fin de la taille des images des potions
+    BITMAP* img;
+} t_potion;
 
 void initialisation_allegro();
 t_spriteimmo initspriteimmo();
 t_perso init_perso();
 t_case init_case(int n, int i, int j);
 t_obstacle init_obstacle(int n, int i, int j);
+t_potion init_inventaire(char nom_potion[20], int i);
 
 void creer_fichier();
 void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
@@ -55,5 +62,9 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
 void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
+void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
+void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
+void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
+void souris (BITMAP* buffer, t_potion p[NB_POTION]);
 
 #endif //HEADER_H
