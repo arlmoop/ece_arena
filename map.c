@@ -231,7 +231,7 @@ void souris (BITMAP* buffer, t_potion pot[NB_POTION]) {// manque la structure pe
     }
     if (souris > 0) {
         // pour voir si ca fonctionne bien les boutons a changer plus tard
-        BITMAP* image = load_bitmap("Images\\potion_1.bmp", NULL);
+        BITMAP* image = load_bitmap("Images\\potion_15.bmp", NULL);
         blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
     }
 }
