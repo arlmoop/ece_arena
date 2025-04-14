@@ -91,3 +91,8 @@
 198	360	7662922751742743	ece_arena.exe	b4a60e59302d6eef
 2	142	7662923062879837	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
 143	297	7662923064283090	ece_arena.exe	b4a60e59302d6eef
+19	206	7662939207994217	CMakeFiles/ece_arena.dir/menu.c.obj	b20601e30262078c
+16	207	7662939207958047	CMakeFiles/ece_arena.dir/persos.c.obj	84bfa619d09ee066
+3	214	7662939207836166	CMakeFiles/ece_arena.dir/main.c.obj	30e326b15de8835a
+11	263	7662939207914988	CMakeFiles/ece_arena.dir/map.c.obj	9828492e17e91cf0
+263	460	7662939210429283	ece_arena.exe	b4a60e59302d6eef
