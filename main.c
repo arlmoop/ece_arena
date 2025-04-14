@@ -5,6 +5,18 @@
 #include <stdio.h>
 #include <allegro.h>
 
+void initialisation_allegro(){
+    allegro_init();
+    install_keyboard();
+    install_mouse();
+    set_color_depth(desktop_color_depth());
+    if (set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0)!=0) {
+        allegro_message("probleme mode graphique");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+    show_mouse(screen);
+}
 
 int main() {
     srand(time(NULL));

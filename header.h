@@ -49,8 +49,16 @@ typedef struct {
 } t_potion;
 
 void initialisation_allegro();
+
+// MENU.C
 t_spriteimmo initspriteimmo();
+
+// PERSOS.C
 t_perso init_perso(int n, int i, int j);
+
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
+
+// MAP.C
 t_case init_case(int n, int i, int j);
 t_obstacle init_obstacle(int n, int i, int j);
 t_potion init_inventaire(char nom_potion[20], int i);
@@ -60,7 +68,6 @@ void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
 void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
 void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
 void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
 void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
