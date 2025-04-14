@@ -11,12 +11,15 @@ int main() {
     initialisation_allegro();
 
     int degats = 100;
+    char nom_potion[20];
 
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
+    t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
 
+    BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
     BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
@@ -27,15 +30,17 @@ int main() {
     creer_map(tab_map, c, 1);
     creer_obstacles(c, obs);
     placer_persos(c, p);
-
+    creer_potion(pot, nom_potion);
 
     while(!key[KEY_ESC]) {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
         afficher_map(buffer, c);
-        afficher_inventaire(buffer,p, degats);
-        souris(buffer,p);
+        blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
+        point_vie(buffer, pot, degats);
         afficher_obstacles_persos(buffer, c, obs, p);
+        afficher_inventaire(buffer, pot, degats);
+        souris(buffer, pot);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
