@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <allegro.h>
 
+
 t_perso init_perso(int n, int i, int j){
     t_perso b;
     b.x=i, b.y=j;

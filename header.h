@@ -38,7 +38,8 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe, e;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe;
+    bool e;
     // E 0:existe pas 1:existe
     BITMAP *img;
 }t_perso;
@@ -56,14 +57,12 @@ t_spriteimmo initspriteimmo();
 
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
-
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe);
 
 // MAP.C
 t_case init_case(int n, int i, int j);
 t_obstacle init_obstacle(int n, int i, int j);
 t_potion init_inventaire(char nom_potion[20], int i);
-
 void creer_fichier();
 void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
 void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe);

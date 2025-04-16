@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <allegro.h>
 
+
 t_case init_case(int n, int i, int j) {
     t_case c;
     c.x=i, c.y=j;
