@@ -11,7 +11,7 @@
 #define NB_SPAWNS 4
 #define Y_DEPART 10
 #define PRCNT_OBS 8
-#define NB_PERSOS 2
+#define NB_PERSOS 4
 #define NB_POTION 4 // nombre de potion par perso
 
 

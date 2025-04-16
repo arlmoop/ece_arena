@@ -31,7 +31,7 @@ int main() {
     t_case c[TAILLE_MAP][TAILLE_MAP];
     t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
-    int equipe=1;// a enlever quand menu // 0 non 1 oui
+    int equipe=0;// a enlever quand menu // 0 non 1 oui
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
