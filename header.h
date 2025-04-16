@@ -11,7 +11,7 @@
 #define NB_SPAWNS 4
 #define Y_DEPART 10
 #define PRCNT_OBS 8
-#define NB_PERSOS 1
+#define NB_PERSOS 2
 #define NB_POTION 4 // nombre de potion par perso
 
 
@@ -32,13 +32,14 @@ typedef struct {
 typedef struct {
     int x, y, tx, ty, xcentre, ycentre;
     bool e, a;
-    // E 0:ne va pas etre affiche 1:va etre affiche
+    // E 0:existe pas 1:existe
     // A 0:n'a pas ete affiche 1:a ete affiche
     BITMAP *img;
 } t_obstacle;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe, e;
+    // E 0:existe pas 1:existe
     BITMAP *img;
 }t_perso;
 
@@ -56,7 +57,7 @@ t_spriteimmo initspriteimmo();
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
 
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe);
 
 // MAP.C
 t_case init_case(int n, int i, int j);
@@ -68,7 +69,7 @@ void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
 void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
-void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
+void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
 void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
 void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);

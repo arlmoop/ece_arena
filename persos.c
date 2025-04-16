@@ -13,7 +13,8 @@ t_perso init_perso(int n, int i, int j){
     b.tmpimg=4;
     b.dx=0, b.dy=0;
     b.equipe=0;
-    b.classe=0;
+    b.classe=n;
+    b.e=0;
     if (n==1) {
         b.img=load_bitmap("Images\\barbare_1.bmp", NULL);
     }
@@ -27,15 +28,21 @@ t_perso init_perso(int n, int i, int j){
     return b;
 }
 
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
-    int num_joueur=1;
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++){
-            if (c[i][j].type==NB_CASES+num_joueur) {
-                p[1-num_joueur]=init_perso(num_joueur, c[i][j].x, c[i][j].y-35);
-                c[i][j].p=1;
-                //num_joueur++; ca bug
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe) {
+    int num=1;
+    int paire=1;
+        for(int i=0;i<TAILLE_MAP;i++){
+            for(int j=0;j<TAILLE_MAP;j++) {
+                p[i][j]=init_perso(num, c[i][j].x, c[i][j].y-35);
+                if (c[i][j].type==NB_CASES+num) {
+                    p[i][j].e=1;
+                    c[i][j].p=1;
+                    num++;
+                    if (paire%2!=0 && equipe==1) {
+                        num--;
+                    }
+                    paire++;
+                }
             }
         }
-    }
 }

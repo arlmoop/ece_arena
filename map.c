@@ -144,29 +144,14 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
     }
 }
 
-// Bug daffichage pas grave
-void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++){
-            obs[i][j].a=0;
-        }
-    }
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++){
-            if(obs[i][j].e==1 && (i==0 || j==0 || (c[i][j+1].p==1 || c[i+1][j+1].p==1 || c[i+1][j].p==1))) {
+void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]) {
+    for (int i=0; i<TAILLE_MAP; i++) {
+        for (int j=0; j<TAILLE_MAP; j++) {
+            if (obs[i][j].e==1) {
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
-                obs[i][j].a=1;
             }
-        }
-    }
-    for(int k=0;k<NB_PERSOS;k++){
-        draw_sprite(buffer, p[k].img, p[k].x, p[k].y);
-    }
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++){
-            if(obs[i][j].e==1 && obs[i][j].a==0) {
-                draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
-                obs[i][j].a=1;
+            if (p[i][j].e==1) {
+                draw_sprite(buffer, p[i][j].img, p[i][j].x, p[i][j].y);
             }
         }
     }

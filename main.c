@@ -10,7 +10,7 @@ void initialisation_allegro(){
     install_keyboard();
     install_mouse();
     set_color_depth(desktop_color_depth());
-    if (set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0)!=0) {
+    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0)!=0) {
         allegro_message("probleme mode graphique");
         allegro_exit();
         exit(EXIT_FAILURE);
@@ -25,11 +25,12 @@ int main() {
     int degats = 100;
     char nom_potion[20];
 
-    t_perso p[NB_PERSOS];
+    t_perso p[TAILLE_MAP][TAILLE_MAP];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
+    int equipe=1;// a enlever quand menu // 0 non 1 oui
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -39,9 +40,9 @@ int main() {
 
     creer_fichier();
     charger_fichier(tab_map);
-    creer_map(tab_map, c, 1);
+    creer_map(tab_map, c, equipe);
     creer_obstacles(c, obs);
-    placer_persos(c, p);
+    placer_persos(c, p, equipe);
     creer_potion(pot, nom_potion);
 
     while(!key[KEY_ESC]) {
@@ -50,7 +51,7 @@ int main() {
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
-        afficher_obstacles_persos(buffer, c, obs, p);
+        afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris(buffer, pot);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
