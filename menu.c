@@ -15,6 +15,43 @@ t_spriteimmo init_spriteimmo() {
     return s;
 }
 
+void disparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2) {
+    BITMAP*nuage=create_bitmap(SCREEN_W,SCREEN_H);
+    int x1 = 0, y1 = 0;
+    int x2 = 0, y2 = 0;
+    while(y1!=500&&x2!=250) {
+        clear_bitmap(nuage);
+        blit(menu,nuage,0,0,0,0,SCREEN_W,SCREEN_H);
+        x1 -= 5; y1 += 5;
+        x2 += 5; y2 -= 5;
+        stretch_sprite(nuage, fond1, x1, y1,SCREEN_W,SCREEN_H);
+        stretch_sprite(nuage, fond2, x2, y2,SCREEN_W,SCREEN_H);
+        blit(nuage, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        rest(10);
+    }
+    destroy_bitmap(nuage);
+}
+
+void apparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2) {
+    BITMAP*nuage=create_bitmap(SCREEN_W,SCREEN_H);
+    int x1 = -250, y1 = 250;
+    int x2 = 250, y2 = -250;
+    while (y1 > 0 || x2 > 0) {
+        clear_bitmap(nuage);
+        blit(menu,nuage,0,0,0,0,SCREEN_W,SCREEN_H);
+        x1 += 5;
+        y1 -= 5;
+        x2 -= 5;
+        y2 += 5;
+
+        stretch_sprite(nuage, fond1, x1, y1, SCREEN_W, SCREEN_H);
+        stretch_sprite(nuage, fond2, x2, y2, SCREEN_W, SCREEN_H);
+        blit(nuage, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        rest(10);
+    }
+    destroy_bitmap(nuage);
+}
+
 int bouton_bas_droite(BITMAP *menu, int est_retour,int format_menu) {
     int bouton_w = 50;
     int bouton_h = 40;
@@ -162,13 +199,15 @@ int afficher_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int
             int curseur_map = (mx >= map_x && mx <= map_x + map_w && my >= map_y && my <= map_y + map_h);
             int couleur = curseur_map ? makecol(200, 150, 60) : makecol(120, 80, 30);
             //int txt_couleur = curseur ? makecol(255, 255, 255) : makecol(220, 180, 100);
-            if(curseur_map&&theme!=0&&theme!=1) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
+            if(curseur_map&&*theme!=0&&*theme!=1) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
             rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
-            if(theme==0){
+            if(*theme==0){
                 rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
+                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
             }
-            else if(theme==1){
+            else if(*theme==1){
                 rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
+                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
             }
             if (curseur_map && (mouse_b & 1)) {
                 *theme=i;
@@ -370,24 +409,15 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     return choix;
 }
 
-typedef enum {
-    MENU_PRINCIPAL,
-    CHOIX_MAP,
-    CHOIX_JOUEURS,
-    CHOIX_CLASSES
-} EtatMenu;
-
-int aleatoire=0;
-int theme=-1;
-int nb_joueurs=2;
-int choix_joueurs[4];
-
-int menu(int *aleatoire,int *theme, int *nb_joueurs, int choix_joueurs[]) {
+int menu() {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *fond_nuage_bas = load_bitmap("fond_nuage_bas.bmp", NULL);
     BITMAP *fond_nuage_haut = load_bitmap("fond_nuage_haut.bmp", NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
-    
+    int aleatoire=0;
+    int theme=-1;
+    int nb_joueurs=2;
+    int choix_joueurs[4];
     int fin_du_jeu=0;
     int choix = -1;
     int choix_map = -1;
@@ -443,41 +473,4 @@ int menu(int *aleatoire,int *theme, int *nb_joueurs, int choix_joueurs[]) {
     destroy_bitmap(fond_nuage_bas);
     destroy_bitmap(fond_nuage_haut);
     return 0;
-}
-
-void disparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2) {
-    BITMAP*nuage=create_bitmap(SCREEN_W,SCREEN_H);
-    int x1 = 0, y1 = 0;
-    int x2 = 0, y2 = 0;
-    while(y1!=500&&x2!=250) {
-        clear_bitmap(nuage);
-        blit(menu,nuage,0,0,0,0,SCREEN_W,SCREEN_H);
-        x1 -= 5; y1 += 5;
-        x2 += 5; y2 -= 5;
-        stretch_sprite(nuage, fond1, x1, y1,SCREEN_W,SCREEN_H);
-        stretch_sprite(nuage, fond2, x2, y2,SCREEN_W,SCREEN_H);
-        blit(nuage, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        rest(10);
-    }
-    destroy_bitmap(nuage);
-}
-
-void apparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2) {
-    BITMAP*nuage=create_bitmap(SCREEN_W,SCREEN_H);
-    int x1 = -250, y1 = 250;
-    int x2 = 250, y2 = -250;
-    while (y1 > 0 || x2 > 0) {
-        clear_bitmap(nuage);
-        blit(menu,nuage,0,0,0,0,SCREEN_W,SCREEN_H);
-        x1 += 5;
-        y1 -= 5;
-        x2 -= 5;
-        y2 += 5;
-
-        stretch_sprite(nuage, fond1, x1, y1, SCREEN_W, SCREEN_H);
-        stretch_sprite(nuage, fond2, x2, y2, SCREEN_W, SCREEN_H);
-        blit(nuage, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        rest(10);
-    }
-    destroy_bitmap(nuage);
 }
