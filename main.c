@@ -54,7 +54,8 @@ int main() {
         point_vie(buffer, pot, degats);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
-        souris(buffer, pot);
+        souris_potion(buffer, pot);
+        souris_tab(c,buffer);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 

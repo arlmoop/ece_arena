@@ -22,7 +22,7 @@ typedef struct {
 
 typedef struct {
     int x, y, tx, ty, xcentre, ycentre, type;
-    bool o, p;
+    bool o, p, r;
     // O 0:pas occupee 1:occupee par obstacle
     // P 0:pas occupee 1:occupee par perso
     // TYPE 1:terre 2:autre
@@ -69,9 +69,15 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
+void souris_case(t_case *c);
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
+
+
+// SORTS.C
 void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
 void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
 void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
-void souris (BITMAP* buffer, t_potion p[NB_POTION]);
+void souris_potion (BITMAP* buffer, t_potion p[NB_POTION]);
+
 
 #endif //HEADER_H
