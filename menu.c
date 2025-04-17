@@ -409,15 +409,12 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     return choix;
 }
 
-int menu() {
+int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]) {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *fond_nuage_bas = load_bitmap("fond_nuage_bas.bmp", NULL);
     BITMAP *fond_nuage_haut = load_bitmap("fond_nuage_haut.bmp", NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
-    int aleatoire=0;
-    int theme=-1;
-    int nb_joueurs=2;
-    int choix_joueurs[4];
+
     int fin_du_jeu=0;
     int choix = -1;
     int choix_map = -1;
@@ -437,12 +434,12 @@ int menu() {
                 else if(choix==-2) fin_du_jeu=1;
                 break;
             case CHOIX_MAP:
-                choix_map = afficher_map(menu,fond_nuage_bas,fond_nuage_haut,&theme,&aleatoire);
+                choix_map = afficher_menu_map(menu,fond_nuage_bas,fond_nuage_haut,theme,aleatoire);
                 if (choix_map == 0) etat_actuel = CHOIX_JOUEURS;
                 else if (choix_map == -2) etat_actuel = MENU_PRINCIPAL;
                 break;
             case CHOIX_JOUEURS:
-                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,&nb_joueurs,&lancer);
+                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer);
                 if(joueurs>=0&&joueurs<4){
                     etat_actuel= CHOIX_CLASSES;
                 }
@@ -451,6 +448,9 @@ int menu() {
                     anime_nuage=1;
                 }
                 if(lancer){
+                    destroy_bitmap(menu);
+                    destroy_bitmap(fond_nuage_bas);
+                    destroy_bitmap(fond_nuage_haut);
                     return 1;
                 }
                 break;
