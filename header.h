@@ -13,7 +13,10 @@
 #define PRCNT_OBS 8
 #define NB_PERSOS 4
 #define NB_POTION 4 // nombre de potion par perso
-
+#define MENU_W 400
+#define MENU_H 300
+#define MENU_CLASSES_W 600
+#define MENU_CLASSES_H 480
 
 typedef struct {
     int x, y, tx, ty;
