@@ -130,7 +130,7 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
     return choix;
 }
 
-int afficher_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire) {
+int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire) {
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -299,6 +299,9 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
                 rectfill(menu,cadre_x-4,cadre_y-4,cadre_x+cadre_w+4,cadre_y+cadre_h+4,makecol(200, 150, 60));
             }
             rectfill(menu,cadre_x,cadre_y,cadre_x+cadre_w,cadre_y+cadre_h,makecol(120, 80, 30));
+            char j[30];
+            sprintf(j,"joueur %d",i+1);
+            textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, makecol(255, 255, 255),-1,j);
             if (curseur_cadre&&(mouse_b & 1)) {
                 choix = i;
                 while(mouse_b & 1);
