@@ -199,13 +199,13 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
             int curseur_map = (mx >= map_x && mx <= map_x + map_w && my >= map_y && my <= map_y + map_h);
             int couleur = curseur_map ? makecol(200, 150, 60) : makecol(120, 80, 30);
             //int txt_couleur = curseur ? makecol(255, 255, 255) : makecol(220, 180, 100);
-            if(curseur_map&&*theme!=0&&*theme!=1) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
+            if(curseur_map) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
             rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
-            if(*theme==0){
+            if(*theme==0&&!i){
                 rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
                 rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
             }
-            else if(*theme==1){
+            else if(*theme==1&&i){
                 rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
                 rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
             }
