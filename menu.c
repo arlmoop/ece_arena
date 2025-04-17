@@ -5,10 +5,6 @@
 #include <stdio.h>
 #include <allegro.h>
 
-#define MENU_W 400
-#define MENU_H 300
-#define MENU_CLASSES_W 600
-#define MENU_CLASSES_H 480
 
 t_spriteimmo init_spriteimmo() {
     t_spriteimmo s;
