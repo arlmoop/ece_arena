@@ -22,7 +22,11 @@ void initialisation_allegro(){
 int main() {
     srand(time(NULL));
     initialisation_allegro();
-
+    int aleatoire=0;
+    int theme=-1;
+    int nb_joueurs=2;
+    int choix_joueurs[4];
+    menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs);
     int degats = 100;
     char nom_potion[20];
 
