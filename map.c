@@ -13,16 +13,16 @@ t_case init_case(int n, int i, int j) {
     c.p=0;
     c.r=0;
     if (n==1) {
-        c.img=load_bitmap("bloc_glace.bmp", NULL);
+        c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
         c.type=2;
     }
     else if (n>1 && n<=NB_CASES){
-        c.img=load_bitmap("bloc_terre.bmp", NULL);
+        c.img=load_bitmap("Images\\bloc_terre.bmp", NULL);
         c.type=1;
     }
     else {
         char filename[20];
-        sprintf(filename, "spawn_%d.bmp", n-NB_CASES);
+        sprintf(filename, "Images\\spawn_%d.bmp", n-NB_CASES);
         c.img=load_bitmap(filename, NULL);
         c.type=n;
     }
@@ -30,7 +30,6 @@ t_case init_case(int n, int i, int j) {
     c.ty=c.img->h;
     c.xcentre=c.x+c.tx/2;
     c.ycentre=c.y+c.ty/2;
-    c.ycentre_losange=c.y+c.ty/4;
     return c;
 }
 
@@ -40,16 +39,16 @@ t_obstacle init_obstacle(int n, int i, int j) {
     obs.e=0;
     obs.a=0;
     if (n==1) {
-        obs.img=load_bitmap("tronc.bmp", NULL);
+        obs.img=load_bitmap("Images\\tronc.bmp", NULL);
     }
     else if (n==2) {
-        obs.img=load_bitmap("gem_box.bmp", NULL);
+        obs.img=load_bitmap("Images\\gem_box.bmp", NULL);
     }
     else if (n==3) {
-        obs.img=load_bitmap("pierre.bmp", NULL);
+        obs.img=load_bitmap("Images\\pierre.bmp", NULL);
     }
     else {
-        obs.img=load_bitmap("sapin.bmp", NULL);
+        obs.img=load_bitmap("Images\\sapin.bmp", NULL);
     }
     obs.tx=obs.img->w;
     obs.ty=obs.img->h;
@@ -160,38 +159,16 @@ void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE
     }
 }
 
-/*void souris_case(t_case *c) {
+void souris_case(t_case *c) {
     if(!(mouse_x>=c->x && mouse_x<=c->x+c->tx && mouse_y>=c->y && mouse_y<=c->y+c->ty)) {
         c->r=0;
     }
     if(mouse_x>=c->x && mouse_x<=c->x+c->tx && mouse_y>=c->y && mouse_y<=c->y+c->ty) {
         c->r=1;
     }
-}*/
-
-int point_dans_losange(t_case c) {
-    float dx = abs(mouse_x - c.xcentre);
-    float dy = abs(mouse_y - c.ycentre_losange);
-    return (dx / (c.tx / 2.0) + dy / (c.ty / 2.0)) <= 1;
 }
 
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
-    int drapeau = 0;
-    for(int i=0; i<TAILLE_MAP && !drapeau; i++) {
-        for(int j=0; j<TAILLE_MAP && !drapeau; j++) {
-            if (point_dans_losange(c[i][j])) {
-                c[i][j].r = 1;
-                line(buffer, c[i][j].xcentre - 5, c[i][j].ycentre_losange, c[i][j].xcentre + 5, c[i][j].ycentre_losange, makecol(255, 0, 0));
-                line(buffer, c[i][j].xcentre, c[i][j].ycentre_losange - 5, c[i][j].xcentre, c[i][j].ycentre_losange + 5, makecol(255, 0, 0));
-                drapeau = 1;
-            } else {
-                c[i][j].r = 0;
-            }
-        }
-    }
-}
-
-/*void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer) {
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer) {
     for(int i=0; i<TAILLE_MAP; i++) {
         for(int j=0; j<TAILLE_MAP; j++) {
             souris_case(&c[i][j]);
@@ -202,4 +179,4 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
             }
         }
     }
-}*/
+}
