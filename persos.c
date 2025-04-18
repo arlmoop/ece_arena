@@ -38,31 +38,70 @@ t_perso init_perso(int n, int i, int j){
     return b;
 }
 
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe) {
-    for(int i=0;i<TAILLE_MAP;i++){
-        for(int j=0;j<TAILLE_MAP;j++) {
-            if (c[i][j].type==NB_CASES+1) {
-                p[i][j]=init_perso(1, c[i][j].x, c[i][j].y-35);
-                c[i][j].p=1;
-                p[i][j].e=1;
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe, int choix_joueurs[]) {
+    if (equipe==0) {
+        for(int i=0;i<TAILLE_MAP;i++){
+            for(int j=0;j<TAILLE_MAP;j++) {
+                if (c[i][j].type==NB_CASES+1) {
+                    p[i][j]=init_perso(1, c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=1;
+                    p[i][j].e=1;
+                }
+                else if (c[i][j].type==NB_CASES+2) {
+                    p[i][j]=init_perso(2, c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=1;
+                    p[i][j].e=1;
+                }
+                else if (c[i][j].type==NB_CASES+3) {
+                    p[i][j]=init_perso(3, c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=1;
+                    p[i][j].e=1;
+                }
+                else if (c[i][j].type==NB_CASES+4) {
+                    p[i][j]=init_perso(4, c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=1;
+                    p[i][j].e=1;
+                }
+                else {
+                    p[i][j]=init_perso(0, c[i][j].x, c[i][j].y-35);
+                }
             }
-            else if (c[i][j].type==NB_CASES+2) {
-                p[i][j]=init_perso(2, c[i][j].x, c[i][j].y-35);
-                c[i][j].p=1;
-                p[i][j].e=1;
-            }
-            else if (c[i][j].type==NB_CASES+3) {
-                p[i][j]=init_perso(3, c[i][j].x, c[i][j].y-35);
-                c[i][j].p=1;
-                p[i][j].e=1;
-            }
-            else if (c[i][j].type==NB_CASES+4) {
-                p[i][j]=init_perso(4, c[i][j].x, c[i][j].y-35);
-                c[i][j].p=1;
-                p[i][j].e=1;
-            }
-            else {
-                p[i][j]=init_perso(0, c[i][j].x, c[i][j].y-35);
+        }
+    }
+    else {
+        int compte=1;
+        for(int i=0;i<TAILLE_MAP;i++){
+            for(int j=0;j<TAILLE_MAP;j++) {
+                if (c[i][j].type==NB_CASES+1) {
+                    if (compte==1) {
+                        p[i][j]=init_perso(1, c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=1;
+                        p[i][j].e=1;
+                        compte++;
+                    }
+                    else {
+                        p[i][j]=init_perso(2, c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=1;
+                        p[i][j].e=1;
+                        compte--;
+                    }
+                }
+                else if (c[i][j].type==NB_CASES+2) {
+                    if (compte==1) {
+                        p[i][j]=init_perso(3, c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=1;
+                        p[i][j].e=1;
+                        compte++;
+                    }
+                    else {
+                        p[i][j]=init_perso(4, c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=1;
+                        p[i][j].e=1;
+                    }
+                }
+                else {
+                    p[i][j]=init_perso(0, c[i][j].x, c[i][j].y-35);
+                }
             }
         }
     }

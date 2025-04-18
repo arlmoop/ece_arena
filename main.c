@@ -45,9 +45,9 @@ int main() {
 
     creer_fichier();
     charger_fichier(tab_map);
-    creer_map(tab_map, c, equipe);
+    creer_map(tab_map, c, equipe, nb_joueurs);
     creer_obstacles(c, obs);
-    placer_persos(c, p, equipe);
+    placer_persos(c, p, equipe, choix_joueurs);
     creer_potion(pot, nom_potion);
 
     while(!key[KEY_ESC]) {
