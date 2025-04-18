@@ -85,7 +85,7 @@ void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]) {
     }
 }
 
-void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe){
+void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe, int nb_joueurs){
     t_case case1=init_case(1,0,0);
     int m;
     // 2V2
@@ -113,7 +113,7 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
                 c[i][j]=init_case(m,SCREEN_W/2-case1.tx/2+(case1.tx/2)*j-(case1.tx/2)*i,Y_DEPART+(case1.y+12)*j+(case1.y+12)*i);
             }
         }
-        for(int k=0; k<NB_PERSOS; k++) {
+        for(int k=0; k<nb_joueurs; k++) {
             m=NB_CASES+1+k;
             int i=rand()%TAILLE_MAP, j=rand()%TAILLE_MAP;
             if (c[i][j].type<=NB_CASES) {

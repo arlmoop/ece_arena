@@ -68,7 +68,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]);
 
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe);
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe, int choix_joueurs[]);
 
 // MAP.C
 t_case init_case(int n, int i, int j);
@@ -76,7 +76,7 @@ t_obstacle init_obstacle(int n, int i, int j);
 t_potion init_inventaire(char nom_potion[20], int i);
 void creer_fichier();
 void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]);
-void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe);
+void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe, int nb_joueurs);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
