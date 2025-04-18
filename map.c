@@ -30,6 +30,7 @@ t_case init_case(int n, int i, int j) {
     c.ty=c.img->h;
     c.xcentre=c.x+c.tx/2;
     c.ycentre=c.y+c.ty/2;
+    c.ycentre_losange=c.y+c.ty/4;
     return c;
 }
 
@@ -158,8 +159,28 @@ void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE
         }
     }
 }
+int point_dans_losange(t_case c) {
+    float dx = abs(mouse_x - c.xcentre);
+    float dy = abs(mouse_y - c.ycentre_losange);
+    return (dx / (c.tx / 2.0) + dy / (c.ty / 4.0)) <= 1;
+}
 
-void souris_case(t_case *c) {
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
+    int drapeau = 0;
+    for(int i=0; i<TAILLE_MAP && !drapeau; i++) {
+        for(int j=0; j<TAILLE_MAP && !drapeau; j++) {
+            if (point_dans_losange(c[i][j])) {
+                c[i][j].r = 1;
+                line(buffer, c[i][j].xcentre - 5, c[i][j].ycentre_losange, c[i][j].xcentre + 5, c[i][j].ycentre_losange, makecol(255, 0, 0));
+                line(buffer, c[i][j].xcentre, c[i][j].ycentre_losange - 5, c[i][j].xcentre, c[i][j].ycentre_losange + 5, makecol(255, 0, 0));
+                drapeau = 1;
+            } else {
+                c[i][j].r = 0;
+            }
+        }
+    }
+}
+/*void souris_case(t_case *c) {
     if(!(mouse_x>=c->x && mouse_x<=c->x+c->tx && mouse_y>=c->y && mouse_y<=c->y+c->ty)) {
         c->r=0;
     }
@@ -179,4 +200,4 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer) {
             }
         }
     }
-}
+}*/
