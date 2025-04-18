@@ -24,7 +24,7 @@ typedef struct {
 } t_spriteimmo;
 
 typedef struct {
-    int x, y, tx, ty, xcentre, ycentre, type;
+    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange;
     bool o, p, r;
     // O 0:pas occupee 1:occupee par obstacle
     // P 0:pas occupee 1:occupee par perso
@@ -81,6 +81,7 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 void souris_case(t_case *c);
+int point_dans_losange(t_case c);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
 
 
