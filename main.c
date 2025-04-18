@@ -1,7 +1,7 @@
 #include "header.h"
 
 #include <time.h>
-#include <stdlib.h>
+#include <stdlib.h>  
 #include <stdio.h>
 #include <allegro.h>
 
@@ -16,9 +16,6 @@ void initialisation_allegro(){
         allegro_exit();
         exit(EXIT_FAILURE);
     }
-    BITMAP *souris=load_bitmap("souris.bmp",NULL);
-    set_mouse_sprite(souris);
-    set_mouse_sprite_focus(0, 0); // Position du "clic" dans le sprite
     show_mouse(screen);
 }
 
@@ -40,8 +37,8 @@ int main() {
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int equipe=0;// a enlever quand menu // 0 non 1 oui
 
-    BITMAP *inventaire = load_bitmap("inventaire.bmp", NULL);
-    BITMAP *fond=load_bitmap("fond2.bmp", NULL);
+    BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
+    BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
     BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
@@ -52,7 +49,6 @@ int main() {
     creer_obstacles(c, obs);
     placer_persos(c, p, equipe);
     creer_potion(pot, nom_potion);
-
 
     while(!key[KEY_ESC]) {
         clear_bitmap(buffer);
