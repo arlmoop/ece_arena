@@ -1,7 +1,10 @@
-#ifndef HEADER_H
-#define HEADER_H
-
+#ifndef HEADER_H_INCLUDED
+#define HEADER_H_INCLUDED
+#include <stdio.h>
+#include <stdlib.h>
 #include <allegro.h>
+#include <time.h>
+
 #include <stdbool.h>
 
 #define TAILLE_MAP 19 //Impair pr bien placer les spawns d'equipe
@@ -18,13 +21,20 @@
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
 
+typedef enum {
+    MENU_PRINCIPAL,
+    CHOIX_MAP,
+    CHOIX_JOUEURS,
+    CHOIX_CLASSES
+} EtatMenu;
+
 typedef struct {
     int x, y, tx, ty;
     BITMAP *img;
 } t_spriteimmo;
 
 typedef struct {
-    int x, y, tx, ty, xcentre, ycentre, type;
+    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange;
     bool o, p, r;
     // O 0:pas occupee 1:occupee par obstacle
     // P 0:pas occupee 1:occupee par perso
@@ -72,7 +82,8 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
-void souris_case(t_case *c);
+//void souris_case(t_case *c);
+int point_dans_losange(t_case c);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
 
 
@@ -82,5 +93,4 @@ void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
 void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
 void souris_potion (BITMAP* buffer, t_potion p[NB_POTION]);
 
-
-#endif //HEADER_H
+#endif // HEADER_H_INCLUDED
