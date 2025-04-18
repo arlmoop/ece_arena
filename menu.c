@@ -232,7 +232,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
         char filename[30];
-        sprintf(filename,"bouton_lancer%d.bmp",i);
+        sprintf(filename,"Images\\bouton_lancer%d.bmp",i);
         bouton_lancer[i]=load_bitmap(filename,NULL);
     }
 
@@ -300,7 +300,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
             }
             rectfill(menu,cadre_x,cadre_y,cadre_x+cadre_w,cadre_y+cadre_h,makecol(120, 80, 30));
             char j[30];
-            sprintf(j,"joueur %d",i+1);
+            sprintf(j,"Images\\joueur %d",i+1);
             textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, makecol(255, 255, 255),-1,j);
             if (curseur_cadre&&(mouse_b & 1)) {
                 choix = i;
@@ -330,17 +330,17 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     BITMAP *icone_skin[2];
     for(int i=0;i<4;i++){
         char filename[20];
-        sprintf(filename,"baniere%d.bmp",i);
+        sprintf(filename,"Images\\baniere%d.bmp",i);
         banieres[i]=load_bitmap(filename,NULL);
     }
     for(int i=0;i<2;i++){
         char filename[20];
-        sprintf(filename,"choix_classe%d.bmp",i);
+        sprintf(filename,"Images\\choix_classe%d.bmp",i);
         bouton_choix[i]=load_bitmap(filename,NULL);
     }
     for(int i=0;i<2;i++){
         char filename[20];
-        sprintf(filename,"icone_skin%d.bmp",i);
+        sprintf(filename,"Images\\icone_skin%d.bmp",i);
         icone_skin[i]=load_bitmap(filename,NULL);
     }
     clear_to_color(menu, makecol(25, 25, 25));
@@ -414,8 +414,8 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
 
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]) {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
-    BITMAP *fond_nuage_bas = load_bitmap("fond_nuage_bas.bmp", NULL);
-    BITMAP *fond_nuage_haut = load_bitmap("fond_nuage_haut.bmp", NULL);
+    BITMAP *fond_nuage_bas = load_bitmap("Images\\fond_nuage_bas.bmp", NULL);
+    BITMAP *fond_nuage_haut = load_bitmap("Images\\fond_nuage_haut.bmp", NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
 
     int fin_du_jeu=0;
