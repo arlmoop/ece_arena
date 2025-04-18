@@ -47,6 +47,13 @@ typedef struct {
     BITMAP *img;
 }t_perso;
 
+typedef enum {
+    MENU_PRINCIPAL,
+    CHOIX_MAP,
+    CHOIX_JOUEURS,
+    CHOIX_CLASSES
+} EtatMenu;
+
 typedef struct {
     int x, y, xf, yf;
     //xf et yf les coordonnees de la fin de la taille des images des potions
@@ -57,6 +64,7 @@ void initialisation_allegro();
 
 // MENU.C
 t_spriteimmo initspriteimmo();
+int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]);
 
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
