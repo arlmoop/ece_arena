@@ -228,7 +228,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
     return choix;
 }
 
-int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer){
+int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe){
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
         char filename[30];
@@ -242,6 +242,10 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
     int bouton_h = 20;
     int bouton_w = 20;
     int bouton_y = menu_y + 10;
+    int bouton_equipe_h = 24;
+    int bouton_equipe_w = 80;
+    int bouton_equipe_y = menu_y + 10;
+    int bouton_equipe_x = menu_x + MENU_W/2 + 90;
     int espace_cadre=20;
     int cadre_w=MENU_W/2-35;
     int cadre_h=MENU_H/2-bouton_h-50;
@@ -267,7 +271,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
             return;
         }
         for(int i=0;i<2;i++){
-            int bouton_x = menu_x + MENU_W/2 + 80 + i*40;
+            int bouton_x = menu_x + MENU_W/2 + i*40;
             int curseur_bouton=(mx >= bouton_x && mx <= bouton_x + bouton_w && my >= bouton_y && my <= bouton_y + bouton_h);
             rectfill(menu,bouton_x+4,bouton_y+4,bouton_x+4+bouton_w,bouton_y+4+bouton_h,makecol(120, 80, 30));
             rect(menu,bouton_x+4,bouton_y+4,bouton_x+4+bouton_w,bouton_y+4+bouton_h,makecol(200, 150, 60));
@@ -282,13 +286,30 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
                     while(mouse_b & 1);
                 } else if(!i&&*nb_joueurs>2){
                     (*nb_joueurs)--;
+                    *equipe=0;
                     while(mouse_b & 1);
                 }
             }
         }
         char filename[30];
         sprintf(filename,"Nombre de joueurs : %d",*nb_joueurs);
-        textprintf_centre_ex(menu, font, menu_x + MENU_W / 2-40, menu_y + 20, makecol(255, 255, 0), -1, filename);
+        textprintf_centre_ex(menu, font, menu_x + MENU_W / 4, menu_y + 20, makecol(255, 255, 0), -1, filename);
+        int curseur_bouton_equipe=(mx >= bouton_equipe_x && mx <= bouton_equipe_x + bouton_equipe_w && my >= bouton_equipe_y && my <= bouton_equipe_y + bouton_equipe_h);
+        int x=*equipe;
+        if(curseur_bouton_equipe&&(mouse_b & 1)&&*nb_joueurs==4){
+            while(mouse_b & 1)
+            (*equipe)=!x;
+        }
+        int couleur_bouton_equipe=(*equipe)?makecol(255, 215, 0):makecol(120, 80, 30);
+        if(curseur_bouton_equipe){
+            rectfill(menu,bouton_equipe_x+2,bouton_equipe_y+2,bouton_equipe_x+bouton_equipe_w-2,bouton_equipe_y+bouton_equipe_h-2,couleur_bouton_equipe);
+            rect(menu,bouton_equipe_x+2,bouton_equipe_y+2,bouton_equipe_x+bouton_equipe_w-2,bouton_equipe_y+bouton_equipe_h-2,makecol(200, 150, 60));
+        } else{
+            rectfill(menu,bouton_equipe_x,bouton_equipe_y,bouton_equipe_x+bouton_equipe_w,bouton_equipe_y+bouton_equipe_h,couleur_bouton_equipe);
+            rect(menu,bouton_equipe_x,bouton_equipe_y,bouton_equipe_x+bouton_equipe_w,bouton_equipe_y+bouton_equipe_h,makecol(200, 150, 60));
+        }
+
+        textprintf_centre_ex(menu, font, bouton_equipe_x+bouton_equipe_w/2, bouton_equipe_y+bouton_equipe_h/2.5, makecol(255, 255, 255), -1, "Equipe");
 
         for(int i=0;i<*nb_joueurs;i++){
             int cadre_x=menu_x+25+(i%2)*(espace_cadre+cadre_w);
@@ -300,8 +321,15 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
             }
             rectfill(menu,cadre_x,cadre_y,cadre_x+cadre_w,cadre_y+cadre_h,makecol(120, 80, 30));
             char j[30];
-            sprintf(j,"Images\\joueur %d",i+1);
-            textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, makecol(255, 255, 255),-1,j);
+            sprintf(j,"joueur %d",i+1);
+            int couleur_joueur;
+            if(*equipe){
+                if(i<2) couleur_joueur=makecol(0,0,255);
+                else couleur_joueur=makecol(255,0,0);
+            }
+            else couleur_joueur=makecol(255, 255, 255);
+            textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, couleur_joueur,-1,j);
+
             if (curseur_cadre&&(mouse_b & 1)) {
                 choix = i;
                 while(mouse_b & 1);
@@ -412,7 +440,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     return choix;
 }
 
-int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]) {
+int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equipe) {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *fond_nuage_bas = load_bitmap("Images\\fond_nuage_bas.bmp", NULL);
     BITMAP *fond_nuage_haut = load_bitmap("Images\\fond_nuage_haut.bmp", NULL);
@@ -442,7 +470,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]) {
                 else if (choix_map == -2) etat_actuel = MENU_PRINCIPAL;
                 break;
             case CHOIX_JOUEURS:
-                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer);
+                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe);
                 if(joueurs>=0&&joueurs<4){
                     etat_actuel= CHOIX_CLASSES;
                 }
