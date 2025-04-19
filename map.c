@@ -180,24 +180,3 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
         }
     }
 }
-/*void souris_case(t_case *c) {
-    if(!(mouse_x>=c->x && mouse_x<=c->x+c->tx && mouse_y>=c->y && mouse_y<=c->y+c->ty)) {
-        c->r=0;
-    }
-    if(mouse_x>=c->x && mouse_x<=c->x+c->tx && mouse_y>=c->y && mouse_y<=c->y+c->ty) {
-        c->r=1;
-    }
-}
-
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer) {
-    for(int i=0; i<TAILLE_MAP; i++) {
-        for(int j=0; j<TAILLE_MAP; j++) {
-            souris_case(&c[i][j]);
-            if(c[i][j].r==1) {
-                for(int z=0;z<100;z++) {
-                    putpixel(buffer, c[i][j].xcentre+z, c[i][j].y+z, makecol(255, 0, 0));
-                }
-            }
-        }
-    }
-}*/

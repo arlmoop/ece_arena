@@ -80,7 +80,6 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
-void souris_case(t_case *c);
 int point_dans_losange(t_case c);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
 
