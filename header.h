@@ -17,6 +17,7 @@
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
 
+
 typedef struct {
     int x, y, tx, ty;
     BITMAP *img;
@@ -59,15 +60,21 @@ typedef struct {
     BITMAP* img;
 } t_potion;
 
+
+//OUTILS.C
 void initialisation_allegro();
+void magenta (BITMAP* image, int r_max, int g_max, int b_max);
+
 
 // MENU.C
 t_spriteimmo initspriteimmo();
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
 
+
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe, int choix_joueurs[]);
+
 
 // MAP.C
 t_case init_case(int n, int i, int j);

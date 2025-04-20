@@ -8,6 +8,8 @@ add_executable(ece_arena main.c
                          header.h
                          persos.c
                          menu.c
-        sorts.c)
+        sorts.c
+        outils.c
+)
 
 target_link_libraries(ece_arena -lmingw32 -lalleg44)
