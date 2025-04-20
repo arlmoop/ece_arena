@@ -205,7 +205,7 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_pre
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     int r=0;
     for(int i=0; i<=PM; i++) {
-        if(abs(p.ligne-ligne_actu)==i && abs(p.colonne-colonne_actu)<=PM-i) {
+        if(abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu)<=PM) {
             r=1;
         }
     }
