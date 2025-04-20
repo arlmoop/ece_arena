@@ -17,6 +17,8 @@ int main() {
     menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
     int degats = 100;
     char nom_potion[20];
+    int ligne_prec=-1;
+    int colonne_prec=-1;
 
     t_perso p[TAILLE_MAP][TAILLE_MAP];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
@@ -43,7 +45,7 @@ int main() {
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
-        souris_tab(c,buffer);
+        souris_tab(c,buffer,&ligne_prec,&colonne_prec);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);
