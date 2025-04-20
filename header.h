@@ -16,6 +16,7 @@
 #define MENU_H 300
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
+#define PM 3
 
 
 typedef struct {
@@ -86,7 +87,7 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 int point_dans_losange(t_case c);
-void remplir_losange(t_case c, BITMAP * buffer);
+void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
 void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer);

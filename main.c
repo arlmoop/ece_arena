@@ -27,6 +27,7 @@ int main() {
     t_case c[TAILLE_MAP][TAILLE_MAP];
     t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
+    int tour_perso=1;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -48,7 +49,7 @@ int main() {
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
         souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
-        chemin(c, p, 1, ligne_actu, colonne_actu, buffer);
+        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);

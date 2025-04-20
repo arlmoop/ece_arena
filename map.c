@@ -165,10 +165,10 @@ int point_dans_losange(t_case c) {
     return (dx / (c.tx / 2.0) + dy / (c.ty / 4.0)) <= 1;
 }
 
-void remplir_losange(t_case c, BITMAP * buffer) {
+void remplir_losange(t_case c, BITMAP * buffer, int couleur) {
     for (int i=0; i<=c.tx/4+1; i++) {
-        hline(buffer, c.x+13*i/7, c.ycentre_losange-i, c.x+c.tx-13*i/7, makecol(255, 0, 0));
-        hline(buffer, c.x+13*i/7, c.ycentre_losange+i, c.x+c.tx-13*i/7, makecol(255, 0, 0));
+        hline(buffer, c.x+13*i/7, c.ycentre_losange-i, c.x+c.tx-13*i/7, couleur);
+        hline(buffer, c.x+13*i/7, c.ycentre_losange+i, c.x+c.tx-13*i/7, couleur);
     }
 }
 
@@ -191,23 +191,23 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_pre
                 c[i][j].r = 0;
             }
         }
-
         if (*ligne_actu != -1 && *colonne_actu != -1) {
             c[*ligne_actu][*colonne_actu].r = 1;
         }
-
         *ligne_prec = *ligne_actu;
         *colonne_prec = *colonne_actu;
     }
     if (*ligne_prec != -1 && *colonne_prec != -1 && c[*ligne_prec][*colonne_prec].r == 1) {
-        remplir_losange(c[*ligne_prec][*colonne_prec], buffer);
+        remplir_losange(c[*ligne_prec][*colonne_prec], buffer, makecol(255, 0, 0));
     }
 }
 
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     int r=0;
-    if(p.ligne-ligne_actu<=3 && p.ligne-ligne_actu>=-3 && p.colonne-colonne_actu<=3 && p.colonne-colonne_actu>=-3) {
-        r=1;
+    for(int i=0; i<=PM; i++) {
+        if(abs(p.ligne-ligne_actu)==i && abs(p.colonne-colonne_actu)<=PM-i) {
+            r=1;
+        }
     }
     return r;
 }
@@ -216,7 +216,27 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP],
     for (int i=0; i<TAILLE_MAP; i++) {
         for(int j=0; j<TAILLE_MAP; j++) {
             if(tour_perso==c[i][j].p && comparer_coord(p[i][j], ligne_actu, colonne_actu)==1) {
-                remplir_losange(c[i][j], buffer);
+                int k, l;
+                if(i<=ligne_actu) {
+                    for (k=i; k<ligne_actu; k++) {
+                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
+                    }
+                }
+                else {
+                    for (k=i; k>ligne_actu; k--) {
+                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
+                    }
+                }
+                if(j<=colonne_actu) {
+                    for (l=j; l<=colonne_actu; l++) {
+                        remplir_losange(c[k][l], buffer, makecol(100, 255, 100));
+                    }
+                }
+                else {
+                    for (l=j; l>=colonne_actu; l--) {
+                        remplir_losange(c[k][l], buffer, makecol(100, 255, 100));
+                    }
+                }
             }
         }
     }
