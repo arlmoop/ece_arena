@@ -172,17 +172,35 @@ void remplir_losange(t_case c, BITMAP * buffer) {
     }
 }
 
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
-    int drapeau = 0;
-    for(int i=0; i<TAILLE_MAP && !drapeau; i++) {
-        for(int j=0; j<TAILLE_MAP && !drapeau; j++) {
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec) {
+    int ligne_actu = -1;
+    int colonne_actu = -1;
+
+    for (int i = 0; i < TAILLE_MAP; i++) {
+        for (int j = 0; j < TAILLE_MAP; j++) {
             if (point_dans_losange(c[i][j])) {
-                c[i][j].r = 1;
-                remplir_losange(c[i][j], buffer);
-                drapeau = 1;
-            } else {
+                ligne_actu = i;
+                colonne_actu = j;
+                break;
+            }
+        }
+        if (ligne_actu != -1) break;
+    }
+    if (ligne_actu != *ligne_prec || colonne_actu != *colonne_prec) {
+        for (int i = 0; i < TAILLE_MAP; i++) {
+            for (int j = 0; j < TAILLE_MAP; j++) {
                 c[i][j].r = 0;
             }
         }
+
+        if (ligne_actu != -1 && colonne_actu != -1) {
+            c[ligne_actu][colonne_actu].r = 1;
+        }
+
+        *ligne_prec = ligne_actu;
+        *colonne_prec = colonne_actu;
+    }
+    if (*ligne_prec != -1 && *colonne_prec != -1 && c[*ligne_prec][*colonne_prec].r == 1) {
+        remplir_losange(c[*ligne_prec][*colonne_prec], buffer);
     }
 }
