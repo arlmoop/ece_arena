@@ -19,6 +19,8 @@ int main() {
     char nom_potion[20];
     int ligne_prec=-1;
     int colonne_prec=-1;
+    int ligne_actu = -1;
+    int colonne_actu = -1;
 
     t_perso p[TAILLE_MAP][TAILLE_MAP];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
@@ -45,7 +47,8 @@ int main() {
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
-        souris_tab(c,buffer,&ligne_prec,&colonne_prec);
+        souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
+        chemin(c, p, 1, ligne_actu, colonne_actu, buffer);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);

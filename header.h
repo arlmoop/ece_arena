@@ -24,10 +24,8 @@ typedef struct {
 } t_spriteimmo;
 
 typedef struct {
-    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange;
-    bool o, p, r;
-    // O 0:pas occupee 1:occupee par obstacle
-    // P 0:pas occupee 1:occupee par perso
+    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange, p;
+    bool o, r;
     // TYPE 1:terre 2:autre
     BITMAP *img;
 } t_case;
@@ -41,7 +39,8 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne;
+    int imgcourante, cptimg, tmpimg;
     bool e;
     // E 0:existe pas 1:existe
     BITMAP *img;
@@ -88,7 +87,9 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer);
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec);
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer);
 
 
 // SORTS.C

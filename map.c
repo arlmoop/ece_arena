@@ -6,9 +6,9 @@
 #include <allegro.h>
 
 
-t_case init_case(int n, int i, int j) {
+t_case init_case(int n, int x, int y) {
     t_case c;
-    c.x=i, c.y=j;
+    c.x=x, c.y=y;
     c.o=0;
     c.p=0;
     c.r=0;
@@ -34,9 +34,9 @@ t_case init_case(int n, int i, int j) {
     return c;
 }
 
-t_obstacle init_obstacle(int n, int i, int j) {
+t_obstacle init_obstacle(int n, int x, int y) {
     t_obstacle obs;
-    obs.x=i, obs.y=j;
+    obs.x=x, obs.y=y;
     obs.e=0;
     obs.a=0;
     if (n==1) {
@@ -139,7 +139,7 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
     for(int i=0;i<TAILLE_MAP;i++){
         for(int j=0;j<TAILLE_MAP;j++){
             obs[i][j]=init_obstacle(1+rand()%NB_OBS, c[i][j].x, c[i][j].y-20);
-            if(c[i][j].type==1 && 1+rand()%100>100-PRCNT_OBS && c[i][j].p==0) {
+            if(c[i][j].type==1 && 1+rand()%100>100-PRCNT_OBS) {
                 obs[i][j].e=1;
                 c[i][j].o=1;
             }
@@ -172,35 +172,52 @@ void remplir_losange(t_case c, BITMAP * buffer) {
     }
 }
 
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec) {
-    int ligne_actu = -1;
-    int colonne_actu = -1;
-
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu) {
+    *ligne_actu = -1;
+    *colonne_actu = -1;
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
             if (point_dans_losange(c[i][j])) {
-                ligne_actu = i;
-                colonne_actu = j;
+                *ligne_actu = i;
+                *colonne_actu = j;
                 break;
             }
         }
-        if (ligne_actu != -1) break;
+        if (*ligne_actu != -1) break;
     }
-    if (ligne_actu != *ligne_prec || colonne_actu != *colonne_prec) {
+    if (*ligne_actu != *ligne_prec || *colonne_actu != *colonne_prec) {
         for (int i = 0; i < TAILLE_MAP; i++) {
             for (int j = 0; j < TAILLE_MAP; j++) {
                 c[i][j].r = 0;
             }
         }
 
-        if (ligne_actu != -1 && colonne_actu != -1) {
-            c[ligne_actu][colonne_actu].r = 1;
+        if (*ligne_actu != -1 && *colonne_actu != -1) {
+            c[*ligne_actu][*colonne_actu].r = 1;
         }
 
-        *ligne_prec = ligne_actu;
-        *colonne_prec = colonne_actu;
+        *ligne_prec = *ligne_actu;
+        *colonne_prec = *colonne_actu;
     }
     if (*ligne_prec != -1 && *colonne_prec != -1 && c[*ligne_prec][*colonne_prec].r == 1) {
         remplir_losange(c[*ligne_prec][*colonne_prec], buffer);
+    }
+}
+
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
+    int r=0;
+    if(p.ligne-ligne_actu<=3 && p.ligne-ligne_actu>=-3 && p.colonne-colonne_actu<=3 && p.colonne-colonne_actu>=-3) {
+        r=1;
+    }
+    return r;
+}
+
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer) {
+    for (int i=0; i<TAILLE_MAP; i++) {
+        for(int j=0; j<TAILLE_MAP; j++) {
+            if(tour_perso==c[i][j].p && comparer_coord(p[i][j], ligne_actu, colonne_actu)==1) {
+                remplir_losange(c[i][j], buffer);
+            }
+        }
     }
 }
