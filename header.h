@@ -88,7 +88,7 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer);
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec);
 
 
 // SORTS.C
