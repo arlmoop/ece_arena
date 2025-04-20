@@ -165,14 +165,20 @@ int point_dans_losange(t_case c) {
     return (dx / (c.tx / 2.0) + dy / (c.ty / 4.0)) <= 1;
 }
 
+void remplir_losange(t_case c, BITMAP * buffer) {
+    for (int i=0; i<=c.tx/4+1; i++) {
+        hline(buffer, c.x+13*i/7, c.ycentre_losange-i, c.x+c.tx-13*i/7, makecol(255, 0, 0));
+        hline(buffer, c.x+13*i/7, c.ycentre_losange+i, c.x+c.tx-13*i/7, makecol(255, 0, 0));
+    }
+}
+
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP * buffer) {
     int drapeau = 0;
     for(int i=0; i<TAILLE_MAP && !drapeau; i++) {
         for(int j=0; j<TAILLE_MAP && !drapeau; j++) {
             if (point_dans_losange(c[i][j])) {
                 c[i][j].r = 1;
-                line(buffer, c[i][j].xcentre - 5, c[i][j].ycentre_losange, c[i][j].xcentre + 5, c[i][j].ycentre_losange, makecol(255, 0, 0));
-                line(buffer, c[i][j].xcentre, c[i][j].ycentre_losange - 5, c[i][j].xcentre, c[i][j].ycentre_losange + 5, makecol(255, 0, 0));
+                remplir_losange(c[i][j], buffer);
                 drapeau = 1;
             } else {
                 c[i][j].r = 0;

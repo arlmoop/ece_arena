@@ -11,7 +11,6 @@
 #define NB_SPAWNS 4
 #define Y_DEPART 10
 #define PRCNT_OBS 8
-#define NB_PERSOS 4
 #define NB_POTION 4 // nombre de potion par perso
 #define MENU_W 400
 #define MENU_H 300
@@ -64,7 +63,7 @@ void initialisation_allegro();
 
 // MENU.C
 t_spriteimmo initspriteimmo();
-int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]);
+int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
 
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
@@ -81,6 +80,7 @@ void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
 int point_dans_losange(t_case c);
+void remplir_losange(t_case c, BITMAP * buffer);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
 
 

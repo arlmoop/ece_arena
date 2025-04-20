@@ -56,10 +56,10 @@ int main() {
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
+        souris_tab(c,buffer);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);
-        souris_tab(c,buffer);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
