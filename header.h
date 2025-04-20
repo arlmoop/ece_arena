@@ -11,12 +11,13 @@
 #define NB_SPAWNS 4
 #define Y_DEPART 10
 #define PRCNT_OBS 8
-#define NB_PERSOS 4
 #define NB_POTION 4 // nombre de potion par perso
 #define MENU_W 400
 #define MENU_H 300
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
+#define PM 3
+
 
 typedef struct {
     int x, y, tx, ty;
@@ -24,10 +25,8 @@ typedef struct {
 } t_spriteimmo;
 
 typedef struct {
-    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange;
-    bool o, p, r;
-    // O 0:pas occupee 1:occupee par obstacle
-    // P 0:pas occupee 1:occupee par perso
+    int x, y, tx, ty, xcentre, ycentre, type, ycentre_losange, p;
+    bool o, r;
     // TYPE 1:terre 2:autre
     BITMAP *img;
 } t_case;
@@ -41,7 +40,8 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, imgcourante, cptimg, tmpimg, equipe;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne;
+    int imgcourante, cptimg, tmpimg;
     bool e;
     // E 0:existe pas 1:existe
     BITMAP *img;
@@ -60,15 +60,21 @@ typedef struct {
     BITMAP* img;
 } t_potion;
 
+
+//OUTILS.C
 void initialisation_allegro();
+void magenta (BITMAP* image, int r_max, int g_max, int b_max);
+
 
 // MENU.C
 t_spriteimmo initspriteimmo();
-int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[]);
+int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
+
 
 // PERSOS.C
 t_perso init_perso(int n, int i, int j);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], bool equipe, int choix_joueurs[]);
+
 
 // MAP.C
 t_case init_case(int n, int i, int j);
@@ -80,9 +86,11 @@ void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
 void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]);
-void souris_case(t_case *c);
 int point_dans_losange(t_case c);
-void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP],BITMAP * buffer);
+void remplir_losange(t_case c, BITMAP * buffer, int couleur);
+void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer);
 
 
 // SORTS.C

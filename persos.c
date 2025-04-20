@@ -6,9 +6,10 @@
 #include <allegro.h>
 
 
-t_perso init_perso(int n, int i, int j){
+t_perso init_perso(int n, int x, int y){
     t_perso b;
-    b.x=i, b.y=j;
+    b.x=x, b.y=y;
+    b.ligne=0, b.colonne=0;
     b.imgcourante=0;
     b.cptimg=0;
     b.tmpimg=4;
@@ -49,22 +50,23 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILL
                 }
                 else if (c[i][j].type==NB_CASES+2) {
                     p[i][j]=init_perso(2, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=1;
+                    c[i][j].p=2;
                     p[i][j].e=1;
                 }
                 else if (c[i][j].type==NB_CASES+3) {
                     p[i][j]=init_perso(3, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=1;
+                    c[i][j].p=3;
                     p[i][j].e=1;
                 }
                 else if (c[i][j].type==NB_CASES+4) {
                     p[i][j]=init_perso(4, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=1;
+                    c[i][j].p=4;
                     p[i][j].e=1;
                 }
                 else {
                     p[i][j]=init_perso(0, c[i][j].x, c[i][j].y-35);
                 }
+                p[i][j].ligne=i, p[i][j].colonne=j;
             }
         }
     }
@@ -81,7 +83,7 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILL
                     }
                     else {
                         p[i][j]=init_perso(2, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=1;
+                        c[i][j].p=2;
                         p[i][j].e=1;
                         compte--;
                     }
@@ -89,19 +91,20 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILL
                 else if (c[i][j].type==NB_CASES+2) {
                     if (compte==1) {
                         p[i][j]=init_perso(3, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=1;
+                        c[i][j].p=3;
                         p[i][j].e=1;
                         compte++;
                     }
                     else {
                         p[i][j]=init_perso(4, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=1;
+                        c[i][j].p=4;
                         p[i][j].e=1;
                     }
                 }
                 else {
                     p[i][j]=init_perso(0, c[i][j].x, c[i][j].y-35);
                 }
+                p[i][j].ligne=i, p[i][j].colonne=j;
             }
         }
     }

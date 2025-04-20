@@ -6,19 +6,6 @@
 #include <allegro.h>
 
 
-void initialisation_allegro(){
-    allegro_init();
-    install_keyboard();
-    install_mouse();
-    set_color_depth(desktop_color_depth());
-    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0)!=0) {
-        allegro_message("probleme mode graphique");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-    show_mouse(screen);
-}
-
 int main() {
     srand(time(NULL));
     initialisation_allegro();
@@ -26,16 +13,21 @@ int main() {
     int theme=-1;
     int nb_joueurs=2;
     int choix_joueurs[4];
-    menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs);
+    int equipe=0;
+    menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
     int degats = 100;
     char nom_potion[20];
+    int ligne_prec=-1;
+    int colonne_prec=-1;
+    int ligne_actu = -1;
+    int colonne_actu = -1;
 
     t_perso p[TAILLE_MAP][TAILLE_MAP];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
-    int equipe=0;// a enlever quand menu // 0 non 1 oui
+    int tour_perso=1;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -56,10 +48,11 @@ int main() {
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
         point_vie(buffer, pot, degats);
+        souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
+        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
         afficher_obstacles_persos(buffer, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);
-        souris_tab(c,buffer);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
