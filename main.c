@@ -22,7 +22,7 @@ int main() {
     int ligne_actu = -1;
     int colonne_actu = -1;
 
-    t_perso p[TAILLE_MAP][TAILLE_MAP];
+    t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     t_potion pot[NB_POTION];
@@ -50,7 +50,7 @@ int main() {
         point_vie(buffer, pot, degats);
         souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
-        afficher_obstacles_persos(buffer, obs, p);
+        afficher_obstacles_persos(buffer, c, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
