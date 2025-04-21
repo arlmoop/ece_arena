@@ -50,6 +50,7 @@ int main() {
         point_vie(buffer, pot, degats);
         souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
+        deplacement(c, p, tour_perso, ligne_actu, colonne_actu);
         afficher_obstacles_persos(buffer, c, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot);

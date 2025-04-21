@@ -108,7 +108,13 @@ void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int to
         for (int j = 0; j < TAILLE_MAP; j++) {
             if (tour_perso == c[i][j].p && comparer_coord(p[tour_perso-1], ligne_actu, colonne_actu) == 1
                 && mouse_b&1 && c[ligne_actu][colonne_actu].o==0 && c[ligne_actu][colonne_actu].p==0) {
-                // PAS FINI
+
+                p[tour_perso-1].x=c[ligne_actu][colonne_actu].x;
+                p[tour_perso-1].y=c[ligne_actu][colonne_actu].y-35;
+                // eventuelement changer xcentre et ycentre
+                p[tour_perso-1].ligne=ligne_actu;
+                p[tour_perso-1].colonne=colonne_actu;
+
                 c[ligne_actu][colonne_actu].p=tour_perso;
                 c[i][j].p=0;
             }
