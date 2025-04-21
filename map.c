@@ -205,36 +205,36 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_pre
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     int r=0;
     for(int i=0; i<=PM; i++) {
-        if(abs(p.ligne-ligne_actu)==i && abs(p.colonne-colonne_actu)<=PM-i) {
+        if(abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu)<=PM) {
             r=1;
         }
     }
     return r;
 }
 
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer) {
-    for (int i=0; i<TAILLE_MAP; i++) {
-        for(int j=0; j<TAILLE_MAP; j++) {
-            if(tour_perso==c[i][j].p && comparer_coord(p[i][j], ligne_actu, colonne_actu)==1) {
-                int k, l;
-                if(i<=ligne_actu) {
-                    for (k=i; k<ligne_actu; k++) {
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
+    for (int i = 0; i < TAILLE_MAP; i++) {
+        for (int j = 0; j < TAILLE_MAP; j++) {
+            if (tour_perso == c[i][j].p && comparer_coord(p[i][j], ligne_actu, colonne_actu) == 1) {
+                int ligne_finale = i;
+                if (i < ligne_actu) {
+                    for (int k = i + 1; k <= ligne_actu; k++) {
                         remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
                     }
-                }
-                else {
-                    for (k=i; k>ligne_actu; k--) {
+                    ligne_finale = ligne_actu;
+                } else if (i > ligne_actu) {
+                    for (int k = i - 1; k >= ligne_actu; k--) {
                         remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
                     }
+                    ligne_finale = ligne_actu;
                 }
-                if(j<=colonne_actu) {
-                    for (l=j; l<=colonne_actu; l++) {
-                        remplir_losange(c[k][l], buffer, makecol(100, 255, 100));
+                if (j < colonne_actu) {
+                    for (int l = j + 1; l <= colonne_actu; l++) {
+                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
                     }
-                }
-                else {
-                    for (l=j; l>=colonne_actu; l--) {
-                        remplir_losange(c[k][l], buffer, makecol(100, 255, 100));
+                } else if (j > colonne_actu) {
+                    for (int l = j - 1; l >= colonne_actu; l--) {
+                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
                     }
                 }
             }
