@@ -111,9 +111,11 @@ void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int to
 
                 p[tour_perso-1].x=c[ligne_actu][colonne_actu].x;
                 p[tour_perso-1].y=c[ligne_actu][colonne_actu].y-35;
-                // eventuelement changer xcentre et ycentre
+
                 p[tour_perso-1].ligne=ligne_actu;
                 p[tour_perso-1].colonne=colonne_actu;
+                p[tour_perso-1].xcentre=p[tour_perso-1].x+p[tour_perso-1].tx/2;
+                p[tour_perso-1].ycentre=p[tour_perso-1].y+p[tour_perso-1].ty/2;
 
                 c[ligne_actu][colonne_actu].p=tour_perso;
                 c[i][j].p=0;
