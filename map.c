@@ -147,18 +147,22 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
     }
 }
 
-void afficher_obstacles_persos(BITMAP *buffer, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP]) {
+void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
     for (int i=0; i<TAILLE_MAP; i++) {
         for (int j=0; j<TAILLE_MAP; j++) {
             if (obs[i][j].e==1) {
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
             }
-            if (p[i][j].e==1) {
-                draw_sprite(buffer, p[i][j].img, p[i][j].x, p[i][j].y);
+            if (c[i][j].p!=0) {
+                for (int k=0; k<NB_PERSOS; k++) {
+                    if(p[k].classe==c[i][j].p)
+                    draw_sprite(buffer, p[k].img, p[k].x, p[k].y);
+                }
             }
         }
     }
 }
+
 int point_dans_losange(t_case c) {
     float dx = abs(mouse_x - c.xcentre);
     float dy = abs(mouse_y - c.ycentre_losange);
@@ -212,10 +216,10 @@ int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     return r;
 }
 
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[TAILLE_MAP][TAILLE_MAP], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p && comparer_coord(p[i][j], ligne_actu, colonne_actu) == 1) {
+            if (tour_perso == c[i][j].p && comparer_coord(p[tour_perso-1], ligne_actu, colonne_actu) == 1) {
                 int ligne_finale = i;
                 if (i < ligne_actu) {
                     for (int k = i + 1; k <= ligne_actu; k++) {
