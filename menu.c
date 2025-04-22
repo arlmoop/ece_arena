@@ -472,7 +472,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
             case CHOIX_JOUEURS:
                 joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe);
                 if(joueurs>=0&&joueurs<4){
-                    etat_actuel= CHOIX_CLASSES;
+                    etat_actuel = CHOIX_CLASSES;
                 }
                 if (joueurs == -2){
                     etat_actuel = CHOIX_MAP;

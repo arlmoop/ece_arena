@@ -45,13 +45,13 @@ void souris_potion (BITMAP* buffer, t_potion pot[NB_POTION]) {// manque la struc
     int souris = 0;
     // test pour savoir si les potions sont appuyées dans l'inventaire
     for (int i = 0; i < NB_POTION; i++) {
-        if ((mouse_b & 1 || mouse_b & 2) && mouse_x>pot[i].x && mouse_x<pot[i].xf && mouse_y>pot[i].y && mouse_y<pot[i].yf) {
-            souris = i+1;
+        if (mouse_x>pot[i].x && mouse_x<pot[i].xf && mouse_y>pot[i].y && mouse_y<pot[i].yf) {
+            textout_ex(buffer, font, "Potion cliquée", 100, 100, makecol(255, 255, 255), -1);
+            BITMAP* image = load_bitmap("Images\\potion_15.bmp", NULL);
+            blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
+        } else {
+            textout_ex(buffer, font, "Potion pas cliquée", 100, 120, makecol(255, 255, 255), -1);
         }
     }
-    if (souris > 0) {
-        // pour voir si ca fonctionne bien les boutons a changer plus tard
-        BITMAP* image = load_bitmap("Images\\potion_15.bmp", NULL);
-        blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
-    }
+
 }
