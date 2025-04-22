@@ -49,9 +49,6 @@ void souris_potion (BITMAP* buffer, t_potion pot[NB_POTION]) {// manque la struc
             textout_ex(buffer, font, "Potion cliquée", 100, 100, makecol(255, 255, 255), -1);
             BITMAP* image = load_bitmap("Images\\potion_15.bmp", NULL);
             blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
-        } else {
-            textout_ex(buffer, font, "Potion pas cliquée", 100, 120, makecol(255, 255, 255), -1);
         }
     }
-
 }
