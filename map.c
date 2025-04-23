@@ -148,15 +148,21 @@ void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP
 }
 
 void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]) {
-    for (int i=0; i<TAILLE_MAP; i++) {
-        for (int j=0; j<TAILLE_MAP; j++) {
-            if (obs[i][j].e==1) {
+    for (int i = 0; i < TAILLE_MAP; i++) {
+        for (int j = 0; j < TAILLE_MAP; j++) {
+            if (obs[i][j].e == 1) {
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
             }
-            if (c[i][j].p!=0) {
-                for (int k=0; k<NB_PERSOS; k++) {
-                    if(p[k].classe==c[i][j].p)
-                    draw_sprite(buffer, p[k].img, p[k].x, p[k].y);
+
+            if (c[i][j].p != 0) {
+                int classe = c[i][j].p;
+
+                for (int k = 0; k < NB_PERSOS; k++) {
+                    if (p[k].classe == classe) {
+                        int frame = p[k].imgcourante % p[k].nb_images;
+                        draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
+                        break;
+                    }
                 }
             }
         }
@@ -216,10 +222,31 @@ int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     return r;
 }
 
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
+    if (c[ligne_actu][colonne_actu].o != 0 || c[ligne_actu][colonne_actu].p != 0)
+        return 0;
+
+    if (comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu) != 1)
+        return 0;
+
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p && comparer_coord(p[tour_perso-1], ligne_actu, colonne_actu) == 1) {
+            if (c[i][j].p == tour_perso) {
+                return 1;
+            }
+        }
+    }
+
+    return 0;
+}
+
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
+    if (!chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu)){
+            return;
+    }
+    for (int i = 0; i < TAILLE_MAP; i++) {
+        for (int j = 0; j < TAILLE_MAP; j++) {
+            if (tour_perso == c[i][j].p) {
                 int ligne_finale = i;
                 if (i < ligne_actu) {
                     for (int k = i + 1; k <= ligne_actu; k++) {
