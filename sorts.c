@@ -41,7 +41,7 @@ void afficher_inventaire (BITMAP* buffer, t_potion pot[NB_POTION], int degats) {
     point_vie(buffer, pot, degats);
 }
 
-void souris_potion (BITMAP* buffer, t_potion pot[NB_POTION]) {// manque la structure personnage qui permetterait de recuperer me type de perso
+void souris_potion (BITMAP* buffer, t_potion pot[NB_POTION], t_case c[TAILLE_MAP][TAILLE_MAP]) {// manque la structure personnage qui permetterait de recuperer me type de perso
     int souris = 0;
     // test pour savoir si les potions sont appuyées dans l'inventaire
     for (int i = 0; i < NB_POTION; i++) {
@@ -49,6 +49,7 @@ void souris_potion (BITMAP* buffer, t_potion pot[NB_POTION]) {// manque la struc
             textout_ex(buffer, font, "Potion cliquée", 100, 100, makecol(255, 255, 255), -1);
             BITMAP* image = load_bitmap("Images\\potion_15.bmp", NULL);
             blit(image, buffer, 0, 0, 0, 0, image->w, image->h);
+            remplir_losange(c[18][18], buffer, makecol(0, 0, 255));
         }
     }
 }

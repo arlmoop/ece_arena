@@ -105,7 +105,7 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
 void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
 void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
 void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
-void souris_potion (BITMAP* buffer, t_potion p[NB_POTION]);
+void souris_potion (BITMAP* buffer, t_potion p[NB_POTION], t_case c[TAILLE_MAP][TAILLE_MAP]);
 
 
 #endif //HEADER_H

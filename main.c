@@ -53,7 +53,7 @@ int main() {
         deplacement(c, p, tour_perso, ligne_actu, colonne_actu);
         afficher_obstacles_persos(buffer, c, obs, p);
         afficher_inventaire(buffer, pot, degats);
-        souris_potion(buffer, pot);
+        souris_potion(buffer, pot, c);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
