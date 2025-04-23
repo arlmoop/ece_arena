@@ -12,31 +12,38 @@ t_perso init_perso(int n, int x, int y){
     b.ligne=0, b.colonne=0;
     b.imgcourante=0;
     b.cptimg=0;
-    b.tmpimg=4;
+    b.tmpimg=2;
     b.dx=0, b.dy=0;
     b.equipe=0;
     b.classe=n;
+    b.frames_restantes=0;
+    b.nb_images=5;
     if (n==1) {
-        b.img=load_bitmap("Images\\barbare_1.bmp", NULL);
+        for(int i=0;i<b.nb_images;i++){
+            char filename[20];
+            sprintf(filename,"Images\\barbare_%d.bmp",i);
+            b.img[i]=load_bitmap(filename,NULL);
+        }
     }
     else if (n==2) {
-        b.img=load_bitmap("Images\\squelette_1.bmp", NULL);
+        b.img[0]=load_bitmap("Images\\squelette_1.bmp", NULL);
     }
     else if (n==3) {
-        b.img=load_bitmap("Images\\archere_1.bmp", NULL);
+        b.img[0]=load_bitmap("Images\\archere_1.bmp", NULL);
     }
     else if (n==4) {
-        b.img=load_bitmap("Images\\geant_1.bmp", NULL);
+        b.img[0]=load_bitmap("Images\\geant_1.bmp", NULL);
     }
     else {
-        b.img=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas
+        b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas
     }
-    b.tx=b.img->w;
-    b.ty=b.img->h;
+    b.tx=b.img[0]->w;
+    b.ty=b.img[0]->h;
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
     return b;
 }
+
 
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]) {
     // SOLO
@@ -103,22 +110,55 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool 
     }
 }
 
-void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
+void animer(t_perso *perso) {
+    if (perso->anim_en_cours) {
+        perso->x += perso->dx;
+        perso->y += perso->dy;
+        perso->frames_restantes--;
+
+        perso->cptimg++;
+        if (perso->cptimg >= perso->tmpimg) {
+            perso->cptimg = 0;
+            perso->imgcourante++;
+            if (perso->imgcourante >= perso->nb_images) {
+                perso->imgcourante = 0;
+            }
+        }
+
+        if (perso->frames_restantes <= 0) {
+            perso->anim_en_cours = 0;
+            perso->dx = 0;
+            perso->dy = 0;
+
+            perso->xcentre = perso->x + perso->tx / 2;
+            perso->ycentre = perso->y + perso->ty / 2;
+        }
+    }
+    rest(25);
+}
+
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p && comparer_coord(p[tour_perso-1], ligne_actu, colonne_actu) == 1
-                && mouse_b&1 && c[ligne_actu][colonne_actu].o==0 && c[ligne_actu][colonne_actu].p==0) {
+            if (tour_perso == c[i][j].p && mouse_b & 1 && chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu) && !p[tour_perso - 1].anim_en_cours)
+            {
+                int x_depart = p[tour_perso - 1].x;
+                int y_depart = p[tour_perso - 1].y;
+                int x_arrivee = c[ligne_actu][colonne_actu].x;
+                int y_arrivee = c[ligne_actu][colonne_actu].y - 35;
 
-                p[tour_perso-1].x=c[ligne_actu][colonne_actu].x;
-                p[tour_perso-1].y=c[ligne_actu][colonne_actu].y-35;
+                int nb_frames = 10;
 
-                p[tour_perso-1].ligne=ligne_actu;
-                p[tour_perso-1].colonne=colonne_actu;
-                p[tour_perso-1].xcentre=p[tour_perso-1].x+p[tour_perso-1].tx/2;
-                p[tour_perso-1].ycentre=p[tour_perso-1].y+p[tour_perso-1].ty/2;
+                p[tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
+                p[tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
+                p[tour_perso - 1].frames_restantes = nb_frames;
+                p[tour_perso - 1].anim_en_cours = 1;
 
-                c[ligne_actu][colonne_actu].p=tour_perso;
-                c[i][j].p=0;
+                p[tour_perso - 1].ligne = ligne_actu;
+                p[tour_perso - 1].colonne = colonne_actu;
+
+                c[ligne_actu][colonne_actu].p = tour_perso;
+                c[i][j].p = 0;
             }
         }
     }
