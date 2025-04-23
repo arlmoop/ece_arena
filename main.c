@@ -42,15 +42,18 @@ int main() {
     placer_persos(c, p, equipe, choix_joueurs);
     creer_potion(pot, nom_potion);
 
-    while(!key[KEY_ESC]) {
+    while (!key[KEY_ESC]) {
         clear_bitmap(buffer);
-        blit(decor, buffer, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
+        blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         afficher_map(buffer, c);
-        blit(inventaire, buffer, 0, 0, 0, SCREEN_H-inventaire->h, SCREEN_W,SCREEN_H);
+        blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
         point_vie(buffer, pot, degats);
-        souris_tab(c,buffer,&ligne_prec,&colonne_prec, &ligne_actu, &colonne_actu);
+        souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
         deplacement(c, p, tour_perso, ligne_actu, colonne_actu);
+        if (p[tour_perso - 1].anim_en_cours) {
+            animer(&p[tour_perso - 1]);
+        }
         afficher_obstacles_persos(buffer, c, obs, p);
         afficher_inventaire(buffer, pot, degats);
         souris_potion(buffer, pot, c);
