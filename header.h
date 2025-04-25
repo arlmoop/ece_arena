@@ -41,9 +41,19 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
+    int x, y, xf, yf;
+    int pot_survol; // si la souris est au dessus de la potion
+    //xf et yf les coordonnees de la fin de la taille des images des potions
+    char intitule[50];
+    int degats;
+    BITMAP* img;
+} t_potion;
+
+typedef struct {
     int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, anim_en_cours, frames_restantes, nb_images;
     int imgcourante, cptimg, tmpimg;
     // E 0:existe pas 1:existe
+    t_potion pot[NB_POTION];
     BITMAP *img[5];
 }t_perso;
 
@@ -53,12 +63,6 @@ typedef enum {
     CHOIX_JOUEURS,
     CHOIX_CLASSES
 } EtatMenu;
-
-typedef struct {
-    int x, y, xf, yf;
-    //xf et yf les coordonnees de la fin de la taille des images des potions
-    BITMAP* img;
-} t_potion;
 
 
 //OUTILS.C
@@ -104,10 +108,14 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
 
 
 // SORTS.C
-void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
-void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
-void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
-void souris_potion (BITMAP* buffer, t_potion p[NB_POTION], t_case c[TAILLE_MAP][TAILLE_MAP]);
+void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]);
+void point_vie (BITMAP* buffer, int degats);
+void afficher_inventaire (BITMAP* buffer, int degats, t_perso p[NB_PERSOS], int tour_perso);
+void affichage_potions (BITMAP *buffer, t_perso *perso,t_case c[TAILLE_MAP][TAILLE_MAP], int tour_perso);
+int potion_1 (int tour_perso);
+int potion_2 (int tour_perso);
+int potion_3 (int tour_perso);
+int potion_4 (int tour_perso);
 
 
 #endif //HEADER_H
