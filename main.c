@@ -47,6 +47,8 @@ int main() {
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         afficher_map(buffer, c);
         blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
+        afficher_inventaire(buffer, degats, p, 0);
+        affichage_potions(buffer, p, c, 0);
         point_vie(buffer, degats);
         souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
@@ -55,8 +57,6 @@ int main() {
             animer(&p[tour_perso - 1]);
         }
         afficher_obstacles_persos(buffer, c, obs, p);
-        afficher_inventaire(buffer, degats, p, 0);
-        affichage_potions(buffer, p, c, 0);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
