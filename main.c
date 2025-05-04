@@ -6,7 +6,7 @@
 #include <allegro.h>
 
 
-int main() {
+int main() {//sa
     srand(time(NULL));
     initialisation_allegro();
     int aleatoire=0;

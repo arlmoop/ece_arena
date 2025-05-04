@@ -424,7 +424,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
                 choix=i+4;
                 break;
             }
-        }
+        }//sas
 
 
         if (bouton_bas_droite(menu, 1, 1)) {

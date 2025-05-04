@@ -163,7 +163,7 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                         draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
                         break;
                     }
-                }
+                }//sa
             }
         }
     }

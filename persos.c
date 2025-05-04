@@ -35,7 +35,7 @@ t_perso init_perso(int n, int x, int y){
         b.img[0]=load_bitmap("Images\\geant_1.bmp", NULL);
     }
     else {
-        b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas
+        b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas sa
     }
     b.tx=b.img[0]->w;
     b.ty=b.img[0]->h;
