@@ -38,7 +38,7 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
         "Potion rouge",
         "Potion bleue",
         "Potion verte",
-        "Potion doorée"
+        "Potion dorée"
     };
 
     for (int i = 0; i < NB_PERSOS; i++) {
