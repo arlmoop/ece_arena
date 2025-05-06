@@ -17,25 +17,25 @@ t_perso init_perso(int n, int x, int y){
     b.equipe=0;
     b.classe=n;
     b.frames_restantes=0;
-    b.nb_images=5;
+    b.nb_images=20;
     if (n==1) {
         for(int i=0;i<b.nb_images;i++){
             char filename[20];
-            sprintf(filename,"Images\\barbare_%d.bmp",i);
+            sprintf(filename,"barbare_%d.bmp",i);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==2) {
-        b.img[0]=load_bitmap("Images\\squelette_1.bmp", NULL);
+        b.img[0]=load_bitmap("squelette_1.bmp", NULL);
     }
     else if (n==3) {
-        b.img[0]=load_bitmap("Images\\archere_1.bmp", NULL);
+        b.img[0]=load_bitmap("archere_1.bmp", NULL);
     }
     else if (n==4) {
-        b.img[0]=load_bitmap("Images\\geant_1.bmp", NULL);
+        b.img[0]=load_bitmap("geant_1.bmp", NULL);
     }
     else {
-        b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas sa
+        b.img[0]=load_bitmap("poubelle.bmp", NULL);// on l'affiche pas
     }
     b.tx=b.img[0]->w;
     b.ty=b.img[0]->h;
@@ -43,7 +43,6 @@ t_perso init_perso(int n, int x, int y){
     b.ycentre=b.y+b.ty/2;
     return b;
 }
-
 
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]) {
     // SOLO
@@ -110,56 +109,88 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool 
     }
 }
 
-void animer(t_perso *perso) {
-    if (perso->anim_en_cours) {
-        perso->x += perso->dx;
-        perso->y += perso->dy;
-        perso->frames_restantes--;
+void lancer_animation(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes) {
+    *etape_courante = 1;  // on part de l'étape 1, étape 0 = position actuelle
 
-        perso->cptimg++;
-        if (perso->cptimg >= perso->tmpimg) {
-            perso->cptimg = 0;
+    int dx_total = (chemin[1].colonne - chemin[0].colonne) * TAILLE_CASE_X;
+    int dy_total = (chemin[1].ligne - chemin[0].ligne) * TAILLE_CASE_Y;
+
+    perso->dx = dx_total / NB_FRAMES;
+    perso->dy = dy_total / NB_FRAMES;
+    perso->frames_restantes = NB_FRAMES;
+    perso->nb_frames = NB_FRAMES;
+    perso->anim_en_cours = 1;
+}
+
+void animer(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes) {
+    if (!perso->anim_en_cours) return;
+
+    perso->x += perso->dx;
+    perso->y += perso->dy;
+    perso->frames_restantes--;
+
+    perso->cptimg++;
+    if (perso->cptimg >= perso->tmpimg) {
+        perso->cptimg = 0;
+
+        if (perso->dy < 0) { // haut
+            perso->imgcourante = (perso->imgcourante < 5 || perso->imgcourante >= 10) ? 0 : perso->imgcourante;
             perso->imgcourante++;
-            if (perso->imgcourante >= perso->nb_images) {
-                perso->imgcourante = 0;
-            }
+            if (perso->imgcourante >= 5) perso->imgcourante = 0;
+        } else if (perso->dy > 0) { // bas
+            perso->imgcourante = (perso->imgcourante < 5 || perso->imgcourante >= 10) ? 5 : perso->imgcourante;
+            perso->imgcourante++;
+            if (perso->imgcourante >= 10) perso->imgcourante = 5;
+        } else if (perso->dx > 0) { // droite
+            perso->imgcourante = (perso->imgcourante < 10 || perso->imgcourante >= 15) ? 10 : perso->imgcourante;
+            perso->imgcourante++;
+            if (perso->imgcourante >= 15) perso->imgcourante = 10;
+        } else if (perso->dx < 0) { // gauche
+            perso->imgcourante = (perso->imgcourante < 15) ? 15 : perso->imgcourante;
+            perso->imgcourante++;
+            if (perso->imgcourante >= 20) perso->imgcourante = 15;
         }
+    }
 
-        if (perso->frames_restantes <= 0) {
+    if (perso->frames_restantes <= 0) {
+        perso->x = chemin[*etape_courante].colonne * TAILLE_CASE_X;
+        perso->y = chemin[*etape_courante].ligne * TAILLE_CASE_Y;
+
+        (*etape_courante)++;
+        if (*etape_courante >= nb_etapes) {
             perso->anim_en_cours = 0;
             perso->dx = 0;
             perso->dy = 0;
-
-            perso->xcentre = perso->x + perso->tx / 2;
-            perso->ycentre = perso->y + perso->ty / 2;
+        } else {
+            int dx_total = (chemin[*etape_courante].colonne - chemin[*etape_courante - 1].colonne) * TAILLE_CASE_X;
+            int dy_total = (chemin[*etape_courante].ligne - chemin[*etape_courante - 1].ligne) * TAILLE_CASE_Y;
+            perso->dx = dx_total / perso->nb_frames;
+            perso->dy = dy_total / perso->nb_frames;
+            perso->frames_restantes = perso->nb_frames;
         }
     }
-    rest(25);
+
+    rest(20); // temporisation
 }
 
-void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
-    for (int i = 0; i < TAILLE_MAP; i++) {
-        for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p && mouse_b & 1 && chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu) && !p[tour_perso - 1].anim_en_cours)
-            {
-                int x_depart = p[tour_perso - 1].x;
-                int y_depart = p[tour_perso - 1].y;
-                int x_arrivee = c[ligne_actu][colonne_actu].x;
-                int y_arrivee = c[ligne_actu][colonne_actu].y - 35;
 
-                int nb_frames = 10;
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,
+                 int ligne_actu, int colonne_actu, t_coord chemin[], int *nb_etapes, int *etape_courante) {
+    t_perso *perso = &p[tour_perso];
 
-                p[tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
-                p[tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
-                p[tour_perso - 1].frames_restantes = nb_frames;
-                p[tour_perso - 1].anim_en_cours = 1;
+    if (perso->anim_en_cours) return;  // On ignore l'appel si une animation est déjà en cours
 
-                p[tour_perso - 1].ligne = ligne_actu;
-                p[tour_perso - 1].colonne = colonne_actu;
+    int ligne_depart = perso->y / TAILLE_CASE_Y;
+    int colonne_depart = perso->x / TAILLE_CASE_X;
 
-                c[ligne_actu][colonne_actu].p = tour_perso;
-                c[i][j].p = 0;
-            }
-        }
-    }
+    // Vérifier que la destination est différente
+    if (ligne_depart == ligne_actu && colonne_depart == colonne_actu)
+        return;
+
+    // Ici on appelle la fonction pour calculer le chemin (pas détaillée ici)
+    *nb_etapes = calculer_chemin(chemin, ligne_depart, colonne_depart, ligne_actu, colonne_actu, c);
+    if (*nb_etapes <= 1) return;  // pas de chemin ou déplacement impossible
+
+    // Lancer l’animation
+    lancer_animation(perso, chemin, etape_courante, *nb_etapes);
 }
