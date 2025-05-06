@@ -13,16 +13,16 @@ t_case init_case(int n, int x, int y) {
     c.p=0;
     c.r=0;
     if (n==1) {
-        c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
+        c.img=load_bitmap("bloc_glace.bmp", NULL);
         c.type=2;
     }
     else if (n>1 && n<=NB_CASES){
-        c.img=load_bitmap("Images\\bloc_terre.bmp", NULL);
+        c.img=load_bitmap("bloc_terre.bmp", NULL);
         c.type=1;
     }
     else {
         char filename[20];
-        sprintf(filename, "Images\\spawn_%d.bmp", n-NB_CASES);
+        sprintf(filename, "spawn_%d.bmp", n-NB_CASES);
         c.img=load_bitmap(filename, NULL);
         c.type=n;
     }
@@ -40,16 +40,16 @@ t_obstacle init_obstacle(int n, int x, int y) {
     obs.e=0;
     obs.a=0;
     if (n==1) {
-        obs.img=load_bitmap("Images\\tronc.bmp", NULL);
+        obs.img=load_bitmap("tronc.bmp", NULL);
     }
     else if (n==2) {
-        obs.img=load_bitmap("Images\\gem_box.bmp", NULL);
+        obs.img=load_bitmap("gem_box.bmp", NULL);
     }
     else if (n==3) {
-        obs.img=load_bitmap("Images\\pierre.bmp", NULL);
+        obs.img=load_bitmap("pierre.bmp", NULL);
     }
     else {
-        obs.img=load_bitmap("Images\\sapin.bmp", NULL);
+        obs.img=load_bitmap("sapin.bmp", NULL);
     }
     obs.tx=obs.img->w;
     obs.ty=obs.img->h;
@@ -163,7 +163,7 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                         draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
                         break;
                     }
-                }//sa
+                }
             }
         }
     }
@@ -222,53 +222,62 @@ int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     return r;
 }
 
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
-    if (c[ligne_actu][colonne_actu].o != 0 || c[ligne_actu][colonne_actu].p != 0)
-        return 0;
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], int ligne_depart, int colonne_depart, int ligne_arrivee, int colonne_arrivee, int tour_perso) {
 
-    if (comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu) != 1)
-        return 0;
+    int distance = abs(ligne_arrivee - ligne_depart) + abs(colonne_arrivee - colonne_depart);
+    if (distance > 3) return 0;
 
-    for (int i = 0; i < TAILLE_MAP; i++) {
-        for (int j = 0; j < TAILLE_MAP; j++) {
-            if (c[i][j].p == tour_perso) {
-                return 1;
-            }
-        }
+    int ligne = ligne_depart;
+    int colonne = colonne_depart;
+
+    while (colonne != colonne_arrivee) {
+        colonne += (colonne < colonne_arrivee) ? 1 : -1;
+        if (c[ligne][colonne].o || c[ligne][colonne].p) return 0; // obstacle ou perso
     }
 
-    return 0;
+    while (ligne != ligne_arrivee) {
+        ligne += (ligne < ligne_arrivee) ? 1 : -1;
+        if (c[ligne][colonne].o || c[ligne][colonne].p) return 0;
+    }
+
+    return 1;
 }
 
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
-    if (!chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu)){
-            return;
+int calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]) {
+    int nb_etapes = 0;
+    int ligne = ligne_depart;
+    int colonne = colonne_depart;
+
+    while (colonne != colonne_arrivee && nb_etapes < PM) {
+        if (colonne < colonne_arrivee)
+            colonne++;
+        else
+            colonne--;
+        chemin[nb_etapes].ligne = ligne;
+        chemin[nb_etapes].colonne = colonne;
+        nb_etapes++;
     }
-    for (int i = 0; i < TAILLE_MAP; i++) {
-        for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p) {
-                int ligne_finale = i;
-                if (i < ligne_actu) {
-                    for (int k = i + 1; k <= ligne_actu; k++) {
-                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
-                    }
-                    ligne_finale = ligne_actu;
-                } else if (i > ligne_actu) {
-                    for (int k = i - 1; k >= ligne_actu; k--) {
-                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
-                    }
-                    ligne_finale = ligne_actu;
-                }
-                if (j < colonne_actu) {
-                    for (int l = j + 1; l <= colonne_actu; l++) {
-                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
-                    }
-                } else if (j > colonne_actu) {
-                    for (int l = j - 1; l >= colonne_actu; l--) {
-                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
-                    }
-                }
-            }
-        }
+
+    while (ligne != ligne_arrivee && nb_etapes < PM) {
+        if (ligne < ligne_arrivee)
+            ligne++;
+        else
+            ligne--;
+        chemin[nb_etapes].ligne = ligne;
+        chemin[nb_etapes].colonne = colonne;
+        nb_etapes++;
+    }
+
+    return nb_etapes;
+}
+
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu, BITMAP* buffer) {
+    if (!chemin_valide(c, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu, tour_perso))
+        return;
+    t_coord chemin[3];
+    int nb_cases = calculer_chemin(chemin, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu, c);
+
+    for (int i = 0; i < nb_cases; i++) {
+        remplir_losange(c[chemin[i].ligne][chemin[i].colonne], buffer, makecol(100, 255, 100));
     }
 }
