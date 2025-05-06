@@ -4,20 +4,23 @@
 #include <allegro.h>
 #include <stdbool.h>
 
-#define TAILLE_MAP 19 //Impair pr bien placer les spawns d'equipe
-#define NB_IMG_PERSOS 1 //Nb de sprite par perso (mieux si tt pareil)
-#define NB_CASES 10 //Nb de cases hors spawns
+#define TAILLE_MAP 19
+#define NB_IMG_PERSOS 1
+#define NB_CASES 10
 #define NB_OBS 8
 #define NB_SPAWNS 4
 #define Y_DEPART 10
 #define PRCNT_OBS 8
-#define NB_POTION 4 // nombre de potion par perso
+#define NB_POTION 4
 #define MENU_W 400
 #define MENU_H 300
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
 #define PM 3
 #define NB_PERSOS 4
+#define NB_FRAMES 10
+#define TAILLE_CASE_X 42
+#define TAILLE_CASE_Y 25
 
 
 typedef struct {
@@ -41,21 +44,16 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
-    int x, y, xf, yf;
-    int pot_survol; // si la souris est au dessus de la potion
-    //xf et yf les coordonnees de la fin de la taille des images des potions
-    char intitule[50];
-    int degats;
-    BITMAP* img;
-} t_potion;
-
-typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, anim_en_cours, frames_restantes, nb_images;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, anim_en_cours, nb_frames,frames_restantes, nb_images;
     int imgcourante, cptimg, tmpimg;
     // E 0:existe pas 1:existe
-    t_potion pot[NB_POTION];
-    BITMAP *img[5];
+    BITMAP *img[20];
 }t_perso;
+
+typedef struct {
+    int ligne;
+    int colonne;
+} t_coord;
 
 typedef enum {
     MENU_PRINCIPAL,
@@ -63,6 +61,12 @@ typedef enum {
     CHOIX_JOUEURS,
     CHOIX_CLASSES
 } EtatMenu;
+
+typedef struct {
+    int x, y, xf, yf;
+    //xf et yf les coordonnees de la fin de la taille des images des potions
+    BITMAP* img;
+} t_potion;
 
 
 //OUTILS.C
@@ -85,9 +89,9 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equ
 // PERSOS.C
 t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]);
-void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu);
-void animer(t_perso* perso);
-
+void lancer_animation(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes);
+void animer(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes);
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu, t_coord chemin[], int *nb_etapes, int *etape_courante);
 
 // MAP.C
 t_case init_case(int n, int x, int y);
@@ -103,19 +107,16 @@ int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu);
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer);
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, int tour_perso);
+int calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]);
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer);
 
 
 // SORTS.C
-void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]);
-void point_vie (BITMAP* buffer, int degats);
-void afficher_inventaire (BITMAP* buffer, int degats, t_perso p[NB_PERSOS], int tour_perso);
-void affichage_potions (BITMAP *buffer, t_perso *perso,t_case c[TAILLE_MAP][TAILLE_MAP], int tour_perso);
-int potion_1 (int tour_perso);
-int potion_2 (int tour_perso);
-int potion_3 (int tour_perso);
-int potion_4 (int tour_perso);
+void creer_potion (t_potion p[NB_POTION], char nom_potion[20]);
+void point_vie (BITMAP* buffer, t_potion p[NB_POTION], int degats);
+void afficher_inventaire (BITMAP* buffer, t_potion p[NB_POTION], int degats);
+void souris_potion (BITMAP* buffer, t_potion p[NB_POTION], t_case c[TAILLE_MAP][TAILLE_MAP]);
 
 
 #endif //HEADER_H
