@@ -1,12 +1,24 @@
 #include "header.h"
 
 #include <time.h>
-#include <stdlib.h>  
+#include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
 
+void initialisation_allegro() {
+    allegro_init();
+    install_keyboard();
+    install_mouse();
+    set_color_depth(desktop_color_depth());
+    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0)!=0) {
+        allegro_message("probleme mode graphique");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+    show_mouse(screen);
+}
 
-int main() {//sa
+int main() {
     srand(time(NULL));
     initialisation_allegro();
     int aleatoire=0;
@@ -29,8 +41,8 @@ int main() {//sa
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int tour_perso=1;
 
-    BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
-    BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
+    BITMAP *inventaire = load_bitmap("inventaire.bmp", NULL);
+    BITMAP *fond=load_bitmap("fond2.bmp", NULL);
     BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
@@ -40,23 +52,30 @@ int main() {//sa
     creer_map(tab_map, c, equipe, nb_joueurs);
     creer_obstacles(c, obs);
     placer_persos(c, p, equipe, choix_joueurs);
-    equiper_potion(p, nom_potion);
-
+    creer_potion(pot, nom_potion);
+    t_coord chemin[20];
+    int nb_etapes = 0;
+    int etape_courante = 0;
     while (!key[KEY_ESC]) {
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+
         afficher_map(buffer, c);
-        blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
-        afficher_inventaire(buffer, degats, p, 0);
-        affichage_potions(buffer, p, c, 0);
-        point_vie(buffer, degats);
-        souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
-        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
-        deplacement(c, p, tour_perso, ligne_actu, colonne_actu);
-        if (p[tour_perso - 1].anim_en_cours) {
-            animer(&p[tour_perso - 1]);
-        }
         afficher_obstacles_persos(buffer, c, obs, p);
+
+        if (!p[tour_perso].anim_en_cours) {
+            souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
+            afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
+            deplacement(c, p, tour_perso, ligne_actu, colonne_actu, chemin, &nb_etapes, &etape_courante);
+        } else {
+            animer(&p[tour_perso], chemin, &etape_courante, nb_etapes);
+        }
+
+        blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
+        point_vie(buffer, pot, degats);
+        afficher_inventaire(buffer, pot, degats);
+        souris_potion(buffer, pot, c);
+
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
