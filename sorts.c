@@ -235,3 +235,5 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         textout_ex(buffer, font, p[tour_perso].pot[3].intitule, 487, 508, makecol(255, 255, 25), -1);
     }
 }
+
+void attaque_potion ()
