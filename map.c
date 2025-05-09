@@ -275,10 +275,22 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
 
 void afficher_pause(BITMAP *buffer, int *compteur) {
 
-    if (key[KEY_A]) {
-        *compteur=!*compteur;
+    if (mouse_b&1 && mouse_x<SCREEN_W/18 && mouse_y<SCREEN_H/15 && *compteur==0) {
+        *compteur=1;
     }
+
+    if (mouse_b&1 && mouse_x>SCREEN_W-17*SCREEN_W/18 && mouse_x<SCREEN_W-15*SCREEN_W/18 && mouse_y>SCREEN_H-17*SCREEN_H/18 && mouse_y<SCREEN_H-15*SCREEN_H/18 && *compteur==1) {
+        *compteur=0;
+    }
+
     if (*compteur==1) {
-        rectfill(buffer, 7*SCREEN_W/8, 7*SCREEN_H/8, SCREEN_W-7*SCREEN_W/8, SCREEN_H-7*SCREEN_H/8, makecol(50, 50, 50));
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(180, 180, 100));
+        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 50, 150));
     }
+    if (*compteur==0) {
+        rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(50, 50, 50));
+        rectfill(buffer, 10, 10, SCREEN_W/36-3, SCREEN_H/15-10, makecol(200, 200, 200));
+        rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
+    }
+
 }

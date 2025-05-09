@@ -26,13 +26,19 @@ t_perso init_perso(int n, int x, int y){
         }
     }
     else if (n==2) {
-        b.img[0]=load_bitmap("Images\\squelette_1.bmp", NULL);
+        for(int i=0;i<b.nb_images;i++){
+            b.img[i]=load_bitmap("Images\\squelette_1.bmp",NULL);
+        }
     }
     else if (n==3) {
-        b.img[0]=load_bitmap("Images\\archere_1.bmp", NULL);
+        for(int i=0;i<b.nb_images;i++){
+            b.img[i]=load_bitmap("Images\\archere_1.bmp",NULL);
+        }
     }
     else if (n==4) {
-        b.img[0]=load_bitmap("Images\\geant_1.bmp", NULL);
+        for(int i=0;i<b.nb_images;i++){
+            b.img[i]=load_bitmap("Images\\geant_1.bmp",NULL);
+        }
     }
     else {
         b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas sa
@@ -41,6 +47,7 @@ t_perso init_perso(int n, int x, int y){
     b.ty=b.img[0]->h;
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
+    b.anim_en_cours=0;
     return b;
 }
 
@@ -51,23 +58,23 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool 
         for(int i=0;i<TAILLE_MAP;i++){
             for(int j=0;j<TAILLE_MAP;j++) {
                 if (c[i][j].type==NB_CASES+1) {
-                    p[0]=init_perso(1, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=1;
+                    p[0]=init_perso(choix_joueurs[0], c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=choix_joueurs[0];
                     p[0].ligne=i, p[0].colonne=j;
                 }
                 else if (c[i][j].type==NB_CASES+2) {
-                    p[1]=init_perso(2, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=2;
+                    p[1]=init_perso(choix_joueurs[1], c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=choix_joueurs[1];
                     p[1].ligne=i, p[1].colonne=j;
                 }
                 else if (c[i][j].type==NB_CASES+3) {
-                    p[2]=init_perso(3, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=3;
+                    p[2]=init_perso(choix_joueurs[2], c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=choix_joueurs[2];
                     p[2].ligne=i, p[2].colonne=j;
                 }
                 else if (c[i][j].type==NB_CASES+4) {
-                    p[3]=init_perso(4, c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=4;
+                    p[3]=init_perso(choix_joueurs[3], c[i][j].x, c[i][j].y-35);
+                    c[i][j].p=choix_joueurs[3];
                     p[3].ligne=i, p[3].colonne=j;
                 }
             }
@@ -80,28 +87,28 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool 
             for(int j=0;j<TAILLE_MAP;j++) {
                 if (c[i][j].type==NB_CASES+1) {
                     if (compte==1) {
-                        p[0]=init_perso(1, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=1;
+                        p[0]=init_perso(choix_joueurs[0], c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=choix_joueurs[0];
                         p[0].ligne=i, p[0].colonne=j;
                         compte++;
                     }
                     else {
-                        p[1]=init_perso(2, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=2;
+                        p[1]=init_perso(choix_joueurs[1], c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=choix_joueurs[1];
                         p[1].ligne=i, p[1].colonne=j;
                         compte--;
                     }
                 }
                 else if (c[i][j].type==NB_CASES+2) {
                     if (compte==1) {
-                        p[2]=init_perso(3, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=3;
+                        p[2]=init_perso(choix_joueurs[2], c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=choix_joueurs[2];
                         p[2].ligne=i, p[2].colonne=j;
                         compte++;
                     }
                     else {
-                        p[3]=init_perso(4, c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=4;
+                        p[3]=init_perso(choix_joueurs[3], c[i][j].x, c[i][j].y-35);
+                        c[i][j].p=choix_joueurs[3];
                         p[3].ligne=i, p[3].colonne=j;
                     }
                 }

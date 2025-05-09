@@ -22,11 +22,11 @@ int main() {//sa
     int ligne_actu = -1;
     int colonne_actu = -1;
     int compteur=0;
+    int temps=0;
 
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
-    t_potion pot[NB_POTION];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int tour_perso=1;
 

@@ -417,11 +417,13 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
             textprintf_centre_ex(menu, font, bouton_choix_x+bouton_choix_w/2, bouton_choix_y+bouton_choix_h/2.5, makecol(0, 0, 0), -1, "Choisir");
 
             if(curseur_bouton_choix && (mouse_b & 1)){
-                choix=i;
+                choix=i+1;
+                while(mouse_b & 1);
                 break;
             }
             if(curseur_icone_skin && (mouse_b & 1)){
-                choix=i+4;
+                choix=i+5;
+                while(mouse_b & 1);
                 break;
             }
         }//sas
@@ -487,7 +489,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
                 break;
             case CHOIX_CLASSES:
                 classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut);
-                if(classes>=0&&classes<4){
+                if(classes>=1&&classes<5){
                     choix_joueurs[joueurs]=classes;
                     etat_actuel = CHOIX_JOUEURS;
                     anime_nuage=0;
