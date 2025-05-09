@@ -90,6 +90,7 @@ void animer(t_perso* perso);
 
 
 // MAP.C
+void afficher_pause(BITMAP *buffer, int *compteur);
 t_case init_case(int n, int x, int y);
 t_obstacle init_obstacle(int n, int x, int y);
 t_potion init_inventaire(char nom_potion[20], int i);
