@@ -272,3 +272,13 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
         }
     }
 }
+
+void afficher_pause(BITMAP *buffer, int *compteur) {
+
+    if (key[KEY_A]) {
+        *compteur=!*compteur;
+    }
+    if (*compteur==1) {
+        rectfill(buffer, 7*SCREEN_W/8, 7*SCREEN_H/8, SCREEN_W-7*SCREEN_W/8, SCREEN_H-7*SCREEN_H/8, makecol(50, 50, 50));
+    }
+}
