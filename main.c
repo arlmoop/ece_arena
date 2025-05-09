@@ -35,8 +35,9 @@ int main() {//sa
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
-    BITMAP* imagesss = load_bitmap("Images\\serpent1.bmp", NULL);
+    BITMAP* imagesss = load_bitmap("Images\\serpent3.bmp", NULL);
     magenta(imagesss, 200, 50, 200);
+
     creer_fichier();
     charger_fichier(tab_map);
     creer_map(tab_map, c, equipe, nb_joueurs);
