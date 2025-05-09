@@ -87,7 +87,7 @@ t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]);
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu);
 void animer(t_perso* perso);
-
+void ordre_persos (BITMAP* buffer, t_perso p[NB_PERSOS]);
 
 // MAP.C
 void afficher_pause(BITMAP *buffer, int *compteur);
