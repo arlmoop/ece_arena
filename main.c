@@ -27,7 +27,7 @@ int main() {//sa
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
-    int tour_perso=2;
+    int tour_perso=1;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -54,7 +54,7 @@ int main() {//sa
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
         deplacement(c, p, &tour_perso, ligne_actu, colonne_actu);
         if (p[tour_perso - 1].anim_en_cours) {
-            animer(&p[tour_perso - 1]);
+            animer(&p[tour_perso - 1], &tour_perso);
         }
         afficher_obstacles_persos(buffer, c, obs, p);
         afficher_pause(buffer, &compteur);

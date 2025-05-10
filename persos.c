@@ -49,6 +49,7 @@ t_perso init_perso(int n, int x, int y){
     b.ycentre=b.y+b.ty/2;
     b.anim_en_cours=0;
     b.pa=5, b.pm=3, b.pv=100;
+    b.num=0;
     return b;
 }
 
@@ -60,14 +61,16 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
             if (c[i][j].type>NB_CASES) {
                 p[b]=init_perso(choix_joueurs[b], c[i][j].x, c[i][j].y-35);
                 c[i][j].p=choix_joueurs[b];
+                c[i][j].num_joueur=b+1;
                 p[b].ligne=i, p[b].colonne=j;
+                p[b].num=b+1;
                 b++;
             }
         }
     }
 }
 
-void animer(t_perso *perso) {
+void animer(t_perso *perso, int *tour_perso) {
     if (perso->anim_en_cours) {
         perso->x += perso->dx;
         perso->y += perso->dy;
@@ -92,12 +95,13 @@ void animer(t_perso *perso) {
         }
     }
     rest(25);
+    //gerer_tours(tour_perso);
 }
 
 void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *tour_perso, int ligne_actu, int colonne_actu) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (*tour_perso == c[i][j].p && mouse_b & 1 && chemin_valide(c, p, *tour_perso, ligne_actu, colonne_actu) && !p[*tour_perso - 1].anim_en_cours)
+            if (*tour_perso == c[i][j].num_joueur && mouse_b & 1 && chemin_valide(c, p, *tour_perso, ligne_actu, colonne_actu) && !p[*tour_perso - 1].anim_en_cours)
             {
                 int x_depart = p[*tour_perso - 1].x;
                 int y_depart = p[*tour_perso - 1].y;
@@ -113,11 +117,20 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *to
                 p[*tour_perso - 1].ligne = ligne_actu;
                 p[*tour_perso - 1].colonne = colonne_actu;
 
-                c[ligne_actu][colonne_actu].p = *tour_perso;
-                c[i][j].p = 0;
-
-                *tour_perso++;
+                c[ligne_actu][colonne_actu].num_joueur = *tour_perso;
+                c[ligne_actu][colonne_actu].p=c[i][j].p;
+                c[i][j].num_joueur = 0;
+                c[i][j].p=0;
             }
         }
+    }
+}
+
+void gerer_tours(int *tour_perso) {
+    if(*tour_perso<NB_PERSOS) {
+        (*tour_perso)++;
+    }
+    else {
+        *tour_perso=1;
     }
 }

@@ -12,6 +12,7 @@ t_case init_case(int n, int x, int y) {
     c.o=0;
     c.p=0;
     c.r=0;
+    c.num_joueur=0;
     if (n==1) {
         c.img=load_bitmap("Images\\bloc_glace.bmp", NULL);
         c.type=2;
@@ -154,11 +155,11 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                 draw_sprite(buffer, obs[i][j].img, obs[i][j].x, obs[i][j].y);
             }
 
-            if (c[i][j].p != 0) {
-                int classe = c[i][j].p;
+            if (c[i][j].num_joueur != 0) {
+                int num = c[i][j].num_joueur;
 
                 for (int k = 0; k < NB_PERSOS; k++) {
-                    if (p[k].classe == classe) {
+                    if (p[k].num==num) {
                         int frame = p[k].imgcourante % p[k].nb_images;
                         draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
                         break;
@@ -214,8 +215,8 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_pre
 
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
     int r=0;
-    for(int i=0; i<=PM; i++) {
-        if(abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu)<=PM) {
+    for(int i=0; i<=p.pm; i++) {
+        if(abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu)<=p.pm) {
             r=1;
         }
     }
@@ -228,7 +229,7 @@ int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int to
         && comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu)) {
         for (int i = 0; i < TAILLE_MAP; i++) {
             for (int j = 0; j < TAILLE_MAP; j++) {
-                if (c[i][j].p == tour_perso) {
+                if (c[i][j].num_joueur == tour_perso) {
                     r=1;
                 }
             }
@@ -241,7 +242,7 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
     if (chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu)) {
         for (int i = 0; i < TAILLE_MAP; i++) {
             for (int j = 0; j < TAILLE_MAP; j++) {
-                if (tour_perso == c[i][j].p) {
+                if (tour_perso == c[i][j].num_joueur) {
                     int ligne_finale = i;
                     if (i < ligne_actu) {
                         for (int k = i + 1; k <= ligne_actu; k++) {
