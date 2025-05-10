@@ -30,3 +30,17 @@ void initialisation_allegro() {
     }
     show_mouse(screen);
 }
+
+int clic_gauche(int x1, int y1, int x2, int y2) {
+    int r=0;
+    if(mouse_b&1 && mouse_x<x2 && mouse_x>x1 && mouse_y<y2 && mouse_y>y1)
+        r=1;
+    return r;
+}
+
+int clic_droit(int x1, int y1, int x2, int y2) {
+    int r=0;
+    if(mouse_b&2 && mouse_x<x2 && mouse_x>x1 && mouse_y<y2 && mouse_y>y1)
+        r=1;
+    return r;
+}

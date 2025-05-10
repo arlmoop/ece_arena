@@ -50,9 +50,9 @@ typedef struct {
 } t_potion;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, anim_en_cours, frames_restantes, nb_images;
-    int imgcourante, cptimg, tmpimg;
-    // E 0:existe pas 1:existe
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne;
+    int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
+    int pm, pa, pv;
     t_potion pot[NB_POTION];
     BITMAP *img[5];
 }t_perso;
@@ -68,6 +68,8 @@ typedef enum {
 //OUTILS.C
 void initialisation_allegro();
 void magenta (BITMAP* image, int r_max, int g_max, int b_max);
+int clic_gauche(int x1, int y1, int x2, int y2);
+int clic_droit(int x1, int y1, int x2, int y2);
 
 
 // MENU.C
@@ -84,8 +86,8 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equ
 
 // PERSOS.C
 t_perso init_perso(int n, int x, int y);
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]);
-void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu);
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
+void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *tour_perso, int ligne_actu, int colonne_actu);
 void animer(t_perso* perso);
 void ordre_persos (BITMAP* buffer, t_perso p[NB_PERSOS]);
 

@@ -48,70 +48,20 @@ t_perso init_perso(int n, int x, int y){
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
     b.anim_en_cours=0;
+    b.pa=5, b.pm=3, b.pv=100;
     return b;
 }
 
 
-void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]) {
-    // SOLO
-    if (equipe==0) {
-        for(int i=0;i<TAILLE_MAP;i++){
-            for(int j=0;j<TAILLE_MAP;j++) {
-                if (c[i][j].type==NB_CASES+1) {
-                    p[0]=init_perso(choix_joueurs[0], c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=choix_joueurs[0];
-                    p[0].ligne=i, p[0].colonne=j;
-                }
-                else if (c[i][j].type==NB_CASES+2) {
-                    p[1]=init_perso(choix_joueurs[1], c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=choix_joueurs[1];
-                    p[1].ligne=i, p[1].colonne=j;
-                }
-                else if (c[i][j].type==NB_CASES+3) {
-                    p[2]=init_perso(choix_joueurs[2], c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=choix_joueurs[2];
-                    p[2].ligne=i, p[2].colonne=j;
-                }
-                else if (c[i][j].type==NB_CASES+4) {
-                    p[3]=init_perso(choix_joueurs[3], c[i][j].x, c[i][j].y-35);
-                    c[i][j].p=choix_joueurs[3];
-                    p[3].ligne=i, p[3].colonne=j;
-                }
-            }
-        }
-    }
-    // 2V2
-    else {
-        int compte=1;
-        for(int i=0;i<TAILLE_MAP;i++){
-            for(int j=0;j<TAILLE_MAP;j++) {
-                if (c[i][j].type==NB_CASES+1) {
-                    if (compte==1) {
-                        p[0]=init_perso(choix_joueurs[0], c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=choix_joueurs[0];
-                        p[0].ligne=i, p[0].colonne=j;
-                        compte++;
-                    }
-                    else {
-                        p[1]=init_perso(choix_joueurs[1], c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=choix_joueurs[1];
-                        p[1].ligne=i, p[1].colonne=j;
-                        compte--;
-                    }
-                }
-                else if (c[i][j].type==NB_CASES+2) {
-                    if (compte==1) {
-                        p[2]=init_perso(choix_joueurs[2], c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=choix_joueurs[2];
-                        p[2].ligne=i, p[2].colonne=j;
-                        compte++;
-                    }
-                    else {
-                        p[3]=init_perso(choix_joueurs[3], c[i][j].x, c[i][j].y-35);
-                        c[i][j].p=choix_joueurs[3];
-                        p[3].ligne=i, p[3].colonne=j;
-                    }
-                }
+void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]) {
+    int b=0;
+    for(int i=0;i<TAILLE_MAP;i++){
+        for(int j=0;j<TAILLE_MAP;j++) {
+            if (c[i][j].type>NB_CASES) {
+                p[b]=init_perso(choix_joueurs[b], c[i][j].x, c[i][j].y-35);
+                c[i][j].p=choix_joueurs[b];
+                p[b].ligne=i, p[b].colonne=j;
+                b++;
             }
         }
     }
@@ -144,28 +94,29 @@ void animer(t_perso *perso) {
     rest(25);
 }
 
-void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *tour_perso, int ligne_actu, int colonne_actu) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p && mouse_b & 1 && chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu) && !p[tour_perso - 1].anim_en_cours)
+            if (*tour_perso == c[i][j].p && mouse_b & 1 && chemin_valide(c, p, *tour_perso, ligne_actu, colonne_actu) && !p[*tour_perso - 1].anim_en_cours)
             {
-                int x_depart = p[tour_perso - 1].x;
-                int y_depart = p[tour_perso - 1].y;
+                int x_depart = p[*tour_perso - 1].x;
+                int y_depart = p[*tour_perso - 1].y;
                 int x_arrivee = c[ligne_actu][colonne_actu].x;
                 int y_arrivee = c[ligne_actu][colonne_actu].y - 35;
-
                 int nb_frames = 10;
 
-                p[tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
-                p[tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
-                p[tour_perso - 1].frames_restantes = nb_frames;
-                p[tour_perso - 1].anim_en_cours = 1;
+                p[*tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
+                p[*tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
+                p[*tour_perso - 1].frames_restantes = nb_frames;
+                p[*tour_perso - 1].anim_en_cours = 1;
 
-                p[tour_perso - 1].ligne = ligne_actu;
-                p[tour_perso - 1].colonne = colonne_actu;
+                p[*tour_perso - 1].ligne = ligne_actu;
+                p[*tour_perso - 1].colonne = colonne_actu;
 
-                c[ligne_actu][colonne_actu].p = tour_perso;
+                c[ligne_actu][colonne_actu].p = *tour_perso;
                 c[i][j].p = 0;
+
+                *tour_perso++;
             }
         }
     }

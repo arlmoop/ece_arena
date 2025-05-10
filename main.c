@@ -22,13 +22,12 @@ int main() {//sa
     int ligne_actu = -1;
     int colonne_actu = -1;
     int compteur=0;
-    int temps=0;
 
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
-    int tour_perso=1;
+    int tour_perso=2;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -36,14 +35,11 @@ int main() {//sa
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
-    BITMAP* imagesss = load_bitmap("Images\\serpent3.bmp", NULL);
-    magenta(imagesss, 200, 50, 200);
-
     creer_fichier();
     charger_fichier(tab_map);
     creer_map(tab_map, c, equipe, nb_joueurs);
     creer_obstacles(c, obs);
-    placer_persos(c, p, equipe, choix_joueurs);
+    placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
 
     while (!key[KEY_ESC]) {
@@ -56,7 +52,7 @@ int main() {//sa
         point_vie(buffer, degats);
         souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
-        deplacement(c, p, tour_perso, ligne_actu, colonne_actu);
+        deplacement(c, p, &tour_perso, ligne_actu, colonne_actu);
         if (p[tour_perso - 1].anim_en_cours) {
             animer(&p[tour_perso - 1]);
         }

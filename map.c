@@ -223,49 +223,45 @@ int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
 }
 
 int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu) {
-    if (c[ligne_actu][colonne_actu].o != 0 || c[ligne_actu][colonne_actu].p != 0)
-        return 0;
-
-    if (comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu) != 1)
-        return 0;
-
-    for (int i = 0; i < TAILLE_MAP; i++) {
-        for (int j = 0; j < TAILLE_MAP; j++) {
-            if (c[i][j].p == tour_perso) {
-                return 1;
+    int r=0;
+    if (c[ligne_actu][colonne_actu].o==0 && c[ligne_actu][colonne_actu].p==0
+        && comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu)) {
+        for (int i = 0; i < TAILLE_MAP; i++) {
+            for (int j = 0; j < TAILLE_MAP; j++) {
+                if (c[i][j].p == tour_perso) {
+                    r=1;
+                }
             }
         }
     }
-
-    return 0;
+    return r;
 }
 
 void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer) {
-    if (!chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu)){
-            return;
-    }
-    for (int i = 0; i < TAILLE_MAP; i++) {
-        for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].p) {
-                int ligne_finale = i;
-                if (i < ligne_actu) {
-                    for (int k = i + 1; k <= ligne_actu; k++) {
-                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
+    if (chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu)) {
+        for (int i = 0; i < TAILLE_MAP; i++) {
+            for (int j = 0; j < TAILLE_MAP; j++) {
+                if (tour_perso == c[i][j].p) {
+                    int ligne_finale = i;
+                    if (i < ligne_actu) {
+                        for (int k = i + 1; k <= ligne_actu; k++) {
+                            remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
+                        }
+                        ligne_finale = ligne_actu;
+                    } else if (i > ligne_actu) {
+                        for (int k = i - 1; k >= ligne_actu; k--) {
+                            remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
+                        }
+                        ligne_finale = ligne_actu;
                     }
-                    ligne_finale = ligne_actu;
-                } else if (i > ligne_actu) {
-                    for (int k = i - 1; k >= ligne_actu; k--) {
-                        remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
-                    }
-                    ligne_finale = ligne_actu;
-                }
-                if (j < colonne_actu) {
-                    for (int l = j + 1; l <= colonne_actu; l++) {
-                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
-                    }
-                } else if (j > colonne_actu) {
-                    for (int l = j - 1; l >= colonne_actu; l--) {
-                        remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
+                    if (j < colonne_actu) {
+                        for (int l = j + 1; l <= colonne_actu; l++) {
+                            remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
+                        }
+                    } else if (j > colonne_actu) {
+                        for (int l = j - 1; l >= colonne_actu; l--) {
+                            remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
+                        }
                     }
                 }
             }
@@ -274,23 +270,20 @@ void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_per
 }
 
 void afficher_pause(BITMAP *buffer, int *compteur) {
-
-    if (mouse_b&1 && mouse_x<SCREEN_W/18 && mouse_y<SCREEN_H/15 && *compteur==0) {
+    if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && !*compteur) {
         *compteur=1;
     }
-
-    if (mouse_b&1 && mouse_x>SCREEN_W-17*SCREEN_W/18 && mouse_x<SCREEN_W-15*SCREEN_W/18 && mouse_y>SCREEN_H-17*SCREEN_H/18 && mouse_y<SCREEN_H-15*SCREEN_H/18 && *compteur==1) {
+    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur) {
         *compteur=0;
     }
 
     if (*compteur==1) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(180, 180, 100));
-        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 50, 150));
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
     }
     if (*compteur==0) {
         rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(50, 50, 50));
         rectfill(buffer, 10, 10, SCREEN_W/36-3, SCREEN_H/15-10, makecol(200, 200, 200));
         rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
-
 }
