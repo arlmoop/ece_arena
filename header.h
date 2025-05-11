@@ -87,10 +87,10 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equ
 // PERSOS.C
 t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
-void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *tour_perso, int ligne_actu, int colonne_actu);
-void animer(t_perso* perso, int *tour_perso);
-void ordre_persos (BITMAP* buffer, t_perso p[NB_PERSOS]);
-void gerer_tours(int *tour_perso);
+void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
+void animer(t_perso* perso, bool *valider_pm);
+void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour, int nb_joueurs);
+void passer(bool *passer_tour, BITMAP *buffer);
 
 
 // MAP.C
@@ -107,9 +107,9 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
 int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
-int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu);
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer);
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance);
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
+void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer, int *distance);
 
 
 // SORTS.C

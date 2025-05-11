@@ -22,12 +22,16 @@ int main() {//sa
     int ligne_actu = -1;
     int colonne_actu = -1;
     int compteur=0;
+    bool valider_pm=0;
+    bool valider_pa=0;
+    bool passer_tour=0;
 
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int tour_perso=1;
+    int distance=0;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -51,12 +55,14 @@ int main() {//sa
         affichage_potions(buffer, p, c, 1);
         point_vie(buffer, degats);
         souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
-        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer);
-        deplacement(c, p, &tour_perso, ligne_actu, colonne_actu);
+        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer, &distance);
+        deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
         if (p[tour_perso - 1].anim_en_cours) {
-            animer(&p[tour_perso - 1], &tour_perso);
+            animer(&p[tour_perso - 1], &valider_pm);
         }
         afficher_obstacles_persos(buffer, c, obs, p);
+        passer(&passer_tour, buffer);
+        gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
         afficher_pause(buffer, &compteur);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }

@@ -48,7 +48,7 @@ t_perso init_perso(int n, int x, int y){
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
     b.anim_en_cours=0;
-    b.pa=5, b.pm=3, b.pv=100;
+    b.pa=5, b.pm=PM, b.pv=100;
     b.num=0;
     return b;
 }
@@ -70,7 +70,7 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
     }
 }
 
-void animer(t_perso *perso, int *tour_perso) {
+void animer(t_perso *perso, bool *valider_pm) {
     if (perso->anim_en_cours) {
         perso->x += perso->dx;
         perso->y += perso->dy;
@@ -94,30 +94,32 @@ void animer(t_perso *perso, int *tour_perso) {
             perso->ycentre = perso->y + perso->ty / 2;
         }
     }
+    if(perso->pm==0)
+        *valider_pm=1;
     rest(25);
-    //gerer_tours(tour_perso);
 }
 
-void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *tour_perso, int ligne_actu, int colonne_actu) {
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (*tour_perso == c[i][j].num_joueur && mouse_b & 1 && chemin_valide(c, p, *tour_perso, ligne_actu, colonne_actu) && !p[*tour_perso - 1].anim_en_cours)
+            if (tour_perso == c[i][j].num_joueur && mouse_b & 1 && chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu, distance) && !p[tour_perso - 1].anim_en_cours)
             {
-                int x_depart = p[*tour_perso - 1].x;
-                int y_depart = p[*tour_perso - 1].y;
+                int x_depart = p[tour_perso - 1].x;
+                int y_depart = p[tour_perso - 1].y;
                 int x_arrivee = c[ligne_actu][colonne_actu].x;
                 int y_arrivee = c[ligne_actu][colonne_actu].y - 35;
                 int nb_frames = 10;
 
-                p[*tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
-                p[*tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
-                p[*tour_perso - 1].frames_restantes = nb_frames;
-                p[*tour_perso - 1].anim_en_cours = 1;
+                p[tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
+                p[tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
+                p[tour_perso - 1].frames_restantes = nb_frames;
+                p[tour_perso - 1].anim_en_cours = 1;
 
-                p[*tour_perso - 1].ligne = ligne_actu;
-                p[*tour_perso - 1].colonne = colonne_actu;
+                p[tour_perso - 1].ligne = ligne_actu;
+                p[tour_perso - 1].colonne = colonne_actu;
+                p[tour_perso - 1].pm-=*distance;
 
-                c[ligne_actu][colonne_actu].num_joueur = *tour_perso;
+                c[ligne_actu][colonne_actu].num_joueur = tour_perso;
                 c[ligne_actu][colonne_actu].p=c[i][j].p;
                 c[i][j].num_joueur = 0;
                 c[i][j].p=0;
@@ -126,11 +128,25 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int *to
     }
 }
 
-void gerer_tours(int *tour_perso) {
-    if(*tour_perso<NB_PERSOS) {
-        (*tour_perso)++;
+void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour, int nb_joueurs) {
+    if ((*valider_pm && *valider_pa) || *passer_tour) {
+        if(*tour_perso<nb_joueurs)
+            (*tour_perso)++;
+        else if(*tour_perso==nb_joueurs)
+            *tour_perso=1;
+
+        *valider_pm=0;
+        *valider_pa=0;
+        *passer_tour=0;
+
+        p->pm=PM;
+        p->pa=5;
     }
-    else {
-        *tour_perso=1;
-    }
+}
+
+void passer(bool *passer_tour, BITMAP *buffer) {
+    rectfill(buffer, SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20, makecol(50, 50, 50));
+    textout_ex(buffer, font, "Passer tour", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
+    if(clic_gauche(SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20))
+        *passer_tour=1;
 }
