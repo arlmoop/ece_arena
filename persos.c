@@ -70,7 +70,7 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
     }
 }
 
-void animer(t_perso *perso, bool *valider_pm) {
+void animer(t_perso *perso, bool *valider_pm, int *distance) {
     if (perso->anim_en_cours) {
         perso->x += perso->dx;
         perso->y += perso->dy;
@@ -92,6 +92,7 @@ void animer(t_perso *perso, bool *valider_pm) {
 
             perso->xcentre = perso->x + perso->tx / 2;
             perso->ycentre = perso->y + perso->ty / 2;
+            perso->pm-=*distance;
         }
     }
     if(perso->pm==0)
@@ -117,7 +118,6 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tou
 
                 p[tour_perso - 1].ligne = ligne_actu;
                 p[tour_perso - 1].colonne = colonne_actu;
-                p[tour_perso - 1].pm-=*distance;
 
                 c[ligne_actu][colonne_actu].num_joueur = tour_perso;
                 c[ligne_actu][colonne_actu].p=c[i][j].p;
@@ -149,4 +149,12 @@ void passer(bool *passer_tour, BITMAP *buffer) {
     textout_ex(buffer, font, "Passer tour", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
     if(clic_gauche(SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20))
         *passer_tour=1;
+}
+
+//temporaire tant qu'on a pas la validation des sorts
+void val_pa(bool *valider_pa, BITMAP *buffer) {
+    rectfill(buffer, SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20, makecol(50, 50, 50));
+    textout_ex(buffer, font, "val", SCREEN_W/2, SCREEN_H/2, makecol(255, 255, 255), -1);
+    if(clic_gauche(SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20))
+        *valider_pa=1;
 }

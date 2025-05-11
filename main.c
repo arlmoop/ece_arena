@@ -58,10 +58,11 @@ int main() {//sa
         chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer, &distance);
         deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
         if (p[tour_perso - 1].anim_en_cours) {
-            animer(&p[tour_perso - 1], &valider_pm);
+            animer(&p[tour_perso - 1], &valider_pm, &distance);
         }
         afficher_obstacles_persos(buffer, c, obs, p);
         passer(&passer_tour, buffer);
+        val_pa(&valider_pa, buffer);
         gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
         afficher_pause(buffer, &compteur);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
