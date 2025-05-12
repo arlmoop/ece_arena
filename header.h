@@ -91,8 +91,8 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equ
 t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], bool equipe, int choix_joueurs[]);
 void lancer_animation(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes);
-void animer(t_perso *perso, t_coord chemin[], int *etape_courante, int nb_etapes);
-void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu, t_coord chemin[], int *nb_etapes, int *etape_courante);
+void animer(t_perso *perso, t_coord chemin[], int *etape_courante, int distance);
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu, t_coord chemin[], int *nb_distance, int *etape_courante);
 
 // MAP.C
 t_case init_case(int n, int x, int y);
