@@ -212,35 +212,27 @@ void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_pre
     }
 }
 
-int comparer_coord(t_perso p, int ligne_actu, int colonne_actu) {
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance) {
     int r=0;
-    for(int i=0; i<=PM; i++) {
-        if(abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu)<=PM) {
-            r=1;
-        }
-    }
+    *distance=abs(p.ligne-ligne_actu) + abs(p.colonne-colonne_actu);
+    if(*distance<=p.pm)
+        r=1;
     return r;
 }
 
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], int ligne_depart, int colonne_depart, int ligne_arrivee, int colonne_arrivee, int tour_perso) {
-
-    int distance = abs(ligne_arrivee - ligne_depart) + abs(colonne_arrivee - colonne_depart);
-    if (distance > 3) return 0;
-
-    int ligne = ligne_depart;
-    int colonne = colonne_depart;
-
-    while (colonne != colonne_arrivee) {
-        colonne += (colonne < colonne_arrivee) ? 1 : -1;
-        if (c[ligne][colonne].o || c[ligne][colonne].p) return 0; // obstacle ou perso
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance) {
+    int r=0;
+    if (c[ligne_actu][colonne_actu].o==0 && c[ligne_actu][colonne_actu].p==0
+        && comparer_coord(p[tour_perso - 1], ligne_actu, colonne_actu, distance)) {
+        for (int i = 0; i < TAILLE_MAP; i++) {
+            for (int j = 0; j < TAILLE_MAP; j++) {
+                if (c[i][j].num_joueur == tour_perso) {
+                    r=1;
+                }
+            }
+        }
     }
-
-    while (ligne != ligne_arrivee) {
-        ligne += (ligne < ligne_arrivee) ? 1 : -1;
-        if (c[ligne][colonne].o || c[ligne][colonne].p) return 0;
-    }
-
-    return 1;
+    return r;
 }
 
 void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]) {
