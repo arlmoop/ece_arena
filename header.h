@@ -44,10 +44,11 @@ typedef struct {
 } t_obstacle;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, anim_en_cours, nb_frames,frames_restantes, nb_images;
-    int imgcourante, cptimg, tmpimg;
-    // E 0:existe pas 1:existe
-    BITMAP *img[20];
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, num;
+    int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
+    int pm, pa, pv;
+    t_potion pot[NB_POTION];
+    BITMAP *img[5];
 }t_perso;
 
 typedef struct {
@@ -106,10 +107,11 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
 int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
-int comparer_coord(t_perso p, int ligne_actu, int colonne_actu);
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, int tour_perso);
-int calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]);
-void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer);
+int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance);
+int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
+void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]);
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer);
+void afficher_pause(BITMAP *buffer, int *compteur);
 
 
 // SORTS.C
