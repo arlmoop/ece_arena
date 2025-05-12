@@ -243,7 +243,7 @@ int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], int ligne_depart, int colonn
     return 1;
 }
 
-int calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]) {
+void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]) {
     int nb_etapes = 0;
     int ligne = ligne_depart;
     int colonne = colonne_depart;
@@ -267,17 +267,34 @@ int calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int l
         chemin[nb_etapes].colonne = colonne;
         nb_etapes++;
     }
-
-    return nb_etapes;
 }
 
-void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu, BITMAP* buffer) {
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer) {
     if (!chemin_valide(c, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu, tour_perso))
         return;
     t_coord chemin[3];
-    int nb_cases = calculer_chemin(chemin, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu, c);
+    calculer_chemin(chemin, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu, c);
 
-    for (int i = 0; i < nb_cases; i++) {
+    for (int i = 0; i < *distance; i++) {
         remplir_losange(c[chemin[i].ligne][chemin[i].colonne], buffer, makecol(100, 255, 100));
+    }
+}
+
+void afficher_pause(BITMAP *buffer, int *compteur) {
+    if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && !*compteur) {
+        *compteur=1;
+    }
+    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur) {
+        *compteur=0;
+    }
+
+    if (*compteur==1) {
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
+    }
+    if (*compteur==0) {
+        rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(50, 50, 50));
+        rectfill(buffer, 10, 10, SCREEN_W/36-3, SCREEN_H/15-10, makecol(200, 200, 200));
+        rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
 }
