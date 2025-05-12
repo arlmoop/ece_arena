@@ -235,7 +235,7 @@ int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int to
     return r;
 }
 
-void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, t_case c[TAILLE_MAP][TAILLE_MAP]) {
+void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee) {
     int nb_etapes = 0;
     int ligne = ligne_depart;
     int colonne = colonne_depart;
