@@ -55,7 +55,7 @@ int main() {//sa
         affichage_potions(buffer, p, c, 1);
         point_vie(buffer, degats);
         souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
-        chemin(c, p, tour_perso, ligne_actu, colonne_actu, buffer, &distance);
+        afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
         deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
         if (p[tour_perso - 1].anim_en_cours) {
             animer(&p[tour_perso - 1], &valider_pm, &distance);

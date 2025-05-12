@@ -19,6 +19,9 @@
 #define PM 3
 #define NB_PERSOS 4
 
+typedef struct {
+    int ligne, colonne;
+}t_coord;
 
 typedef struct {
     int x, y, tx, ty;
@@ -110,7 +113,8 @@ void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance);
 int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP*buffer, int *distance);
+void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee);
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer);
 
 
 // SORTS.C

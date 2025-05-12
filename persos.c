@@ -92,6 +92,7 @@ void animer(t_perso *perso, bool *valider_pm, int *distance) {
 
             perso->xcentre = perso->x + perso->tx / 2;
             perso->ycentre = perso->y + perso->ty / 2;
+
             perso->pm-=*distance;
         }
     }

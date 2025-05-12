@@ -236,35 +236,40 @@ int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int to
     return r;
 }
 
-void chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, BITMAP* buffer, int *distance) {
-    if (chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu, distance)) {
-        for (int i = 0; i < TAILLE_MAP; i++) {
-            for (int j = 0; j < TAILLE_MAP; j++) {
-                if (tour_perso == c[i][j].num_joueur) {
-                    int ligne_finale = i;
-                    if (i < ligne_actu) {
-                        for (int k = i + 1; k <= ligne_actu; k++) {
-                            remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
-                        }
-                        ligne_finale = ligne_actu;
-                    } else if (i > ligne_actu) {
-                        for (int k = i - 1; k >= ligne_actu; k--) {
-                            remplir_losange(c[k][j], buffer, makecol(100, 255, 100));
-                        }
-                        ligne_finale = ligne_actu;
-                    }
-                    if (j < colonne_actu) {
-                        for (int l = j + 1; l <= colonne_actu; l++) {
-                            remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
-                        }
-                    } else if (j > colonne_actu) {
-                        for (int l = j - 1; l >= colonne_actu; l--) {
-                            remplir_losange(c[ligne_finale][l], buffer, makecol(100, 255, 100));
-                        }
-                    }
-                }
-            }
-        }
+void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee) {
+    int nb_etapes = 0;
+    int ligne = ligne_depart;
+    int colonne = colonne_depart;
+
+    while (colonne != colonne_arrivee && nb_etapes < PM) {
+        if (colonne < colonne_arrivee)
+            colonne++;
+        else
+            colonne--;
+        chemin[nb_etapes].ligne = ligne;
+        chemin[nb_etapes].colonne = colonne;
+        nb_etapes++;
+    }
+
+    while (ligne != ligne_arrivee && nb_etapes < PM) {
+        if (ligne < ligne_arrivee)
+            ligne++;
+        else
+            ligne--;
+        chemin[nb_etapes].ligne = ligne;
+        chemin[nb_etapes].colonne = colonne;
+        nb_etapes++;
+    }
+}
+
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer) {
+    if (!chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu, distance))
+        return;
+    t_coord chemin[3];
+    calculer_chemin(chemin, p[tour_perso-1].ligne, p[tour_perso-1].colonne, ligne_actu, colonne_actu);
+
+    for (int i = 0; i < *distance; i++) {
+        remplir_losange(c[chemin[i].ligne][chemin[i].colonne], buffer, makecol(100, 255, 100));
     }
 }
 
