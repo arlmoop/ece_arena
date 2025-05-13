@@ -279,13 +279,15 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart) {
+                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause) {
 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
+        *pause=clock();
     }
     if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur==1) {
         *compteur=0;
+        *tps_pause+=clock()-*pause;
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==1) {
         *compteur=2;
@@ -294,11 +296,13 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
         recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0);
+        *depart=clock();
     }
     if (clic_gauche(0, 70, 80, 130) && *compteur==2) {
         recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1);
+        *depart=clock();
     }
 
 

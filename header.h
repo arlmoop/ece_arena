@@ -127,7 +127,7 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart);
+                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
 
 
 // SORTS.C

@@ -15,6 +15,9 @@ int main() {//sa
     int choix_joueurs[4];
     int equipe=0;
     menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
+    clock_t depart=clock();
+    clock_t pause;
+    clock_t tps_pause=0;
     int degats = 100;
     char nom_potion[20];
     int ligne_prec=-1;
@@ -33,6 +36,7 @@ int main() {//sa
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
+    char texte[50];
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -48,6 +52,7 @@ int main() {//sa
     equiper_potion(p, nom_potion);
 
     while (!key[KEY_ESC]) {
+        double secondes = (double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
         clear_bitmap(buffer);
         blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         afficher_map(buffer, c);
@@ -68,7 +73,9 @@ int main() {//sa
         afficher_pause(buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
             &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
             &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
-            choix_joueurs, &tour_depart);
+            choix_joueurs, &tour_depart, &depart, &pause, &tps_pause);
+        sprintf(texte, "Temps : %.0f s", secondes);
+        textout_ex(buffer, font, texte, 600, 10, makecol(255, 255, 0), -1);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
