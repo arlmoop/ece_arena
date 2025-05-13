@@ -59,8 +59,8 @@ t_obstacle init_obstacle(int n, int x, int y) {
     return obs;
 }
 
-void creer_fichier() {
-    FILE* fichier=fopen("telechargement_map.txt", "w");
+void creer_fichier(char *nom_fichier) {
+    FILE* fichier=fopen(nom_fichier, "w");
     if(fichier==NULL) {
         printf("Erreur\n");
         exit(1);
@@ -74,8 +74,8 @@ void creer_fichier() {
     fclose(fichier);
 }
 
-void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]) {
-    FILE* fic=fopen("telechargement_map.txt", "r");
+void charger_fichier(char *nom_fichier, int tab_map[TAILLE_MAP][TAILLE_MAP]) {
+    FILE* fic=fopen(nom_fichier, "r");
     if(fic==NULL) {
         printf("Erreur\n");
         exit(1);
@@ -87,7 +87,7 @@ void charger_fichier(int tab_map[TAILLE_MAP][TAILLE_MAP]) {
     }
 }
 
-void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], bool equipe, int nb_joueurs){
+void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], int equipe, int nb_joueurs){
     t_case case1=init_case(1,0,0);
     int m;
     // 2V2
@@ -273,21 +273,84 @@ void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int
     }
 }
 
-void afficher_pause(BITMAP *buffer, int *compteur) {
-    if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && !*compteur) {
+void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
+                int *colonne_prec, int *colonne_actu,
+                bool *valider_pm, bool *valider_pa, bool *passer_tour,
+                int *tour_perso, int *nb_joueurs, int *distance,
+                int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+                int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
+                int choix_joueurs[], int *tour_depart) {
+
+    if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
     }
-    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur) {
+    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur==1) {
         *compteur=0;
     }
-
-    if (*compteur==1) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
-        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==1) {
+        *compteur=2;
     }
+    if (clic_gauche(0, 0, 80, 60) && *compteur==2) {
+        recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
+            compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0);
+    }
+    if (clic_gauche(0, 70, 80, 130) && *compteur==2) {
+        recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
+            compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1);
+    }
+
+
     if (*compteur==0) {
         rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(50, 50, 50));
         rectfill(buffer, 10, 10, SCREEN_W/36-3, SCREEN_H/15-10, makecol(200, 200, 200));
         rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
+    if (*compteur==1) {
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(100, 100, 100));
+        textout_ex(buffer, font, "recommencer", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
+    }
+    if (*compteur==2) {
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        //sur cette map
+        rectfill(buffer, 0, 0, 80, 60, makecol(100, 100, 100));
+        textout_ex(buffer, font, "cette map", 0, 0, makecol(255, 255, 255), -1);
+        //sur autre map
+        rectfill(buffer, 0, 70, 80, 130, makecol(100, 100, 100));
+        textout_ex(buffer, font, "autre map", 0, 70, makecol(255, 255, 255), -1);
+    }
+}
+
+void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
+                int *colonne_prec, int *colonne_actu, int *compteur,
+                bool *valider_pm, bool *valider_pa, bool *passer_tour,
+                int *tour_perso, int *nb_joueurs, int *distance,
+                int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+                int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
+                int choix_joueurs[], int *tour_depart, bool map) {
+
+    *degats = 100;
+    *ligne_prec=-1;
+    *colonne_prec=-1;
+    *ligne_actu = -1;
+    *colonne_actu = -1;
+    *compteur=0;
+    *valider_pm=0;
+    *valider_pa=0;
+    *passer_tour=0;
+    *tour_perso=*tour_depart;
+    *distance=0;
+
+    if(map) {
+        creer_fichier("telechargement_map.txt");
+        charger_fichier("telechargement_map.txt", tab_map);
+        creer_map(tab_map, c, *equipe, *nb_joueurs);
+        creer_obstacles(c, obs);
+    }
+
+    placer_persos(c, p, choix_joueurs);
+    equiper_potion(p, nom_potion);
 }

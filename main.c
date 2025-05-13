@@ -25,13 +25,14 @@ int main() {//sa
     bool valider_pm=0;
     bool valider_pa=0;
     bool passer_tour=0;
+    int tour_perso=1+rand()%nb_joueurs;
+    int tour_depart=tour_perso;//pour sauvegarde
+    int distance=0;
 
     t_perso p[NB_PERSOS];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
-    int tour_perso=1;
-    int distance=0;
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -39,8 +40,8 @@ int main() {//sa
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
-    creer_fichier();
-    charger_fichier(tab_map);
+    creer_fichier("telechargement_map.txt");
+    charger_fichier("telechargement_map.txt", tab_map);
     creer_map(tab_map, c, equipe, nb_joueurs);
     creer_obstacles(c, obs);
     placer_persos(c, p, choix_joueurs);
@@ -64,7 +65,10 @@ int main() {//sa
         passer(&passer_tour, buffer);
         val_pa(&valider_pa, buffer);
         gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
-        afficher_pause(buffer, &compteur);
+        afficher_pause(buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
+            &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
+            &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
+            choix_joueurs, &tour_depart);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
