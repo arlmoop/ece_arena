@@ -80,10 +80,10 @@ t_spriteimmo initspriteimmo();
 void disparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2);
 void apparition_fond_nuage(BITMAP *menu,BITMAP *fond1, BITMAP *fond2);
 int bouton_bas_droite(BITMAP *menu, int est_retour,int format_menu);
-int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut);
-int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire);
-int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe);
-int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut);
+int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu);
+int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire, BITMAP *fond_menu);
+int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu);
+int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu);
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
 
 
@@ -120,7 +120,7 @@ void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_act
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart, bool map);
+                int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause);
 void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
                 int *colonne_prec, int *colonne_actu,
                 bool *valider_pm, bool *valider_pa, bool *passer_tour,
@@ -128,6 +128,7 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
+void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
 
 
 // SORTS.C

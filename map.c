@@ -295,13 +295,13 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
     if (clic_gauche(0, 0, 80, 60) && *compteur==2) {
         recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
-            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0);
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause);
         *depart=clock();
     }
     if (clic_gauche(0, 70, 80, 130) && *compteur==2) {
         recommencer(degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
-            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1);
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1, depart, tps_pause);
         *depart=clock();
     }
 
@@ -334,7 +334,7 @@ void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_act
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart, bool map) {
+                int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause) {
 
     *degats = 100;
     *ligne_prec=-1;
@@ -347,6 +347,8 @@ void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_act
     *passer_tour=0;
     *tour_perso=*tour_depart;
     *distance=0;
+    *depart=clock();
+    *tps_pause=0;
 
     if(map) {
         creer_fichier("telechargement_map.txt");
@@ -357,4 +359,10 @@ void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_act
 
     placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
+}
+
+void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause) {
+    *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
+    sprintf(texte, "Temps : %.0f s", *secondes);
+    textout_ex(buffer, font, texte, 600, 10, makecol(255, 255, 0), -1);
 }

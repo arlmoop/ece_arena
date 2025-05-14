@@ -83,7 +83,7 @@ int bouton_bas_droite(BITMAP *menu, int est_retour,int format_menu) {
     return (curseur && (mouse_b & 1));
 }
 
-int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut) {
+int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu) {
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -96,6 +96,7 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         rectfill(menu, menu_x, menu_y, menu_x + MENU_W, menu_y + MENU_H, makecol(60, 40, 20));
         rect(menu, menu_x, menu_y, menu_x + MENU_W, menu_y + MENU_H, makecol(255, 215, 0));
         textprintf_centre_ex(menu, font, menu_x + MENU_W / 2, menu_y + 20, makecol(255, 255, 0), -1, "MENU");
@@ -130,7 +131,7 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
     return choix;
 }
 
-int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire) {
+int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire, BITMAP *fond_menu) {
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -153,6 +154,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         int mx = mouse_x;
         int my = mouse_y;
 
@@ -228,7 +230,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
     return choix;
 }
 
-int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe){
+int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu){
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
         char filename[30];
@@ -257,6 +259,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         int mx = mouse_x;
         int my = mouse_y;
 
@@ -352,7 +355,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
     return choix;
 }
 
-int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut) {
+int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu) {
     BITMAP *banieres[4];
     BITMAP *bouton_choix[2];
     BITMAP *icone_skin[2];
@@ -379,6 +382,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     int n=0;
     while(!key[KEY_ESC]&&choix==-1){
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         rectfill(menu, cadre_total_x, cadre_total_y, cadre_total_x + MENU_CLASSES_W, cadre_total_y + MENU_CLASSES_H, makecol(40, 30, 20));
         rect(menu, cadre_total_x, cadre_total_y, cadre_total_x + MENU_CLASSES_W, cadre_total_y + MENU_CLASSES_H, makecol(255, 215, 0));
         textprintf_centre_ex(menu, font, SCREEN_W / 2, cadre_total_y + 10, makecol(255, 255, 0), -1, "CLASSES DES PERSONNAGES");
@@ -444,6 +448,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
 
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equipe) {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
+    BITMAP *fond_menu=load_bitmap("Images\\fond_menu.bmp", NULL);
     BITMAP *fond_nuage_bas = load_bitmap("Images\\fond_nuage_bas.bmp", NULL);
     BITMAP *fond_nuage_haut = load_bitmap("Images\\fond_nuage_haut.bmp", NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
@@ -461,18 +466,18 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     while (!fin_du_jeu) {
         switch (etat_actuel) {
             case MENU_PRINCIPAL:
-                choix = afficher_menu_principal(menu,fond_nuage_bas,fond_nuage_haut);
+                choix = afficher_menu_principal(menu,fond_nuage_bas,fond_nuage_haut, fond_menu);
                 if (choix == 0) etat_actuel = CHOIX_MAP;
-                else if (choix == 1) return 0;// RAJOUTER CHARGER PARTIE
+                else if (choix == 1) return 3;// RAJOUTER CHARGER PARTIE
                 else if(choix==-2) fin_du_jeu=1;
                 break;
             case CHOIX_MAP:
-                choix_map = afficher_menu_map(menu,fond_nuage_bas,fond_nuage_haut,theme,aleatoire);
+                choix_map = afficher_menu_map(menu,fond_nuage_bas,fond_nuage_haut,theme,aleatoire, fond_menu);
                 if (choix_map == 0) etat_actuel = CHOIX_JOUEURS;
                 else if (choix_map == -2) etat_actuel = MENU_PRINCIPAL;
                 break;
             case CHOIX_JOUEURS:
-                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe);
+                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe, fond_menu);
                 if(joueurs>=0&&joueurs<4){
                     etat_actuel = CHOIX_CLASSES;
                 }
@@ -488,7 +493,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
                 }
                 break;
             case CHOIX_CLASSES:
-                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut);
+                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut, fond_menu);
                 if(classes>=1&&classes<5){
                     choix_joueurs[joueurs]=classes;
                     etat_actuel = CHOIX_JOUEURS;
@@ -505,5 +510,6 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     destroy_bitmap(menu);
     destroy_bitmap(fond_nuage_bas);
     destroy_bitmap(fond_nuage_haut);
+    destroy_bitmap(fond_menu);
     return 0;
 }

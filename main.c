@@ -9,15 +9,18 @@
 int main() {//sa
     srand(time(NULL));
     initialisation_allegro();
+
     int aleatoire=0;
     int theme=-1;
     int nb_joueurs=2;
     int choix_joueurs[4];
     int equipe=0;
-    menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
+    int m=menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
+
     clock_t depart=clock();
     clock_t pause;
     clock_t tps_pause=0;
+    double secondes;
     int degats = 100;
     char nom_potion[20];
     int ligne_prec=-1;
@@ -29,7 +32,7 @@ int main() {//sa
     bool valider_pa=0;
     bool passer_tour=0;
     int tour_perso=1+rand()%nb_joueurs;
-    int tour_depart=tour_perso;//pour sauvegarde
+    int tour_depart=tour_perso;
     int distance=0;
 
     t_perso p[NB_PERSOS];
@@ -52,30 +55,30 @@ int main() {//sa
     equiper_potion(p, nom_potion);
 
     while (!key[KEY_ESC]) {
-        double secondes = (double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
-        clear_bitmap(buffer);
-        blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        afficher_map(buffer, c);
-        blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
-        afficher_inventaire(buffer, degats, p, 1);
-        affichage_potions(buffer, p, c, 1);
-        point_vie(buffer, degats);
-        souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
-        afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
-        deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
-        if (p[tour_perso - 1].anim_en_cours) {
-            animer(&p[tour_perso - 1], &valider_pm, &distance);
+        if(compteur==0) {
+            clear_bitmap(buffer);
+            blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+            afficher_map(buffer, c);
+            blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
+            afficher_inventaire(buffer, degats, p, 1);
+            affichage_potions(buffer, p, c, 1);
+            point_vie(buffer, degats);
+            souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
+            afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
+            deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
+            if (p[tour_perso - 1].anim_en_cours) {
+                animer(&p[tour_perso - 1], &valider_pm, &distance);
+            }
+            afficher_obstacles_persos(buffer, c, obs, p);
+            passer(&passer_tour, buffer);
+            val_pa(&valider_pa, buffer);
+            gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
+            timer(texte, buffer, &secondes, depart, tps_pause);
         }
-        afficher_obstacles_persos(buffer, c, obs, p);
-        passer(&passer_tour, buffer);
-        val_pa(&valider_pa, buffer);
-        gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
         afficher_pause(buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
             &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
             &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
             choix_joueurs, &tour_depart, &depart, &pause, &tps_pause);
-        sprintf(texte, "Temps : %.0f s", secondes);
-        textout_ex(buffer, font, texte, 600, 10, makecol(255, 255, 0), -1);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
 
