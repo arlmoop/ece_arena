@@ -36,6 +36,7 @@ int main() {//sa
     int distance=0;
 
     t_perso p[NB_PERSOS];
+    t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
     t_obstacle obs[TAILLE_MAP][TAILLE_MAP];
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
@@ -47,12 +48,19 @@ int main() {//sa
     BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
-    creer_fichier("telechargement_map.txt");
-    charger_fichier("telechargement_map.txt", tab_map);
-    creer_map(tab_map, c, equipe, nb_joueurs);
-    creer_obstacles(c, obs);
-    placer_persos(c, p, choix_joueurs);
-    equiper_potion(p, nom_potion);
+    if(m==1) {
+        creer_fichier();
+        charger_fichier_map(tab_map);
+        creer_map(tab_map, c, equipe, nb_joueurs);
+        creer_fichier_obs(c);
+        charger_fichier_obs(tab_obs);
+        creer_obstacles(tab_obs, c, obs);
+        placer_persos(c, p, choix_joueurs);
+        equiper_potion(p, nom_potion);
+    }
+    else if(m==3) {
+        sauvegarde(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
+    }
 
     while (!key[KEY_ESC]) {
         if(compteur==0) {
@@ -75,7 +83,7 @@ int main() {//sa
             gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
             timer(texte, buffer, &secondes, depart, tps_pause);
         }
-        afficher_pause(buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
+        afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
             &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
             &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
             choix_joueurs, &tour_depart, &depart, &pause, &tps_pause);

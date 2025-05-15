@@ -36,7 +36,7 @@ typedef struct {
 } t_case;
 
 typedef struct {
-    int x, y, tx, ty, xcentre, ycentre;
+    int x, y, tx, ty, xcentre, ycentre, type;
     bool e, a;
     // E 0:existe pas 1:existe
     // A 0:n'a pas ete affiche 1:a ete affiche
@@ -101,11 +101,13 @@ void val_pa(bool *valider_pa, BITMAP *buffer);
 t_case init_case(int n, int x, int y);
 t_obstacle init_obstacle(int n, int x, int y);
 t_potion init_inventaire(char nom_potion[20], int i);
-void creer_fichier(char *nom_fichier);
-void charger_fichier(char *nom_fichier, int tab_map[TAILLE_MAP][TAILLE_MAP]);
+void creer_fichier();
+void charger_fichier_map(int tab_map[TAILLE_MAP][TAILLE_MAP]);
 void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], int equipe, int nb_joueurs);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
-void creer_obstacles(t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
+void creer_fichier_obs(t_case c[TAILLE_MAP][TAILLE_MAP]);
+void charger_fichier_obs(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP]);
+void creer_obstacles(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP]);
 void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP], t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS]);
 int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer, int couleur);
@@ -114,14 +116,14 @@ int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance);
 int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
 void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee);
 void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer);
-void recommencer(int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
+void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
                 int *colonne_prec, int *colonne_actu, int *compteur,
                 bool *valider_pm, bool *valider_pa, bool *passer_tour,
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause);
-void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
+void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
                 int *colonne_prec, int *colonne_actu,
                 bool *valider_pm, bool *valider_pa, bool *passer_tour,
                 int *tour_perso, int *nb_joueurs, int *distance,
@@ -129,6 +131,9 @@ void afficher_pause(BITMAP *buffer, int *compteur, int *degats, char nom_potion[
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
 void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
+void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+                int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
+                char nom_potion[]);
 
 
 // SORTS.C
