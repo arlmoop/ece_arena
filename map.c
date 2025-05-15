@@ -60,7 +60,7 @@ t_obstacle init_obstacle(int n, int x, int y) {
     return obs;
 }
 
-void creer_fichier() {
+void creer_fichier_map() {
     FILE* fichier=fopen("telechargement_map.txt", "w");
     if(fichier==NULL) {
         printf("Erreur\n");
@@ -320,25 +320,30 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
         *pause=clock();
+        while(mouse_b & 1);
     }
-    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur==1) {
-        *compteur=0;
+    if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur>0) {
+        (*compteur)--;
         *tps_pause+=clock()-*pause;
+        while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==1) {
         *compteur=2;
+        while(mouse_b & 1);
     }
-    if (clic_gauche(0, 0, 80, 60) && *compteur==2) {
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause);
         *depart=clock();
+        while(mouse_b & 1);
     }
-    if (clic_gauche(0, 70, 80, 130) && *compteur==2) {
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1, depart, tps_pause);
         *depart=clock();
+        while(mouse_b & 1);
     }
 
 
@@ -355,12 +360,13 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
     }
     if (*compteur==2) {
         rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
         //sur cette map
-        rectfill(buffer, 0, 0, 80, 60, makecol(100, 100, 100));
-        textout_ex(buffer, font, "cette map", 0, 0, makecol(255, 255, 255), -1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(100, 100, 100));
+        textout_ex(buffer, font, "cette map", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
         //sur autre map
-        rectfill(buffer, 0, 70, 80, 130, makecol(100, 100, 100));
-        textout_ex(buffer, font, "autre map", 0, 70, makecol(255, 255, 255), -1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(100, 100, 100));
+        textout_ex(buffer, font, "autre map", SCREEN_W/3, SCREEN_H/2, makecol(255, 255, 255), -1);
     }
 }
 
@@ -387,7 +393,7 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
     *tps_pause=0;
 
     if(map) {
-        creer_fichier();
+        creer_fichier_map();
         charger_fichier_map(tab_map);
         creer_map(tab_map, c, *equipe, *nb_joueurs);
         creer_fichier_obs(c);
@@ -410,6 +416,19 @@ void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_M
                 char nom_potion[]) {
     charger_fichier_map(tab_map);
     creer_map(tab_map, c, equipe, nb_joueurs);
+    charger_fichier_obs(tab_obs);
+    creer_obstacles(tab_obs, c, obs);
+    placer_persos(c, p, choix_joueurs);
+    equiper_potion(p, nom_potion);
+}
+
+void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+                int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
+                char nom_potion[]) {
+    creer_fichier_map();
+    charger_fichier_map(tab_map);
+    creer_map(tab_map, c, equipe, nb_joueurs);
+    creer_fichier_obs(c);
     charger_fichier_obs(tab_obs);
     creer_obstacles(tab_obs, c, obs);
     placer_persos(c, p, choix_joueurs);

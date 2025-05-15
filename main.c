@@ -49,14 +49,7 @@ int main() {//sa
     stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
     if(m==1) {
-        creer_fichier();
-        charger_fichier_map(tab_map);
-        creer_map(tab_map, c, equipe, nb_joueurs);
-        creer_fichier_obs(c);
-        charger_fichier_obs(tab_obs);
-        creer_obstacles(tab_obs, c, obs);
-        placer_persos(c, p, choix_joueurs);
-        equiper_potion(p, nom_potion);
+        nouvelle_partie(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
     }
     else if(m==3) {
         sauvegarde(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);

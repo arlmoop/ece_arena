@@ -101,7 +101,7 @@ void val_pa(bool *valider_pa, BITMAP *buffer);
 t_case init_case(int n, int x, int y);
 t_obstacle init_obstacle(int n, int x, int y);
 t_potion init_inventaire(char nom_potion[20], int i);
-void creer_fichier();
+void creer_fichier_map();
 void charger_fichier_map(int tab_map[TAILLE_MAP][TAILLE_MAP]);
 void creer_map(int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP], int equipe, int nb_joueurs);
 void afficher_map(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP]);
@@ -132,6 +132,9 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
 void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+                int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
+                char nom_potion[]);
+void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
 
