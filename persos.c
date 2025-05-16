@@ -6,7 +6,7 @@
 #include <allegro.h>
 
 
-t_perso init_perso(int n, int x, int y){
+t_perso init_perso(int n, int x, int y) {
     t_perso b;
     b.x=x, b.y=y;
     b.ligne=0, b.colonne=0;
@@ -18,6 +18,7 @@ t_perso init_perso(int n, int x, int y){
     b.classe=n;
     b.frames_restantes=0;
     b.nb_images=5;
+    b.nom[30]="NULL";
     if (n==1) {
         for(int i=0;i<b.nb_images;i++){
             char filename[20];
@@ -64,6 +65,7 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
                 c[i][j].num_joueur=b+1;
                 p[b].ligne=i, p[b].colonne=j;
                 p[b].num=b+1;
+                sprintf(p[b].nom, "Joueur %d", b+1);
                 b++;
             }
         }
@@ -131,7 +133,7 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tou
 
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
     int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause) {
-    if ((*valider_pm && *valider_pa) || *passer_tour || *secondes>=15) {
+    if ((*valider_pm && *valider_pa) || *passer_tour || *secondes>=TEMPS_TOUR) {
         if(*tour_perso<nb_joueurs)
             (*tour_perso)++;
         else if(*tour_perso==nb_joueurs)

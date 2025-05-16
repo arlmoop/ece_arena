@@ -19,6 +19,7 @@
 #define PM 3
 #define PA 5
 #define NB_PERSOS 4
+#define TEMPS_TOUR 20
 
 typedef struct {
     int ligne, colonne;
@@ -56,6 +57,7 @@ typedef struct {
     int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, num;
     int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
     int pm, pa, pv;
+    char nom[30];
     t_potion pot[NB_POTION];
     BITMAP *img[5];
 }t_perso;
@@ -131,15 +133,15 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
-void timer(char temps[30], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
 void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
-void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
-    BITMAP *buffer, int tour_perso);
+void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t tps_pause,
+    char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+    BITMAP *buffer, int tour_perso, int nb_joueurs);
 void hg(BITMAP *buffer);
 
 

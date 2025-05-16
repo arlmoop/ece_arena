@@ -415,12 +415,6 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
     equiper_potion(p, nom_potion);
 }
 
-void timer(char texte[30], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause) {
-    *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
-    sprintf(texte, "Temps : %.0f s", *secondes);
-    textout_ex(buffer, font, texte, 600, 10, makecol(255, 255, 0), -1);
-}
-
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]) {
@@ -445,17 +439,31 @@ void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TA
     equiper_potion(p, nom_potion);
 }
 
-void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
-    BITMAP *buffer, int tour_perso) {
+void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t tps_pause,
+    char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+    BITMAP *buffer, int tour_perso, int nb_joueurs) {
     //TOUR
-    sprintf(t, "Au tour du joueur : %d", tour_perso);
-    textout_ex(buffer, font, t, 600, 30, makecol(0, 255, 255), -1);
+    sprintf(t, "Au tour de : %s", p[tour_perso-1].nom);
+    textout_ex(buffer, font, t, 600, 10, makecol(0, 255, 255), -1);
+    //JOUEURS SUIVANTS
+    textout_ex(buffer, font, "Joueurs suivants :", 552, 30, makecol(0, 128, 255), -1);
+    textout_ex(buffer, font, p[tour_perso-1].nom, 704, 30, makecol(0, 128, 255), -1);//CHANGER
+    if(nb_joueurs>2) {
+        textout_ex(buffer, font, p[tour_perso-1].nom, 704, 50, makecol(0, 128, 255), -1);//CHANGER
+        if(nb_joueurs>3) {
+            textout_ex(buffer, font, p[tour_perso-1].nom, 704, 70, makecol(0, 128, 255), -1);//CHANGER
+        }
+    }
     //PA
     sprintf(pa, "Il vous reste %d PA", p[tour_perso-1].pa);
-    textout_ex(buffer, font, pa, 600, 50, makecol(255, 0, 255), -1);
+    textout_ex(buffer, font, pa, 100, 30, makecol(255, 0, 255), -1);
     //PM
     sprintf(pm, "Il vous reste %d PM", p[tour_perso-1].pm);
-    textout_ex(buffer, font, pm, 600, 70, makecol(255, 0, 255), -1);
+    textout_ex(buffer, font, pm, 100, 50, makecol(255, 0, 255), -1);
+    //TIMER
+    *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
+    sprintf(temps, "Temps : %.0f s", *secondes);
+    textout_ex(buffer, font, temps, 100, 10, makecol(255, 255, 0), -1);
 }
 
 void hg(BITMAP *buffer) {
