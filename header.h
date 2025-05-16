@@ -48,7 +48,7 @@ typedef struct {
     int x, y, xf, yf;
     //xf et yf les coordonnees de la fin de la taille des images des potions
     char intitule[50];
-    int degats;
+    int degats, pa;
     BITMAP* img;
 } t_potion;
 
