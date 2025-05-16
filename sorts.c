@@ -39,45 +39,6 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
         "Potion verte",
         "Potion dorée"
     };
-
-    int pa_potion[NB_POTION*NB_POTION] = {
-        "1",
-        "2",
-        "3",
-        "4",
-        "1",
-        "2",
-        "3",
-        "4",
-        "1",
-        "2",
-        "3",
-        "4",
-        "1",
-        "2",
-        "3",
-        "4",
-    };
-
-    int degats_potion[NB_POTION*NB_POTION] = {
-        "10",
-        "20",
-        "30",
-        "40",
-        "10",
-        "20",
-        "30",
-        "40",
-        "10",
-        "20",
-        "30",
-        "40",
-        "10",
-        "20",
-        "30",
-        "40",
-    }; //
-
     for (int i = 0; i < NB_PERSOS; i++) {
         for (int k = 0; k < NB_POTION; k++) {
             int index = (i * NB_PERSOS) + k;
@@ -90,8 +51,6 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
             strcpy(p[i].pot[k].intitule, noms_potion[index]);
             p[i].pot[k].intitule[sizeof(p[i].pot[k].intitule) - 1] = '\0';
 
-            p[i].pot[k].pa = pa_potion[index];
-            p[i].pot[k].degats = degats_potion[index];
         }
     }
 }
