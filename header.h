@@ -17,6 +17,7 @@
 #define MENU_CLASSES_W 600
 #define MENU_CLASSES_H 480
 #define PM 3
+#define PA 5
 #define NB_PERSOS 4
 
 typedef struct {
