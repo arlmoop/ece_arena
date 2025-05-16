@@ -140,6 +140,7 @@ void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAI
                 char nom_potion[]);
 void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
     BITMAP *buffer, int tour_perso);
+void hg(BITMAP *buffer);
 
 
 // SORTS.C

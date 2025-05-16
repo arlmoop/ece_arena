@@ -357,24 +357,18 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
     if (*compteur==1) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
-        rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
-        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
-        rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
-
+        hg(buffer);
+        //RECOMMENCER
         rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
         rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
         textout_centre_ex(buffer, font, "RECOMMENCER", SCREEN_W/2, SCREEN_H/3+40, makecol(200, 150, 60), -1);
-
+        //QUITTER
         rectfill(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(50, 50, 50));
         rect(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
         textout_centre_ex(buffer, font, "QUITTER LA PARTIE", SCREEN_W/2, SCREEN_H/2+50, makecol(200, 150, 60), -1);
     }
     if (*compteur==2) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
-        rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
-        rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
-        rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
+        hg(buffer);
         //sur cette map
         rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
         rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
@@ -462,4 +456,17 @@ void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
     //PM
     sprintf(pm, "Il vous reste %d PM", p[tour_perso-1].pm);
     textout_ex(buffer, font, pm, 600, 70, makecol(255, 0, 255), -1);
+}
+
+void hg(BITMAP *buffer) {
+    rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
+    rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
+    rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(50, 50, 50));
+    rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10, makecol(200, 200, 200));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10-1, makecol(200, 200, 200));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10+1, makecol(200, 200, 200));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, makecol(200, 200, 200));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, makecol(200, 200, 200));
+    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
 }
