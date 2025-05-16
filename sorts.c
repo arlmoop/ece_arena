@@ -21,7 +21,7 @@ t_potion init_inventaire (char nom_potion[20], int n) {
 
 void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
 
-    char noms[16][50] = {
+    char noms_potion[16][30] = {
         "Potion de foudre",
         "Potion de soin",
         "Potion de gel",
@@ -40,6 +40,20 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
         "Potion dorée"
     };
 
+    int pa_potion[NB_POTION*NB_POTION] = {
+        "1", "2", "3", "4",
+        "1", "2", "3", "4",
+        "1", "2", "3", "4",
+        "1", "2", "3", "4"
+    };
+
+    int degats_potion[NB_POTION*NB_POTION] = {
+        "10", "20", "30", "40",
+        "10", "20", "30", "40",
+        "10", "20", "30", "40",
+        "10", "20", "30", "40"
+    };
+
     for (int i = 0; i < NB_PERSOS; i++) {
         for (int k = 0; k < NB_POTION; k++) {
             int index = (i * NB_PERSOS) + k;
@@ -48,9 +62,12 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
             p[i].pot[k].y = SCREEN_H-92;
             p[i].pot[k].xf = p[i].pot[k].x+p[i].pot[k].img->w;
             p[i].pot[k].yf = p[i].pot[k].y+p[i].pot[k].img->h;
-            p[i].pot[k].degats = 20;
-            strcpy(p[i].pot[k].intitule, noms[index]);
+
+            strcpy(p[i].pot[k].intitule, noms_potion[index]);
             p[i].pot[k].intitule[sizeof(p[i].pot[k].intitule) - 1] = '\0';
+
+            p[i].pot[k].pa = pa_potion[index];
+            p[i].pot[k].degats = degats_potion[index];
         }
     }
 }
