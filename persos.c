@@ -148,14 +148,18 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
 void passer(bool *passer_tour, BITMAP *buffer) {
     rectfill(buffer, SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20, makecol(50, 50, 50));
     textout_ex(buffer, font, "Passer tour", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
-    if(clic_gauche(SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20))
+    if(clic_gauche(SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20)) {
         *passer_tour=1;
+        while(mouse_b & 1);
+    }
 }
 
 //temporaire tant qu'on a pas la validation des sorts
 void val_pa(bool *valider_pa, BITMAP *buffer) {
     rectfill(buffer, SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20, makecol(50, 50, 50));
     textout_ex(buffer, font, "val", SCREEN_W/2, SCREEN_H/2, makecol(255, 255, 255), -1);
-    if(clic_gauche(SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20))
+    if(clic_gauche(SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20)) {
         *valider_pa=1;
+        while(mouse_b & 1);
+    }
 }

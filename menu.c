@@ -119,7 +119,8 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
                 break;
             }
             if (bouton_bas_droite(menu, 0 ,0)) {
-                exit(0);
+                choix=-1;
+
             }
         }
 
@@ -468,7 +469,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
             case MENU_PRINCIPAL:
                 choix = afficher_menu_principal(menu,fond_nuage_bas,fond_nuage_haut, fond_menu);
                 if (choix == 0) etat_actuel = CHOIX_MAP;
-                else if (choix == 1) return 3;// RAJOUTER CHARGER PARTIE
+                else if (choix == 1) return 3;
                 else if(choix==-2) fin_du_jeu=1;
                 break;
             case CHOIX_MAP:
