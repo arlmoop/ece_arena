@@ -141,7 +141,7 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
         *passer_tour=0;
 
         p->pm=PM;
-        p->pa=5;
+        p->pa=PA;
     }
 }
 
