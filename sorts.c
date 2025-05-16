@@ -48,17 +48,11 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
             p[i].pot[k].y = SCREEN_H-92;
             p[i].pot[k].xf = p[i].pot[k].x+p[i].pot[k].img->w;
             p[i].pot[k].yf = p[i].pot[k].y+p[i].pot[k].img->h;
-            p[i].pot[k].degats = (rand() % 21) + 5;
+            p[i].pot[k].degats = 20;
             strcpy(p[i].pot[k].intitule, noms[index]);
             p[i].pot[k].intitule[sizeof(p[i].pot[k].intitule) - 1] = '\0';
         }
     }
-}
-
-void point_vie (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso) {
-    char pv_joueur[10];
-    sprintf(pv_joueur, "%d", p[tour_perso-1].pv);
-    textout_ex(buffer, font, pv_joueur, 724, SCREEN_H-70, makecol(255, 255, 250), -1);
 }
 
 int potion_1 (int tour_perso) {
@@ -89,6 +83,12 @@ int potion_4 (int tour_perso) {
     return -1;
 }
 
+void point_vie (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso) {
+    char pv_joueur[10];
+    sprintf(pv_joueur, "%d", p[tour_perso-1].pv);
+    textout_ex(buffer, font, pv_joueur, 724, SCREEN_H-70, makecol(255, 255, 250), -1);
+}
+
 void afficher_inventaire (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso) {
     for (int k = 0; k < NB_POTION; k++) {
         draw_sprite(buffer, p[tour_perso-1].pot[k].img, p[tour_perso-1].pot[k].x, p[tour_perso-1].pot[k].y);
@@ -98,21 +98,24 @@ void afficher_inventaire (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso) 
     point_vie(buffer, p, tour_perso);
 }
 
-void attaque_croix (BITMAP* buffer, t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int x, int y, int portee) {
+void attaque_croix(BITMAP* buffer, t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int x, int y, int portee) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
             tab_attaque[i][j] = 0;
         }
     }
-    for (int i = 1; i < portee+1; i++) { // sort en ligne
-        remplir_losange(c[x-i][y], buffer, makecol(98, 107, 255));
-        remplir_losange(c[x+i][y], buffer, makecol(98, 107, 255));
-        remplir_losange(c[x][y-i], buffer, makecol(98, 107, 255));
-        remplir_losange(c[x][y+i], buffer, makecol(98, 107, 255));
-        tab_attaque[x-i][y] = 1;
-        tab_attaque[x+i][y] = 1;
-        tab_attaque[x][y-i] = 1;
-        tab_attaque[x][y+i] = 1;
+
+    for (int i = 0; i < TAILLE_MAP; i++) {
+        for (int j = 0; j < TAILLE_MAP; j++) {
+            int dx = abs(i - x);
+            int dy = abs(j - y);
+
+            // On veut une croix : soit même ligne soit même colonne, et distance <= portée
+            if ((dx == 0 || dy == 0) && dx + dy <= portee) {
+                remplir_losange(c[i][j], buffer, makecol(98, 107, 255));
+                tab_attaque[i][j] = 1;
+            }
+        }
     }
 }
 
@@ -172,7 +175,7 @@ void attaque_sur_perso (BITMAP* buffer,t_case c[TAILLE_MAP][TAILLE_MAP], int tab
 void attaque_potion (BITMAP* buffer, t_perso* p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (c[i][j].p > 0 && tab_attaque[i][j] == 1) {
+            if (c[i][j].p > 0 && tab_attaque[i][j] > 0) {
                 for (int k = 0; k < NB_PERSOS; k++) {
                     if (p[k]->colonne == j && p[k]->ligne == i ) {
                         p[k]->pv = p[k]->pv - p[tour_perso-1]->pot[numero_potion].degats;
@@ -187,9 +190,9 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     char degats_potion[10];
 
     afficher_inventaire(buffer, p, tour_perso);
-    point_vie(buffer, p, tour_perso);
 
-    if (potion_1(tour_perso-1) == 0) {
+    if (potion_1(tour_perso) == 0) {
+
         numero_potion = 0;
         textout_ex(buffer, font, "Potion 1 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
@@ -198,7 +201,8 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_2(tour_perso-1) == 1) {
+    } else if (potion_2(tour_perso) == 1) {
+
         numero_potion = 1;
         textout_ex(buffer, font, "Potion 2 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
@@ -207,7 +211,8 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_sur_perso(buffer, c, tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne);
 
-    } else if (potion_3(tour_perso-1) == 2) {
+    } else if (potion_3(tour_perso) == 2) {
+
         numero_potion = 2;
         textout_ex(buffer, font, "Potion 3 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[2].degats);
@@ -216,7 +221,8 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_cercle(buffer, c, tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 4);
 
-    } else if (potion_4(tour_perso-1) == 3) {
+    } else if (potion_4(tour_perso) == 3) {
+
         numero_potion = 3;
         textout_ex(buffer, font, "Potion 4 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[3].degats);
@@ -225,7 +231,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_anneau(buffer, c, tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 2, 3 );
 
-    } else if (potion_1(tour_perso-1) == 4) {
+    } else if (potion_1(tour_perso) == 4) {
 
         numero_potion = 0;
         textout_ex(buffer, font, "Potion 5 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -235,7 +241,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_2(tour_perso-1) == 5) {
+    } else if (potion_2(tour_perso) == 5) {
 
         numero_potion = 1;
         textout_ex(buffer, font, "Potion 6 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -245,7 +251,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_3(tour_perso-1) == 6) {
+    } else if (potion_3(tour_perso) == 6) {
 
         numero_potion = 2;
         textout_ex(buffer, font, "Potion 7 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -255,7 +261,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_4(tour_perso-1) == 7) {
+    } else if (potion_4(tour_perso) == 7) {
 
         numero_potion = 3;
         textout_ex(buffer, font, "Potion 8 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -265,7 +271,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_1(tour_perso-1) == 8) {
+    } else if (potion_1(tour_perso) == 8) {
 
         numero_potion = 0;
         textout_ex(buffer, font, "Potion 9 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -275,7 +281,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_2(tour_perso-1) == 9) {
+    } else if (potion_2(tour_perso) == 9) {
 
         numero_potion = 1;
         textout_ex(buffer, font, "Potion 10 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -285,7 +291,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_3(tour_perso-1) == 10) {
+    } else if (potion_3(tour_perso) == 10) {
 
         numero_potion = 2;
         textout_ex(buffer, font, "Potion 11 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -295,7 +301,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_4(tour_perso-1) == 11) {
+    } else if (potion_4(tour_perso) == 11) {
 
         numero_potion = 3;
         textout_ex(buffer, font, "Potion 12 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -305,7 +311,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_1(tour_perso-1) == 12) {
+    } else if (potion_1(tour_perso) == 12) {
 
         numero_potion = 0;
         textout_ex(buffer, font, "Potion 13 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -315,7 +321,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_2(tour_perso-1) == 13) {
+    } else if (potion_2(tour_perso) == 13) {
 
         numero_potion = 1;
         textout_ex(buffer, font, "Potion 14 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -325,7 +331,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_3(tour_perso-1) == 14) {
+    } else if (potion_3(tour_perso) == 14) {
 
         numero_potion = 2;
         textout_ex(buffer, font, "Potion 15 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -335,7 +341,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
-    } else if (potion_4(tour_perso-1) == 15) {
+    } else if (potion_4(tour_perso) == 15) {
 
         numero_potion = 3;
         textout_ex(buffer, font, "Potion 16 survolée", 100, 100, makecol(255, 255, 255), -1);
@@ -346,6 +352,8 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         attaque_croix(buffer, c,tab_attaque, p[tour_perso-1].ligne, p[tour_perso-1].colonne, 3);
 
     }
+
+    //attaque_potion(buffer, &p, c, tab_attaque, tour_perso, numero_potion);
 }
 
 /*void affichage_potions(BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_perso) {
