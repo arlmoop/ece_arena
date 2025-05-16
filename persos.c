@@ -49,7 +49,7 @@ t_perso init_perso(int n, int x, int y) {
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
     b.anim_en_cours=0;
-    b.pa=5, b.pm=PM, b.pv=80;
+    b.pa=5, b.pm=PM, b.pv=100;
     b.num=0;
     return b;
 }
