@@ -143,6 +143,8 @@ void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t t
     char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
     BITMAP *buffer, int tour_perso, int nb_joueurs);
 void hg(BITMAP *buffer);
+void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int nb_joueurs);
+void timer(BITMAP *buffer, char temps[30], double *secondes, clock_t depart, clock_t tps_pause);
 
 
 // SORTS.C

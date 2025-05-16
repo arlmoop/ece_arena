@@ -155,7 +155,7 @@ void passer(bool *passer_tour, BITMAP *buffer) {
     rectfill(buffer, 600, 400, 738, 420, makecol(20, 20, 20));
     rect(buffer, 600, 400, 738, 420, makecol(200, 150, 60));
     textout_ex(buffer, font, "Terminer le tour", 605, 407, makecol(200, 150, 60), -1);
-    if(clic_gauche(600, 400, 700, 420)) {
+    if(clic_gauche(600, 400, 738, 420)) {
         *passer_tour=1;
         while(mouse_b & 1);
     }

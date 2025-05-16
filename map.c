@@ -446,14 +446,7 @@ void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t t
     sprintf(t, "Au tour de : %s", p[tour_perso-1].nom);
     textout_ex(buffer, font, t, 600, 10, makecol(0, 255, 255), -1);
     //JOUEURS SUIVANTS
-    textout_ex(buffer, font, "Joueurs suivants :", 552, 30, makecol(0, 128, 255), -1);
-    textout_ex(buffer, font, p[tour_perso-1].nom, 704, 30, makecol(0, 128, 255), -1);//CHANGER
-    if(nb_joueurs>2) {
-        textout_ex(buffer, font, p[tour_perso-1].nom, 704, 50, makecol(0, 128, 255), -1);//CHANGER
-        if(nb_joueurs>3) {
-            textout_ex(buffer, font, p[tour_perso-1].nom, 704, 70, makecol(0, 128, 255), -1);//CHANGER
-        }
-    }
+    joueurs_suivants(p, buffer, tour_perso, nb_joueurs);
     //PA
     sprintf(pa, "Il vous reste %d PA", p[tour_perso-1].pa);
     textout_ex(buffer, font, pa, 100, 30, makecol(255, 0, 255), -1);
@@ -461,9 +454,7 @@ void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t t
     sprintf(pm, "Il vous reste %d PM", p[tour_perso-1].pm);
     textout_ex(buffer, font, pm, 100, 50, makecol(255, 0, 255), -1);
     //TIMER
-    *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
-    sprintf(temps, "Temps : %.0f s", *secondes);
-    textout_ex(buffer, font, temps, 100, 10, makecol(255, 255, 0), -1);
+    timer(buffer, temps, secondes, depart, tps_pause);
 }
 
 void hg(BITMAP *buffer) {
@@ -477,4 +468,48 @@ void hg(BITMAP *buffer) {
     line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, makecol(200, 200, 200));
     line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, makecol(200, 200, 200));
     line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
+}
+
+void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int nb_joueurs) {
+    textout_ex(buffer, font, "Joueurs suivants :", 552, 30, makecol(0, 128, 255), -1);
+
+    if(tour_perso<nb_joueurs) {
+        textout_ex(buffer, font, p[tour_perso].nom, 704, 30, makecol(0, 128, 255), -1);
+    }
+    else {
+        textout_ex(buffer, font, p[0].nom, 704, 30, makecol(0, 128, 255), -1);
+    }
+
+    if(nb_joueurs>2) {
+        if(tour_perso+1<nb_joueurs) {
+            textout_ex(buffer, font, p[tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+        }
+        else if (tour_perso<nb_joueurs){
+            textout_ex(buffer, font, p[nb_joueurs-tour_perso-1].nom, 704, 50, makecol(0, 128, 255), -1);
+        }
+        else {
+            textout_ex(buffer, font, p[nb_joueurs-tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+        }
+    }
+
+    if(nb_joueurs>3) {
+        if(tour_perso+2<nb_joueurs){
+            textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
+        }
+        else if(tour_perso+1<nb_joueurs) {
+            textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
+        }
+        else if(tour_perso<nb_joueurs) {
+            textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
+        }
+        else {
+            textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
+        }
+    }
+}
+
+void timer (BITMAP *buffer, char temps[30], double *secondes, clock_t depart, clock_t tps_pause) {
+    *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
+    sprintf(temps, "Temps : %.0f s", *secondes);
+    textout_ex(buffer, font, temps, 100, 10, makecol(255, 255, 0), -1);
 }
