@@ -92,7 +92,8 @@ t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
 void animer(t_perso* perso, bool *valider_pm, int *distance);
-void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour, int nb_joueurs);
+void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause);
 void passer(bool *passer_tour, BITMAP *buffer);
 void val_pa(bool *valider_pa, BITMAP *buffer);
 
@@ -130,13 +131,15 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
-void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
+void timer(char temps[30], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
 void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
+void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+    BITMAP *buffer, int tour_perso);
 
 
 // SORTS.C

@@ -129,8 +129,9 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tou
     }
 }
 
-void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour, int nb_joueurs) {
-    if ((*valider_pm && *valider_pa) || *passer_tour) {
+void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause) {
+    if ((*valider_pm && *valider_pa) || *passer_tour || *secondes>=15) {
         if(*tour_perso<nb_joueurs)
             (*tour_perso)++;
         else if(*tour_perso==nb_joueurs)
@@ -142,13 +143,17 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
 
         p->pm=PM;
         p->pa=PA;
+
+        *depart=clock();
+        *tps_pause=0;
     }
 }
 
 void passer(bool *passer_tour, BITMAP *buffer) {
-    rectfill(buffer, SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20, makecol(50, 50, 50));
-    textout_ex(buffer, font, "Passer tour", SCREEN_W/3, SCREEN_H/3, makecol(255, 255, 255), -1);
-    if(clic_gauche(SCREEN_W/3, SCREEN_H/3, SCREEN_W/2, SCREEN_H/3+20)) {
+    rectfill(buffer, 600, 400, 700, 420, makecol(20, 20, 20));
+    rect(buffer, 600, 400, 700, 420, makecol(200, 150, 60));
+    textout_ex(buffer, font, "Passer tour", 605, 405, makecol(255, 255, 255), -1);
+    if(clic_gauche(600, 400, 700, 420)) {
         *passer_tour=1;
         while(mouse_b & 1);
     }

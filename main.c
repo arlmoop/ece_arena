@@ -42,7 +42,10 @@ int main() {//sa
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int tab_attaque[TAILLE_MAP][TAILLE_MAP];
-    char texte[50];
+    char temps[30];
+    char t[30];
+    char pm[30];
+    char pa[30];
 
     BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
     BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -73,8 +76,9 @@ int main() {//sa
             afficher_obstacles_persos(buffer, c, obs, p);
             passer(&passer_tour, buffer);
             val_pa(&valider_pa, buffer);
-            gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs);
-            timer(texte, buffer, &secondes, depart, tps_pause);
+            gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause);
+            timer(temps, buffer, &secondes, depart, tps_pause);
+            afficher_infos(t, pm, pa, p, buffer, tour_perso);
         }
         afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
             &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,

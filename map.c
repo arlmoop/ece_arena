@@ -327,21 +327,21 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         *tps_pause+=clock()-*pause;
         while(mouse_b & 1);
     }
-    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==1) {
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==1) {
         *compteur=2;
         while(mouse_b & 1);
     }
-    if(clic_gauche(SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==1) {
+    if(clic_gauche(SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==1) {
         //quitter
     }
-    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2) && *compteur==2) {
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause);
         *depart=clock();
         while(mouse_b & 1);
     }
-    if (clic_gauche(SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==2) {
+    if (clic_gauche(SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1, depart, tps_pause);
@@ -351,34 +351,38 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
 
 
     if (*compteur==0) {
-        rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(50, 50, 50));
+        rectfill(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(20, 20, 20));
+        rect(buffer, 0, 0, SCREEN_W/18, SCREEN_H/15, makecol(200, 150, 60));
         rectfill(buffer, 10, 10, SCREEN_W/36-3, SCREEN_H/15-10, makecol(200, 200, 200));
         rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
     if (*compteur==1) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
+        rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
         rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
+        rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
 
-        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(120, 80, 30));
-        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(200, 150, 60));
-        textout_ex(buffer, font, "recommencer", SCREEN_W/2, SCREEN_H/3, makecol(200, 150, 60), -1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
+        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
+        textout_centre_ex(buffer, font, "RECOMMENCER", SCREEN_W/2, SCREEN_H/3+40, makecol(200, 150, 60), -1);
 
-        rectfill(buffer, SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(120, 80, 30));
-        rect(buffer, SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
-        textout_ex(buffer, font, "quitter", SCREEN_W/2, SCREEN_H/2, makecol(200, 150, 60), -1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(50, 50, 50));
+        rect(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
+        textout_centre_ex(buffer, font, "QUITTER LA PARTIE", SCREEN_W/2, SCREEN_H/2+50, makecol(200, 150, 60), -1);
     }
     if (*compteur==2) {
-        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(50, 50, 50));
+        rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
+        rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
         rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(100, 100, 100));
+        rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
         //sur cette map
-        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(120, 80, 30));
-        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2, makecol(200, 150, 60));
-        textout_centre_ex(buffer, font, "SUR CETTE MAP", SCREEN_W/2, SCREEN_H/3, makecol(200, 150, 60), -1);
-
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
+        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
+        textout_centre_ex(buffer, font, "SUR CETTE MAP", SCREEN_W/2, SCREEN_H/3+40, makecol(200, 150, 60), -1);
         //sur autre map
-        rectfill(buffer, SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(120, 80, 30));
-        rect(buffer, SCREEN_W/3, SCREEN_H/2, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
-        textout_centre_ex(buffer, font, "AUTRE MAP", SCREEN_W/2, SCREEN_H/2, makecol(200, 150, 60), -1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(50, 50, 50));
+        rect(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
+        textout_centre_ex(buffer, font, "AUTRE MAP", SCREEN_W/2, SCREEN_H/2+50, makecol(200, 150, 60), -1);
     }
 }
 
@@ -417,7 +421,7 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
     equiper_potion(p, nom_potion);
 }
 
-void timer(char texte[50], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause) {
+void timer(char texte[30], BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause) {
     *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
     sprintf(texte, "Temps : %.0f s", *secondes);
     textout_ex(buffer, font, texte, 600, 10, makecol(255, 255, 0), -1);
@@ -445,4 +449,17 @@ void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TA
     creer_obstacles(tab_obs, c, obs);
     placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
+}
+
+void afficher_infos (char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+    BITMAP *buffer, int tour_perso) {
+    //TOUR
+    sprintf(t, "Au tour du joueur : %d", tour_perso);
+    textout_ex(buffer, font, t, 600, 30, makecol(0, 255, 255), -1);
+    //PA
+    sprintf(pa, "Il vous reste %d PA", p[tour_perso-1].pa);
+    textout_ex(buffer, font, pa, 600, 50, makecol(255, 0, 255), -1);
+    //PM
+    sprintf(pm, "Il vous reste %d PM", p[tour_perso-1].pm);
+    textout_ex(buffer, font, pm, 600, 70, makecol(255, 0, 255), -1);
 }
