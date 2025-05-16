@@ -45,7 +45,6 @@ typedef struct {
 
 typedef struct {
     int x, y, xf, yf;
-    int pot_survol; // si la souris est au dessus de la potion
     //xf et yf les coordonnees de la fin de la taille des images des potions
     char intitule[50];
     int degats;
@@ -141,13 +140,16 @@ void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAI
 
 // SORTS.C
 void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]);
-void point_vie (BITMAP* buffer, int degats);
-void afficher_inventaire (BITMAP* buffer, int degats, t_perso p[NB_PERSOS], int tour_perso);
-void affichage_potions (BITMAP *buffer, t_perso *perso,t_case c[TAILLE_MAP][TAILLE_MAP], int tour_perso);
+void point_vie (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso);
+void afficher_inventaire (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso);
+void affichage_potions (BITMAP *buffer, t_perso p[NB_PERSOS],t_case c[TAILLE_MAP][TAILLE_MAP],int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
 int potion_1 (int tour_perso);
 int potion_2 (int tour_perso);
 int potion_3 (int tour_perso);
 int potion_4 (int tour_perso);
+void attaque_sur_perso (BITMAP* buffer,t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP],int x,int y);
+void attaque_potion (BITMAP* buffer, t_perso* p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
+
 
 
 #endif //HEADER_H
