@@ -35,6 +35,7 @@ int main() {//sa
     int tour_depart=tour_perso;
     int distance=0;
     int numero_potion=0;
+    int n=5;
 
     t_perso p[NB_PERSOS];
     t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -42,6 +43,7 @@ int main() {//sa
     t_case c[TAILLE_MAP][TAILLE_MAP];
     int tab_map[TAILLE_MAP][TAILLE_MAP];
     int tab_attaque[TAILLE_MAP][TAILLE_MAP];
+    int tab_aleatoire[TAILLE_MAP][TAILLE_MAP];
     char temps[30];
     char t[30];
     char pm[30];
@@ -60,19 +62,30 @@ int main() {//sa
         sauvegarde(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
     }
 
+    int changement_tour = tour_perso;
+    tableau_aleatoire(tab_aleatoire, n);
+
     while (!key[KEY_ESC]) {
         if(compteur==0) {
             clear_bitmap(buffer);
             blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             afficher_map(buffer, c);
             blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
-            affichage_potions(buffer, p, c, tab_attaque, tour_perso, numero_potion);
+
+            if (tour_perso != changement_tour) { //Pour avoir des attaques aleatoires
+                tableau_aleatoire(tab_aleatoire, n);
+                changement_tour = tour_perso;
+            }
+
+            affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire, tour_perso, numero_potion);
             souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
             afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
             deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
+
             if (p[tour_perso - 1].anim_en_cours) {
                 animer(&p[tour_perso - 1], &valider_pm, &distance);
             }
+
             afficher_obstacles_persos(buffer, c, obs, p);
             passer(&passer_tour, buffer);
             val_pa(&valider_pa, buffer);
@@ -80,6 +93,7 @@ int main() {//sa
             timer(temps, buffer, &secondes, depart, tps_pause);
             afficher_infos(t, pm, pa, p, buffer, tour_perso);
         }
+
         afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
             &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
             &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,

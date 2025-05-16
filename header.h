@@ -147,13 +147,14 @@ void hg(BITMAP *buffer);
 void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]);
 void point_vie (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso);
 void afficher_inventaire (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso);
-void affichage_potions (BITMAP *buffer, t_perso p[NB_PERSOS],t_case c[TAILLE_MAP][TAILLE_MAP],int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
+void affichage_potions (BITMAP *buffer, t_perso p[NB_PERSOS],t_case c[TAILLE_MAP][TAILLE_MAP],int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tab_aleatoire[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
+void tableau_aleatoire (int tab_aleatoire[TAILLE_MAP][TAILLE_MAP], int n);
 int potion_1 (int tour_perso);
 int potion_2 (int tour_perso);
 int potion_3 (int tour_perso);
 int potion_4 (int tour_perso);
 void attaque_sur_perso (BITMAP* buffer,t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP],int x,int y);
-void attaque_potion (BITMAP* buffer, t_perso* p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
+void attaque_potion (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
 
 
 
