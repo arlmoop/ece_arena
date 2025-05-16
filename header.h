@@ -98,6 +98,8 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
     int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause);
 void passer(bool *passer_tour, BITMAP *buffer);
 void val_pa(bool *valider_pa, BITMAP *buffer);
+void barre_pv(t_perso p, BITMAP *buffer);
+void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
 
 
 // MAP.C
@@ -132,19 +134,18 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause);
+                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause, bool *quitter);
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
 void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
-void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t tps_pause,
-    char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+void afficher_infos (double *secondes, clock_t depart, clock_t tps_pause, t_perso p[NB_PERSOS],
     BITMAP *buffer, int tour_perso, int nb_joueurs);
 void hg(BITMAP *buffer);
 void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int nb_joueurs);
-void timer(BITMAP *buffer, char temps[30], double *secondes, clock_t depart, clock_t tps_pause);
+void timer(BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause);
 
 
 // SORTS.C

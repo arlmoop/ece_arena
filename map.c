@@ -310,12 +310,12 @@ void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int
 }
 
 void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
-                int *colonne_prec, int *colonne_actu,
-                bool *valider_pm, bool *valider_pa, bool *passer_tour,
+                int *colonne_prec, int *colonne_actu, bool *valider_pm, bool *valider_pa, bool *passer_tour,
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause) {
+                int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause,
+                bool *quitter) {
 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
@@ -332,7 +332,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         while(mouse_b & 1);
     }
     if(clic_gauche(SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==1) {
-        //quitter
+        *quitter=1;
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
@@ -439,9 +439,11 @@ void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TA
     equiper_potion(p, nom_potion);
 }
 
-void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t tps_pause,
-    char t[30], char pm[30], char pa[30], t_perso p[NB_PERSOS],
+void afficher_infos (double *secondes, clock_t depart, clock_t tps_pause, t_perso p[NB_PERSOS],
     BITMAP *buffer, int tour_perso, int nb_joueurs) {
+    char t[30];
+    char pm[30];
+    char pa[30];
     //TOUR
     sprintf(t, "Au tour de : %s", p[tour_perso-1].nom);
     textout_ex(buffer, font, t, 600, 10, makecol(0, 255, 255), -1);
@@ -454,7 +456,7 @@ void afficher_infos (char temps[30], double *secondes, clock_t depart, clock_t t
     sprintf(pm, "Il vous reste %d PM", p[tour_perso-1].pm);
     textout_ex(buffer, font, pm, 100, 50, makecol(255, 0, 255), -1);
     //TIMER
-    timer(buffer, temps, secondes, depart, tps_pause);
+    timer(buffer, secondes, depart, tps_pause);
 }
 
 void hg(BITMAP *buffer) {
@@ -508,7 +510,8 @@ void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int 
     }
 }
 
-void timer (BITMAP *buffer, char temps[30], double *secondes, clock_t depart, clock_t tps_pause) {
+void timer (BITMAP *buffer, double *secondes, clock_t depart, clock_t tps_pause) {
+    char temps[30];
     *secondes=(double)(clock()-depart-tps_pause)/CLOCKS_PER_SEC;
     sprintf(temps, "Temps : %.0f s", *secondes);
     textout_ex(buffer, font, temps, 100, 10, makecol(255, 255, 0), -1);

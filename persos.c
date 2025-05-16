@@ -49,7 +49,7 @@ t_perso init_perso(int n, int x, int y) {
     b.xcentre=b.x+b.tx/2;
     b.ycentre=b.y+b.ty/2;
     b.anim_en_cours=0;
-    b.pa=5, b.pm=PM, b.pv=100;
+    b.pa=5, b.pm=PM, b.pv=80;
     b.num=0;
     return b;
 }
@@ -168,5 +168,20 @@ void val_pa(bool *valider_pa, BITMAP *buffer) {
     if(clic_gauche(SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20)) {
         *valider_pa=1;
         while(mouse_b & 1);
+    }
+}
+
+void barre_pv(t_perso p, BITMAP *buffer) {
+    char t[30];
+    rectfill(buffer, p.xcentre-25, p.y-15, p.xcentre+25, p.y, makecol(250, 250, 250));
+    rectfill(buffer, p.xcentre-25, p.y-15, p.xcentre-25+p.pv/2, p.y, makecol(200, 50, 50));
+    rect(buffer, p.xcentre-25, p.y-15, p.xcentre+25, p.y, makecol(50, 50, 50));
+    sprintf(t, "%d", p.pv);
+    textout_centre_ex(buffer, font, t, p.xcentre, p.y-10, makecol(255, 255, 255), -1);
+}
+
+void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer) {
+    for (int i=0; i<nb_persos; i++) {
+        barre_pv(p[i], buffer);
     }
 }
