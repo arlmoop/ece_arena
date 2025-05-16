@@ -76,7 +76,7 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
         "20",
         "30",
         "40",
-    };
+    }; //
 
     for (int i = 0; i < NB_PERSOS; i++) {
         for (int k = 0; k < NB_POTION; k++) {
