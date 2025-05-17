@@ -36,7 +36,8 @@ int main() {//sa
         int tour_depart=tour_perso;
         int distance=0;
         int numero_potion=0;
-        int n=5;
+        int chance_attaque=3;
+        int chance_fail=5;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -44,7 +45,8 @@ int main() {//sa
         t_case c[TAILLE_MAP][TAILLE_MAP];
         int tab_map[TAILLE_MAP][TAILLE_MAP];
         int tab_attaque[TAILLE_MAP][TAILLE_MAP];
-        int tab_aleatoire[TAILLE_MAP][TAILLE_MAP];
+        int tab_aleatoire_attaque[TAILLE_MAP][TAILLE_MAP];
+
 
         BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
         BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
@@ -64,7 +66,8 @@ int main() {//sa
         clock_t tps_pause=0;
 
         int changement_tour = tour_perso;
-        tableau_aleatoire(tab_aleatoire, n);
+
+        tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
 
         while (quitter==0) {
             if(compteur==0) {
@@ -74,11 +77,11 @@ int main() {//sa
                 blit(inventaire, buffer, 0, 0, 0, SCREEN_H - inventaire->h, SCREEN_W, SCREEN_H);
 
                 if (tour_perso != changement_tour) { //Pour avoir des attaques aleatoires
-                    tableau_aleatoire(tab_aleatoire, n);
+                    tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
                     changement_tour = tour_perso;
                 }
 
-                affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire, tour_perso, numero_potion);
+                affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire_attaque, tour_perso, numero_potion);
                 souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
                 afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
                 deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
@@ -102,6 +105,7 @@ int main() {//sa
                 &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
                 choix_joueurs, &tour_depart, &depart, &pause, &tps_pause, &quitter);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        //printf("%d, %d \n", p[0].pot[0].pa, p[1].pot[0].pa);
         }
     }
 
