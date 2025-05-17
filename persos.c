@@ -18,7 +18,7 @@ t_perso init_perso(int n, int x, int y) {
     b.classe=n;
     b.frames_restantes=0;
     b.nb_images=5;
-    b.nom[MAX_NOM]="NULL";
+    sprintf(b.nom, "NULL");
     if (n==1) {
         for(int i=0;i<b.nb_images;i++){
             char filename[20];
@@ -178,7 +178,7 @@ void barre_pv(t_perso p, BITMAP *buffer) {
     rectfill(buffer, p.xcentre-25, p.y-15, p.xcentre-25+p.pv/2, p.y, makecol(200, 50, 50));
     rect(buffer, p.xcentre-25, p.y-15, p.xcentre+25, p.y, makecol(50, 50, 50));
     sprintf(t, "%d", p.pv);
-    textout_centre_ex(buffer, font, t, p.xcentre, p.y-10, makecol(255, 255, 255), -1);
+    textout_centre_ex(buffer, font, t, p.xcentre, p.y-10, makecol(128, 255, 128), -1);
 }
 
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer) {
