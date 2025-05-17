@@ -132,7 +132,7 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tou
 }
 
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
-    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause) {
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, bool *ca) {
     if ((*valider_pm && *valider_pa) || *passer_tour || *secondes>=TEMPS_TOUR) {
         if(*tour_perso<nb_joueurs)
             (*tour_perso)++;
@@ -142,6 +142,7 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
         *valider_pm=0;
         *valider_pa=0;
         *passer_tour=0;
+        *ca=0;
 
         p->pm=PM;
         p->pa=PA;
@@ -154,7 +155,7 @@ void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa
 void passer(bool *passer_tour, BITMAP *buffer) {
     rectfill(buffer, 600, 400, 738, 420, makecol(20, 20, 20));
     rect(buffer, 600, 400, 738, 420, makecol(200, 150, 60));
-    textout_ex(buffer, font, "Terminer le tour", 605, 407, makecol(200, 150, 60), -1);
+    textout_ex(buffer, font, "TERMINER LE TOUR", 605, 407, makecol(200, 150, 60), -1);
     if(clic_gauche(600, 400, 738, 420)) {
         *passer_tour=1;
         while(mouse_b & 1);
