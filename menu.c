@@ -514,3 +514,45 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     destroy_bitmap(fond_menu);
     return 0;
 }
+
+void menu_nom (BITMAP *buffer, t_perso *p) {
+    int index=0;
+    p->nom[0]='\0';
+    BITMAP *fond_menu=load_bitmap("Images\\fond_menu.bmp", NULL);
+    while (!key[KEY_ENTER]) {
+        clear_bitmap(buffer);
+        blit(fond_menu, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        if (key[KEY_BACKSPACE] && index>0) {
+            index--;
+            p->nom[index]='\0';
+            rest(150);
+        }
+        for (int k=KEY_A; k<=KEY_Z; k++) {
+            if (key[k] && index<MAX_NOM-1) {
+                p->nom[index]=(char)(k-KEY_A+'A');
+                index++;
+                p->nom[index] = '\0';
+                rest(150);
+            }
+        }
+        for (int k=KEY_0; k<=KEY_9; k++) {
+            if (key[k] && index<MAX_NOM-1) {
+                p->nom[index]=(char)(k-KEY_0+'0');
+                index++;
+                p->nom[index]='\0';
+                rest(150);
+            }
+        }
+        textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2, makecol(0, 0, 0), -1, "Nom : %s", p->nom);
+        textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2+20, makecol(155, 0, 0), -1, "JOUEUR %d : Appuyez sur ENTREE pour valider", p->num);
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    }
+    destroy_bitmap(fond_menu);
+}
+
+void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs) {
+    for (int i=0; i<nb_joueurs; i++) {
+        menu_nom(buffer, &p[i]);
+        rest(150);
+    }
+}

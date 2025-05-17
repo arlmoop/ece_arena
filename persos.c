@@ -18,7 +18,7 @@ t_perso init_perso(int n, int x, int y) {
     b.classe=n;
     b.frames_restantes=0;
     b.nb_images=5;
-    b.nom[30]="NULL";
+    b.nom[MAX_NOM]="NULL";
     if (n==1) {
         for(int i=0;i<b.nb_images;i++){
             char filename[20];
@@ -163,9 +163,9 @@ void passer(bool *passer_tour, BITMAP *buffer) {
 
 //temporaire tant qu'on a pas la validation des sorts
 void val_pa(bool *valider_pa, BITMAP *buffer) {
-    rectfill(buffer, SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20, makecol(50, 50, 50));
-    textout_ex(buffer, font, "val", SCREEN_W/2, SCREEN_H/2, makecol(255, 255, 255), -1);
-    if(clic_gauche(SCREEN_W/2, SCREEN_H/2, SCREEN_W/2+30, SCREEN_H/2+20)) {
+    rectfill(buffer, 600, 450, 700, 470, makecol(50, 50, 50));
+    textout_ex(buffer, font, "val", 605, 455, makecol(255, 255, 255), -1);
+    if(clic_gauche(600, 450, 700, 470)) {
         *valider_pa=1;
         while(mouse_b & 1);
     }
