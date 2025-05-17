@@ -424,6 +424,7 @@ void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_M
     creer_obstacles(tab_obs, c, obs);
     placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
+    equiper_attaque(p, nb_joueurs);
 }
 
 void nouvelle_partie (BITMAP *buffer, int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
@@ -437,6 +438,7 @@ void nouvelle_partie (BITMAP *buffer, int tab_map[TAILLE_MAP][TAILLE_MAP], t_obs
     creer_obstacles(tab_obs, c, obs);
     placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
+    equiper_attaque(p, nb_joueurs);
     saisir_noms(buffer, p, nb_joueurs);
 }
 

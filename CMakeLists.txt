@@ -10,6 +10,7 @@ add_executable(ece_arena main.c
                          menu.c
         sorts.c
         outils.c
+        attaque.c
 )
 
 target_link_libraries(ece_arena -lmingw32 -lalleg44)

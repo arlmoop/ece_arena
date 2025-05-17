@@ -88,6 +88,8 @@ int main() {//sa
                 }
 
                 afficher_obstacles_persos(buffer, c, obs, p);
+                afficher_attaque(buffer,p[tour_perso-1]);
+                gerer_attaque(buffer,p[tour_perso-1]);
                 passer(&passer_tour, buffer);
                 val_pa(&valider_pa, buffer);
                 gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause);

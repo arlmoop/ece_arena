@@ -55,11 +55,20 @@ typedef struct {
 } t_potion;
 
 typedef struct {
+    int degats, cout;
+    float chance;
+    char nom[MAX_NOM];
+    int tx, ty;
+    BITMAP *img;
+}t_attaque;
+
+typedef struct {
     int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, num;
     int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
     int pm, pa, pv;
     char nom[30];
     t_potion pot[NB_POTION];
+    t_attaque att;
     BITMAP *img[5];
 }t_perso;
 
@@ -164,6 +173,13 @@ int potion_4 (int tour_perso);
 void attaque_sur_perso (BITMAP* buffer,t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP],int x,int y);
 void attaque_potion (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion);
 
+
+
+// ATTAQUE.C
+t_attaque init_attaque(char nom[MAX_NOM]);
+void equiper_attaque(t_perso p[NB_PERSOS], int nb_joueurs);
+void afficher_attaque(BITMAP *buffer, t_perso p);
+int gerer_attaque(BITMAP *buffer, t_perso p);
 
 
 #endif //HEADER_H
