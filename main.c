@@ -32,13 +32,12 @@ int main() {//sa
         bool valider_pm=0;
         bool valider_pa=0;
         bool passer_tour=0;
-        bool ca=0;
+        int ca=0;
         int tour_perso=1+rand()%nb_joueurs;
         int tour_depart=tour_perso;
         int distance=0;
         int numero_potion=0;
         int chance_attaque=3;
-        int chance_fail=5;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];

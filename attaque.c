@@ -46,7 +46,7 @@ int gerer_attaque(BITMAP *buffer, t_perso p) {
     return r;
 }
 
-void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, bool *ca) {
+void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca) {
 
     if(gerer_attaque(buffer, p[tour_perso-1]) && *ca==0) {
         *ca=1;
@@ -65,18 +65,28 @@ void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_per
         if(abs(p[tour_perso-1].ligne-p[i].ligne)+abs(p[tour_perso-1].colonne-p[i].colonne)==1 && *ca==1) {
             if(clic_gauche(p[i].x, p[i].y, p[i].x+p[i].tx, p[i].y+p[i].ty)
                 && p[tour_perso-1].pa>=p[tour_perso-1].att.cout) {
-                //PA
-                p[tour_perso-1].pa-=p[tour_perso-1].att.cout;
-                //PV
-                if(p[i].pv>=p[tour_perso-1].att.degats) {
-                    p[i].pv-=p[tour_perso-1].att.degats;
+                if(1+rand()%10>p[tour_perso-1].att.chance*10) {
+                    //PV
+                    if(p[i].pv>=p[tour_perso-1].att.degats) {
+                        p[i].pv-=p[tour_perso-1].att.degats;
+                    }
+                    else {
+                        p[i].pv=0;
+                    }
+
+                    *ca=0;
                 }
                 else {
-                    p[i].pv=0;
+                    *ca=2;
                 }
+                //PA
+                p[tour_perso-1].pa-=p[tour_perso-1].att.cout;
 
                 while(mouse_b & 1);
             }
         }
+    }
+    if(*ca==2) {
+        textout_ex(buffer, font, "ATTAQUE MANQUEE", 100, 140, makecol(255, 255, 255), -1);
     }
 }

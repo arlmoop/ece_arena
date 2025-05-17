@@ -14,7 +14,6 @@ t_perso init_perso(int n, int x, int y) {
     b.cptimg=0;
     b.tmpimg=2;
     b.dx=0, b.dy=0;
-    b.equipe=0;
     b.classe=n;
     b.frames_restantes=0;
     b.nb_images=5;
@@ -132,7 +131,7 @@ void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tou
 }
 
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
-    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, bool *ca) {
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, int *ca) {
     if ((*valider_pm && *valider_pa) || *passer_tour || *secondes>=TEMPS_TOUR) {
         if(*tour_perso<nb_joueurs)
             (*tour_perso)++;
