@@ -16,12 +16,13 @@ t_potion init_inventaire (char nom_potion[20], int n) {
     pot.degats = 0;
     sprintf(nom_potion, "Images\\potion_%d.bmp", n+1);
     pot.img = load_bitmap(nom_potion, NULL);
+    pot.pa = 0;
     return pot;
 }
 
 void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
 
-    char noms_potion[16][30] = {
+    char noms_potion[16][50] = {
         "Potion de foudre",
         "Potion de soin",
         "Potion de gel",
@@ -39,6 +40,11 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
         "Potion verte",
         "Potion dorée"
     };
+
+    int degats_potion[NB_PERSOS*NB_POTION] = {10, 0, 30, 40, 10, 20, 30, 40, 10, 20, 30, 40, 10, 20, 30, 40};
+
+    int pa_potion[NB_PERSOS*NB_POTION] = {1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, };
+
     for (int i = 0; i < NB_PERSOS; i++) {
         for (int k = 0; k < NB_POTION; k++) {
             int index = (i * NB_PERSOS) + k;
@@ -47,10 +53,14 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
             p[i].pot[k].y = SCREEN_H-92;
             p[i].pot[k].xf = p[i].pot[k].x+p[i].pot[k].img->w;
             p[i].pot[k].yf = p[i].pot[k].y+p[i].pot[k].img->h;
+            p[i].pot[k].degats = 20;
 
             strcpy(p[i].pot[k].intitule, noms_potion[index]);
             p[i].pot[k].intitule[sizeof(p[i].pot[k].intitule) - 1] = '\0';
 
+            p[i].pot[k].degats = degats_potion[index];
+
+            p[i].pot[k].pa = pa_potion[index];
         }
     }
 }
@@ -186,6 +196,7 @@ void attaque_potion (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][
                 for (int k = 0; k < NB_PERSOS; k++) {
                     if (p[k].colonne == j && p[k].ligne == i ) {
                         p[k].pv -= p[tour_perso-1].pot[numero_potion].degats;
+                        p[k].pa -= p[tour_perso-1].pot[numero_potion].pa;
                     }
                 }
             }
