@@ -20,7 +20,7 @@
 #define PA 5
 #define NB_PERSOS 4
 #define MAX_NOM 30
-#define TEMPS_TOUR 20
+#define TEMPS_TOUR 30
 
 typedef struct {
     int ligne, colonne;
