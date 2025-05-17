@@ -32,6 +32,7 @@ int main() {//sa
         bool valider_pm=0;
         bool valider_pa=0;
         bool passer_tour=0;
+        bool ca=0;
         int tour_perso=1+rand()%nb_joueurs;
         int tour_depart=tour_perso;
         int distance=0;
@@ -95,9 +96,10 @@ int main() {//sa
                 gerer_attaque(buffer,p[tour_perso-1]);
                 passer(&passer_tour, buffer);
                 val_pa(&valider_pa, buffer);
-                gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause);
+                gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause, &ca);
                 afficher_infos(&secondes, depart, tps_pause, p, buffer, tour_perso, nb_joueurs);
                 barres(nb_joueurs, p, buffer);
+                attaques(buffer, p, nb_joueurs, tour_perso, &ca);
             }
 
             afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,

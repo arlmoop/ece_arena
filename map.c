@@ -323,8 +323,9 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur>0) {
+        if(*compteur==1)
+            *tps_pause+=clock()-*pause;
         (*compteur)--;
-        *tps_pause+=clock()-*pause;
         while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==1) {

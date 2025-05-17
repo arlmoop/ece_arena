@@ -108,7 +108,7 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
 void animer(t_perso* perso, bool *valider_pm, int *distance);
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
-    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause);
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, bool *ca);
 void passer(bool *passer_tour, BITMAP *buffer);
 void val_pa(bool *valider_pa, BITMAP *buffer);
 void barre_pv(t_perso p, BITMAP *buffer);
@@ -177,6 +177,7 @@ t_attaque init_attaque(char nom[MAX_NOM]);
 void equiper_attaque(t_perso p[NB_PERSOS], int nb_joueurs);
 void afficher_attaque(BITMAP *buffer, t_perso p);
 int gerer_attaque(BITMAP *buffer, t_perso p);
+void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, bool *ca);
 
 
 #endif //HEADER_H
