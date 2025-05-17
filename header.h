@@ -110,7 +110,7 @@ void animer(t_perso* perso, bool *valider_pm, int *distance);
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
     int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, bool *ca);
 void passer(bool *passer_tour, BITMAP *buffer);
-void val_pa(bool *valider_pa, BITMAP *buffer);
+void val_pa(bool *valider_pa, t_perso p);
 void barre_pv(t_perso p, BITMAP *buffer);
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
 

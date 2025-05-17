@@ -162,14 +162,9 @@ void passer(bool *passer_tour, BITMAP *buffer) {
     }
 }
 
-//temporaire tant qu'on a pas la validation des sorts
-void val_pa(bool *valider_pa, BITMAP *buffer) {
-    rectfill(buffer, 600, 450, 700, 470, makecol(50, 50, 50));
-    textout_ex(buffer, font, "val", 605, 455, makecol(255, 255, 255), -1);
-    if(clic_gauche(600, 450, 700, 470)) {
+void val_pa(bool *valider_pa, t_perso p) {
+    if(p.pa==0)
         *valider_pa=1;
-        while(mouse_b & 1);
-    }
 }
 
 void barre_pv(t_perso p, BITMAP *buffer) {

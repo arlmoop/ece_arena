@@ -65,13 +65,16 @@ void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_per
         if(abs(p[tour_perso-1].ligne-p[i].ligne)+abs(p[tour_perso-1].colonne-p[i].colonne)==1 && *ca==1) {
             if(clic_gauche(p[i].x, p[i].y, p[i].x+p[i].tx, p[i].y+p[i].ty)
                 && p[tour_perso-1].pa>=p[tour_perso-1].att.cout) {
+                //PA
                 p[tour_perso-1].pa-=p[tour_perso-1].att.cout;
+                //PV
                 if(p[i].pv>=p[tour_perso-1].att.degats) {
                     p[i].pv-=p[tour_perso-1].att.degats;
                 }
                 else {
                     p[i].pv=0;
                 }
+
                 while(mouse_b & 1);
             }
         }
