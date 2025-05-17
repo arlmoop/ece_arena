@@ -10,17 +10,17 @@ int main() {//sa
     srand(time(NULL));
     initialisation_allegro();
 
-    //while(!key[KEY_ESC]) { //on mettra ca a la fin tkt
+    while(!key[KEY_ESC]) {
+
         int aleatoire=0;
         int theme=-1;
         int nb_joueurs=2;
-        int choix_joueurs[4];
+        int choix_joueurs[NB_PERSOS];
         int equipe=0;
+
         int m=menu(&aleatoire,&theme,&nb_joueurs,choix_joueurs,&equipe);
+
         bool quitter=0;
-        clock_t depart=clock();
-        clock_t pause;
-        clock_t tps_pause=0;
         double secondes;
         int degats = 100;
         char nom_potion[20];
@@ -53,15 +53,19 @@ int main() {//sa
         stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
 
         if(m==1) {
-            nouvelle_partie(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
+            nouvelle_partie(buffer, tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
         }
         else if(m==3) {
             sauvegarde(tab_map, tab_obs, c, equipe, obs, p, nb_joueurs, choix_joueurs, nom_potion);
         }
 
+        clock_t depart=clock();
+        clock_t pause;
+        clock_t tps_pause=0;
+
         int changement_tour = tour_perso;
         tableau_aleatoire(tab_aleatoire, n);
-        //pr quitter fo aller ds le menu pause
+
         while (quitter==0) {
             if(compteur==0) {
                 clear_bitmap(buffer);
@@ -97,7 +101,8 @@ int main() {//sa
                 choix_joueurs, &tour_depart, &depart, &pause, &tps_pause, &quitter);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         }
-    //}
+    }
+
     allegro_exit();
     return 0;
 }

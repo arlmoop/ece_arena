@@ -426,7 +426,7 @@ void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_M
     equiper_potion(p, nom_potion);
 }
 
-void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+void nouvelle_partie (BITMAP *buffer, int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]) {
     creer_fichier_map();
@@ -437,6 +437,7 @@ void nouvelle_partie (int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TA
     creer_obstacles(tab_obs, c, obs);
     placer_persos(c, p, choix_joueurs);
     equiper_potion(p, nom_potion);
+    saisir_noms(buffer, p, nb_joueurs);
 }
 
 void afficher_infos (double *secondes, clock_t depart, clock_t tps_pause, t_perso p[NB_PERSOS],

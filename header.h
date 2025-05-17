@@ -19,6 +19,7 @@
 #define PM 3
 #define PA 5
 #define NB_PERSOS 4
+#define MAX_NOM 30
 #define TEMPS_TOUR 20
 
 typedef struct {
@@ -87,6 +88,8 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
 int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu);
 int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu);
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
+void menu_nom (BITMAP *buffer, t_perso *p);
+void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs);
 
 
 // PERSOS.C
@@ -138,7 +141,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
-void nouvelle_partie(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
+void nouvelle_partie(BITMAP *buffer, int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
 void afficher_infos (double *secondes, clock_t depart, clock_t tps_pause, t_perso p[NB_PERSOS],
