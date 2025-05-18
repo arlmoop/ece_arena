@@ -109,6 +109,7 @@ int main() {
                 if(!p[tour_perso-1].anim_en_cours){
                     afficher_chemin(c, p, chemin, tour_perso, ligne_actu, colonne_actu, &distance, buffer, &deplacement_valide);
                     deplacement(c, p, chemin, tour_perso, ligne_actu, colonne_actu, &distance, &deplacement_valide);
+                    animer_statique(p, nb_joueurs);
                 }
                 if (p[tour_perso - 1].anim_en_cours) {
                     animer(c, &p[tour_perso - 1],chemin, &valider_pm, &distance);
