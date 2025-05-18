@@ -300,8 +300,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause,
                 bool *quitter,
-                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
-                bool *cf) {
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts) {
 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
@@ -309,9 +308,13 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18) && *compteur>0) {
-        if(*compteur==1)
+        if(*compteur==1) {
             *tps_pause+=clock()-*pause;
-        (*compteur)--;
+            *compteur=0;
+        }
+        if(*compteur>=2) {
+            *compteur=1;
+        }
         while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==1) {
@@ -325,7 +328,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause,
-            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts, cf);
+            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts);
         *depart=clock();
         while(mouse_b & 1);
     }
@@ -333,7 +336,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
             distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause,
-            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts, cf);
+            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts);
         *depart=clock();
         while(mouse_b & 1);
     }
@@ -367,6 +370,11 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         rect(buffer, SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
         textout_centre_ex(buffer, font, "AUTRE MAP", SCREEN_W/2, SCREEN_H/2+50, makecol(200, 150, 60), -1);
     }
+    if(*compteur==3) {
+        hg(buffer, 1);
+        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(50, 50, 50));
+        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
+    }
 }
 
 void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
@@ -376,8 +384,7 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause, bool *quitter,
-                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
-                bool *cf) {
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts) {
 
     *degats = 100;
     *ligne_prec=-1;
@@ -398,7 +405,6 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
     *numero_potion=0;
     *chance_attaque=3;
     *nb_morts=0;
-    *cf=0;
 
     if(map) {
         creer_fichier_map();
@@ -475,12 +481,12 @@ void hg(BITMAP *buffer, bool g) {
         line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
     }
     else {
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, makecol(200, 200, 200));
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, makecol(200, 200, 200));
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, makecol(200, 200, 200));
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, makecol(200, 200, 200));
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, makecol(200, 200, 200));
-        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-17*SCREEN_H/18+10, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-17*SCREEN_H/18+10-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-17*SCREEN_H/18+10+1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-15*SCREEN_H/18-10, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-15*SCREEN_H/18-10-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
     }
 }
 
