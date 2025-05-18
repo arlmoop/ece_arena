@@ -196,7 +196,7 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                     if (p[k].num==c[i][j].num_joueur) {
                         //int frame = p[k].imgcourante % p[k].nb_images;
                         if(p[k].mort==0)
-                            draw_sprite(buffer, p[k].img[0], p[k].x, p[k].y);
+                            draw_sprite(buffer, p[k].img[p[k].imgcourante], p[k].x, p[k].y);
                         else {
                             BITMAP *sac=load_bitmap("Images\\pierre_tombale.bmp", NULL);
                             draw_sprite(buffer, sac, p[k].x, p[k].y+15);
