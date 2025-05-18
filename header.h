@@ -65,7 +65,7 @@ typedef struct {
 
 typedef struct {
     int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, ligne, colonne, num;
-    int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
+    int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, etape_courante, nb_images;
     int pm, pa, pv;
     char nom[30];
     t_potion pot[NB_POTION];
@@ -105,8 +105,8 @@ void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs);
 // PERSOS.C
 t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
-void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
-void animer(t_perso* perso, bool *valider_pm, int *distance);
+void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], t_coord chemin[], int tour_perso, int ligne_actu, int colonne_actu, int *distance, int *deplacement_valide);
+void animer(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso *perso, t_coord chemin[], bool *valider_pm, int *distance);
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
     int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, int *ca);
 void passer(bool *passer_tour, BITMAP *buffer);
@@ -131,9 +131,9 @@ int point_dans_losange(t_case c);
 void remplir_losange(t_case c, BITMAP * buffer, int couleur);
 void souris_tab(t_case c[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *ligne_prec, int *colonne_prec, int *ligne_actu, int*colonne_actu);
 int comparer_coord(t_perso p, int ligne_actu, int colonne_actu, int *distance);
-int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
-void calculer_chemin(t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee);
-void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso,int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer);
+//int chemin_valide(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
+//int calculer_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], t_coord chemin[], int ligne_depart, int colonne_depart,int ligne_arrivee, int colonne_arrivee, int *distance);
+void afficher_chemin(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], t_coord chemin[], int tour_perso, int ligne_actu, int colonne_actu,int *distance, BITMAP* buffer, int *deplacement_valide);
 void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
                 int *colonne_prec, int *colonne_actu, int *compteur,
                 bool *valider_pm, bool *valider_pa, bool *passer_tour,
