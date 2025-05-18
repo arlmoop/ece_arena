@@ -39,14 +39,14 @@ void afficher_attaque(BITMAP *buffer, t_perso p) {
 int gerer_attaque(BITMAP *buffer, t_perso p) {
     int r=0;
     if(mouse_x>50 && mouse_x<55+p.att.tx && mouse_y>400 && mouse_y<405+p.att.ty) {
-        textout_ex(buffer, font, "ATTAQUE CAC survolee", 100, 120, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "ATTAQUE CAC survolee", 100, 120, makecol(255, 255, 255), -1);
         if (mouse_b&1)
             r=1;
     }
     return r;
 }
 
-void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca) {
+void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca, bool equipe) {
 
     if(gerer_attaque(buffer, p[tour_perso-1]) && *ca==0) {
         *ca=1;
@@ -65,28 +65,36 @@ void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_per
         if(abs(p[tour_perso-1].ligne-p[i].ligne)+abs(p[tour_perso-1].colonne-p[i].colonne)==1 && *ca==1) {
             if(clic_gauche(p[i].x, p[i].y, p[i].x+p[i].tx, p[i].y+p[i].ty)
                 && p[tour_perso-1].pa>=p[tour_perso-1].att.cout) {
-                if(1+rand()%10>p[tour_perso-1].att.chance*10) {
-                    //PV
-                    if(p[i].pv>=p[tour_perso-1].att.degats) {
-                        p[i].pv-=p[tour_perso-1].att.degats;
+                if(equipe==0 || (equipe==1 && p[tour_perso-1].equipe!=p[i].equipe)) {
+                    if(1+rand()%10>p[tour_perso-1].att.chance*10) {
+                        //PV
+                        if(p[i].pv>=p[tour_perso-1].att.degats) {
+                            p[i].pv-=p[tour_perso-1].att.degats;
+                        }
+                        else {
+                            p[i].pv=0;
+                        }
+
+                        *ca=0;
                     }
                     else {
-                        p[i].pv=0;
+                        *ca=2;
                     }
+                    //PA
+                    p[tour_perso-1].pa-=p[tour_perso-1].att.cout;
 
-                    *ca=0;
+                    while(mouse_b & 1);
                 }
                 else {
-                    *ca=2;
+                    *ca=3;
                 }
-                //PA
-                p[tour_perso-1].pa-=p[tour_perso-1].att.cout;
-
-                while(mouse_b & 1);
             }
         }
     }
     if(*ca==2) {
         textout_ex(buffer, font, "ATTAQUE MANQUEE", 100, 140, makecol(255, 255, 255), -1);
+    }
+    if(*ca==3) {
+        textout_ex(buffer, font, "ATTAQUE IMPOSSIBLE", 100, 140, makecol(255, 255, 255), -1);
     }
 }

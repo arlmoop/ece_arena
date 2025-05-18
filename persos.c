@@ -15,6 +15,7 @@ t_perso init_perso(int n, int x, int y) {
     b.tmpimg=2;
     b.dx=0, b.dy=0;
     b.classe=n;
+    b.cl=-1;
     b.frames_restantes=0;
     b.nb_images=5;
     b.etape_courante=0;
@@ -199,12 +200,14 @@ void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer) {
     }
 }
 
-void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts) {
+void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int *nb_morts) {
     for(int i=0; i<nb_joueurs; i++) {
         if(p[i].mort==0) {
             if(p[i].pv<=0) {
-                classement[*nb_morts]=p[i].num;
+                p[i].cl=nb_joueurs-*nb_morts;
+                printf("%d %d", p[i].cl, *nb_morts);
                 (*nb_morts)++;
+                printf("%d %d", p[i].cl, *nb_morts);
                 p[i].mort=1;
             }
         }
@@ -216,7 +219,12 @@ void aff_morts(t_perso *p, bool *passer_tour) {
         *passer_tour=1;
 }
 
-void fin(int nb_joueurs, int nb_morts, int *compteur) {
+void fin(int nb_joueurs, int nb_morts, int *compteur, t_perso p[NB_PERSOS]) {
     if(nb_morts==nb_joueurs-1)
         *compteur=3;
+    for(int i=0; i<nb_joueurs; i++) {
+        if(p[i].mort==0) {
+            p[i].cl=1;
+        }
+    }
 }

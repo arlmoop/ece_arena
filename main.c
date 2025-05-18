@@ -16,7 +16,7 @@ int main() {//sa
     }
 
     SAMPLE* musique = load_sample("Images\\musique.wav");
-    jouer_musique(musique);
+    //jouer_musique(musique);
 
     while(!key[KEY_ESC]) {
 
@@ -57,7 +57,6 @@ int main() {//sa
         int tab_map[TAILLE_MAP][TAILLE_MAP];
         int tab_attaque[TAILLE_MAP][TAILLE_MAP];
         int tab_aleatoire_attaque[TAILLE_MAP][TAILLE_MAP];
-        int classement[NB_PERSOS];
 
 
         BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
@@ -110,10 +109,10 @@ int main() {//sa
                 gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause, &ca);
                 afficher_infos(&secondes, depart, tps_pause, p, buffer, tour_perso, nb_joueurs);
                 barres(nb_joueurs, p, buffer);
-                attaques(buffer, p, nb_joueurs, tour_perso, &ca);
-                gerer_mort(p, nb_joueurs, classement, &nb_morts);
+                attaques(buffer, p, nb_joueurs, tour_perso, &ca, equipe);
+                gerer_mort(p, nb_joueurs, &nb_morts);
                 aff_morts(&p[tour_perso-1], &passer_tour);
-                fin(nb_joueurs, nb_morts, &compteur);
+                fin(nb_joueurs, nb_morts, &compteur, p);
             }
             afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
                 &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,

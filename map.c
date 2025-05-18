@@ -299,8 +299,8 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause,
-                bool *quitter,
-                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts) {
+                bool *quitter, int *ca, int *deplacement_valide,
+                int *numero_potion, int *chance_attaque, int *nb_morts) {
 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
@@ -335,7 +335,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
     if (clic_gauche(SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
-            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause,
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1, depart, tps_pause,
             quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts);
         *depart=clock();
         while(mouse_b & 1);
@@ -372,8 +372,19 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
     }
     if(*compteur==3) {
         hg(buffer, 1);
-        rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(50, 50, 50));
-        rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, 2*SCREEN_H/3, makecol(200, 150, 60));
+
+        for(int i=0; i<*nb_joueurs; i++) {
+            textout_centre_ex(buffer, font, "CLASSEMENT :", SCREEN_W/2, SCREEN_H-12*SCREEN_H/13, makecol(200, 150, 60), -1);
+            rectfill(buffer, SCREEN_W/8, SCREEN_H/5+i*100, 7*SCREEN_W/8, SCREEN_H/5+i*100+90, makecol(200, 200, 200));
+            rect(buffer, SCREEN_W/8, SCREEN_H/5+i*100, 7*SCREEN_W/8, SCREEN_H/5+i*100+90, makecol(200, 150, 60));
+            rect(buffer, SCREEN_W/8+5, SCREEN_H/5+i*100+5, SCREEN_W/8+85, SCREEN_H/5+i*100+90-5, makecol(200, 150, 60));
+            for(int j=0; j<*nb_joueurs; j++) {
+                if(p[j].cl==i+1) {
+                    stretch_sprite(buffer, p[j].img[0], SCREEN_W/8+5, SCREEN_H/5+i*100+5, p[j].tx*21/15, p[j].ty*25/15);
+                    textprintf_ex(buffer, font, SCREEN_W/8+105, SCREEN_H/5+i*100+35, makecol(0, 0, 25), -1, "%s : %d", p[j].nom, p[j].cl);
+                }
+            }
+        }
     }
 }
 
@@ -494,36 +505,63 @@ void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int 
     textout_ex(buffer, font, "Joueurs suivants :", 552, 30, makecol(0, 128, 255), -1);
 
     if(tour_perso<nb_joueurs) {
-        textout_ex(buffer, font, p[tour_perso].nom, 704, 30, makecol(0, 128, 255), -1);
+        if(p[tour_perso].mort==0)
+            textout_ex(buffer, font, p[tour_perso].nom, 704, 30, makecol(0, 128, 255), -1);
+        else
+            textout_ex(buffer, font, "//////////", 704, 30, makecol(0, 128, 255), -1);
     }
     else {
-        textout_ex(buffer, font, p[0].nom, 704, 30, makecol(0, 128, 255), -1);
+        if(p[tour_perso].mort==0)
+            textout_ex(buffer, font, p[0].nom, 704, 30, makecol(0, 128, 255), -1);
+        else
+            textout_ex(buffer, font, "//////////", 704, 30, makecol(0, 128, 255), -1);
     }
 
     if(nb_joueurs>2) {
         if(tour_perso+1<nb_joueurs) {
-            textout_ex(buffer, font, p[tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+            if(p[tour_perso+1].mort==0)
+                textout_ex(buffer, font, p[tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
         else if (tour_perso<nb_joueurs){
-            textout_ex(buffer, font, p[nb_joueurs-tour_perso-1].nom, 704, 50, makecol(0, 128, 255), -1);
+            if(p[nb_joueurs-tour_perso-1].mort==0)
+                textout_ex(buffer, font, p[nb_joueurs-tour_perso-1].nom, 704, 50, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
         else {
-            textout_ex(buffer, font, p[nb_joueurs-tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+            if(p[nb_joueurs-tour_perso+1].mort==0)
+                textout_ex(buffer, font, p[nb_joueurs-tour_perso+1].nom, 704, 50, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
     }
 
     if(nb_joueurs>3) {
         if(tour_perso+2<nb_joueurs){
-            textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[tour_perso+2].mort==0)
+                textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
         else if(tour_perso+1<nb_joueurs) {
-            textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[0].mort==0)
+                textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
         else if(tour_perso<nb_joueurs) {
-            textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[1].mort==0)
+                textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
         else {
-            textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[2].mort==0)
+                textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
+            else
+                textout_ex(buffer, font, "//////////", 704, 50, makecol(0, 128, 255), -1);
         }
     }
 }
