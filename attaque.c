@@ -8,7 +8,7 @@
 t_attaque init_attaque(char nom[MAX_NOM]) {
     t_attaque a;
     sprintf(a.nom, nom);
-    a.degats=20;
+    a.degats=100;
     a.cout=2;
     a.chance=0.1;
     a.img=load_bitmap("Images\\epee.bmp", NULL);

@@ -196,7 +196,7 @@ void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer) {
 void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts) {
     for(int i=0; i<nb_joueurs; i++) {
         if(p[i].mort==0) {
-            if(p[i].pv==0) {
+            if(p[i].pv<=0) {
                 classement[*nb_morts]=p[i].num;
                 *nb_morts++;
                 p[i].mort=1;
@@ -208,4 +208,19 @@ void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS],
 void aff_morts(t_perso *p, bool *passer_tour) {
     if(p->mort==1)
         *passer_tour=1;
+}
+
+void fin(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs,int classement[NB_PERSOS], int nb_morts, bool *cf, int *compteur) {
+    if(nb_morts==nb_joueurs-1)
+        *cf=1;
+    if(*cf==1) {
+        //class
+        hg(buffer, 1);
+        if(clic_gauche(SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18)) {
+            *cf=0;
+            *compteur=1;
+            while(mouse_b & 1);
+        }
+    }
+
 }

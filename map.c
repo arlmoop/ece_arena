@@ -299,7 +299,9 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause,
-                bool *quitter) {
+                bool *quitter,
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
+                bool *cf) {
 
     if (clic_gauche(0, 0, SCREEN_W/18, SCREEN_H/15) && *compteur==0) {
         *compteur=1;
@@ -322,14 +324,16 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
     if (clic_gauche(SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
-            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause);
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause,
+            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts, cf);
         *depart=clock();
         while(mouse_b & 1);
     }
     if (clic_gauche(SCREEN_W/3, SCREEN_H/2+10, 2*SCREEN_W/3, 2*SCREEN_H/3) && *compteur==2) {
         recommencer(tab_obs, degats, nom_potion, ligne_prec, ligne_actu, colonne_prec, colonne_actu,
             compteur, valider_pm, valider_pa, passer_tour, tour_perso, nb_joueurs,
-            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 1, depart, tps_pause);
+            distance, tab_map, c, equipe, obs, p, choix_joueurs, tour_depart, 0, depart, tps_pause,
+            quitter, ca, deplacement_valide, numero_potion, chance_attaque, nb_morts, cf);
         *depart=clock();
         while(mouse_b & 1);
     }
@@ -342,7 +346,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         rectfill(buffer, SCREEN_W/18-10, 10, SCREEN_W/36+3, SCREEN_H/15-10, makecol(200, 200, 200));
     }
     if (*compteur==1) {
-        hg(buffer);
+        hg(buffer, 0);
         //RECOMMENCER
         rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
         rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
@@ -353,7 +357,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
         textout_centre_ex(buffer, font, "QUITTER LA PARTIE", SCREEN_W/2, SCREEN_H/2+50, makecol(200, 150, 60), -1);
     }
     if (*compteur==2) {
-        hg(buffer);
+        hg(buffer, 0);
         //sur cette map
         rectfill(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(50, 50, 50));
         rect(buffer, SCREEN_W/3, SCREEN_H/3, 2*SCREEN_W/3, SCREEN_H/2-10, makecol(200, 150, 60));
@@ -371,7 +375,9 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
                 int *tour_perso, int *nb_joueurs, int *distance,
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
-                int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause) {
+                int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause, bool *quitter,
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
+                bool *cf) {
 
     *degats = 100;
     *ligne_prec=-1;
@@ -386,6 +392,13 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
     *distance=0;
     *depart=clock();
     *tps_pause=0;
+    *quitter=0;
+    *ca=0;
+    *deplacement_valide=0;
+    *numero_potion=0;
+    *chance_attaque=3;
+    *nb_morts=0;
+    *cf=0;
 
     if(map) {
         creer_fichier_map();
@@ -447,17 +460,27 @@ void afficher_infos (double *secondes, clock_t depart, clock_t tps_pause, t_pers
     timer(buffer, secondes, depart, tps_pause);
 }
 
-void hg(BITMAP *buffer) {
+void hg(BITMAP *buffer, bool g) {
     rectfill(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(20, 20, 20));
     rect(buffer, 17*SCREEN_W/18, 17*SCREEN_H/18, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, makecol(200, 150, 60));
     rectfill(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(50, 50, 50));
     rect(buffer, SCREEN_W-17*SCREEN_W/18, SCREEN_H-17*SCREEN_H/18, SCREEN_W-15*SCREEN_W/18, SCREEN_H-15*SCREEN_H/18, makecol(200, 150, 60));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10, makecol(200, 200, 200));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10-1, makecol(200, 200, 200));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10+1, makecol(200, 200, 200));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, makecol(200, 200, 200));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, makecol(200, 200, 200));
-    line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
+    if(g==0) {
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10+1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, makecol(200, 200, 200));
+    }
+    else {
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-17*SCREEN_H/18+10+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10-1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36-1, makecol(200, 200, 200));
+        line(buffer, SCREEN_W-15*SCREEN_W/18-12, SCREEN_H-15*SCREEN_H/18-10+1, SCREEN_W-17*SCREEN_W/18+12, SCREEN_H-32*SCREEN_H/36+1, makecol(200, 200, 200));
+    }
 }
 
 void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int nb_joueurs) {
@@ -484,20 +507,16 @@ void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int 
 
     if(nb_joueurs>3) {
         if(tour_perso+2<nb_joueurs){
-            if(p[tour_perso+2].mort==0)
-                textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
+            textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else if(tour_perso+1<nb_joueurs) {
-            if(p[0].mort==0)
-                textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
+            textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else if(tour_perso<nb_joueurs) {
-            if(p[0].mort==0)
-                textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
+            textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else {
-            if(p[0].mort==0)
-                textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
+            textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
         }
     }
 }
