@@ -68,6 +68,7 @@ typedef struct {
     int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
     int pm, pa, pv;
     char nom[30];
+    bool mort;
     t_potion pot[NB_POTION];
     t_attaque att;
     BITMAP *img[5];
@@ -107,12 +108,14 @@ t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
 void animer(t_perso* perso, bool *valider_pm, int *distance);
-void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
+void gerer_tours(int *tour_perso, t_perso p[NB_PERSOS], bool *valider_pm, bool *valider_pa, bool *passer_tour,
     int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, int *ca);
 void passer(bool *passer_tour, BITMAP *buffer);
 void val_pa(bool *valider_pa, t_perso p);
 void barre_pv(t_perso p, BITMAP *buffer);
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
+void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts);
+void aff_morts(t_perso *p, bool *passer_tour);
 
 
 // MAP.C

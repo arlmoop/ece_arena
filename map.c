@@ -197,7 +197,8 @@ void afficher_obstacles_persos(BITMAP *buffer, t_case c[TAILLE_MAP][TAILLE_MAP],
                 for (int k = 0; k < NB_PERSOS; k++) {
                     if (p[k].num==num) {
                         int frame = p[k].imgcourante % p[k].nb_images;
-                        draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
+                        if(p[k].mort==0)
+                            draw_sprite(buffer, p[k].img[frame], p[k].x, p[k].y);
                         break;
                     }
                 }//sa
@@ -500,16 +501,20 @@ void joueurs_suivants(t_perso p[NB_PERSOS], BITMAP *buffer, int tour_perso, int 
 
     if(nb_joueurs>3) {
         if(tour_perso+2<nb_joueurs){
-            textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[tour_perso+2].mort==0)
+                textout_ex(buffer, font, p[tour_perso+2].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else if(tour_perso+1<nb_joueurs) {
-            textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[0].mort==0)
+                textout_ex(buffer, font, p[0].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else if(tour_perso<nb_joueurs) {
-            textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[0].mort==0)
+                textout_ex(buffer, font, p[1].nom, 704, 70, makecol(0, 128, 255), -1);
         }
         else {
-            textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
+            if(p[0].mort==0)
+                textout_ex(buffer, font, p[2].nom, 704, 70, makecol(0, 128, 255), -1);
         }
     }
 }

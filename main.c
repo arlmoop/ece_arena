@@ -38,6 +38,7 @@ int main() {//sa
         int distance=0;
         int numero_potion=0;
         int chance_attaque=3;
+        int nb_morts=0;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -46,6 +47,7 @@ int main() {//sa
         int tab_map[TAILLE_MAP][TAILLE_MAP];
         int tab_attaque[TAILLE_MAP][TAILLE_MAP];
         int tab_aleatoire_attaque[TAILLE_MAP][TAILLE_MAP];
+        int classement[NB_PERSOS];
 
 
         BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
@@ -98,6 +100,8 @@ int main() {//sa
                 afficher_infos(&secondes, depart, tps_pause, p, buffer, tour_perso, nb_joueurs);
                 barres(nb_joueurs, p, buffer);
                 attaques(buffer, p, nb_joueurs, tour_perso, &ca);
+                gerer_mort(p, nb_joueurs, classement, &nb_morts);
+                aff_morts(&p[tour_perso-1], &passer_tour);
             }
 
             afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,

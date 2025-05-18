@@ -50,6 +50,7 @@ t_perso init_perso(int n, int x, int y) {
     b.anim_en_cours=0;
     b.pa=5, b.pm=PM, b.pv=100;
     b.num=0;
+    b.mort=0;
     return b;
 }
 
@@ -177,6 +178,24 @@ void barre_pv(t_perso p, BITMAP *buffer) {
 
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer) {
     for (int i=0; i<nb_persos; i++) {
-        barre_pv(p[i], buffer);
+        if(p[i].mort==0)
+            barre_pv(p[i], buffer);
     }
+}
+
+void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts) {
+    for(int i=0; i<nb_joueurs; i++) {
+        if(p[i].mort==0) {
+            if(p[i].pv==0) {
+                classement[*nb_morts]=p[i].num;
+                *nb_morts++;
+                p[i].mort=1;
+            }
+        }
+    }
+}
+
+void aff_morts(t_perso *p, bool *passer_tour) {
+    if(p->mort==1)
+        *passer_tour=1;
 }
