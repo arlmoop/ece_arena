@@ -256,7 +256,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     if (potion_1(p, tour_perso) == 0 && p[tour_perso-1].classe == 1) {
         joueur_attaque=1;
         numero_potion = 0;
-        textout_ex(buffer, font, "Potion 1 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 1 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[0].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -269,7 +269,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         joueur_attaque=1;
         numero_potion = 1;
         p[tour_perso-1].pot[numero_potion].type = 1;
-        textout_ex(buffer, font, "Potion 2 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 2 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[1].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -281,7 +281,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_3(p, tour_perso) == 2 && p[tour_perso-1].classe == 1) {
         joueur_attaque=1;
         numero_potion = 2;
-        textout_ex(buffer, font, "Potion 3 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 3 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[2].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[2].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -293,7 +293,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_4(p, tour_perso) == 3 && p[tour_perso-1].classe == 1) {
         joueur_attaque=1;
         numero_potion = 3;
-        textout_ex(buffer, font, "Potion 4 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 4 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[3].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[3].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -306,7 +306,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         joueur_attaque=1;
         numero_potion = 0;
         p[tour_perso-1].pot[numero_potion].type = 2;
-        textout_ex(buffer, font, "Potion 5 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 5 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[0].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -318,7 +318,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_2(p, tour_perso) == 5) {
         joueur_attaque=1;
         numero_potion = 1;
-        textout_ex(buffer, font, "Potion 6 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 6 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[1].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -330,7 +330,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_3(p, tour_perso) == 6) {
         joueur_attaque=1;
         numero_potion = 2;
-        textout_ex(buffer, font, "Potion 7 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 7 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[2].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[2].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -342,7 +342,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_4(p, tour_perso) == 7) {
         joueur_attaque=1;
         numero_potion = 3;
-        textout_ex(buffer, font, "Potion 8 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 8 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[3].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[3].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -354,7 +354,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_1(p, tour_perso) == 8) {
         joueur_attaque=1;
         numero_potion = 0;
-        textout_ex(buffer, font, "Potion 9 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 9 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[0].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -367,7 +367,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         joueur_attaque=1;
         numero_potion = 1;
         p[tour_perso-1].pot[numero_potion].type = 3;
-        textout_ex(buffer, font, "Potion 10 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 10 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[1].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -379,7 +379,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_3(p, tour_perso) == 10) {
         joueur_attaque=1;
         numero_potion = 2;
-        textout_ex(buffer, font, "Potion 11 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 11 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[2].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[2].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -391,7 +391,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_4(p, tour_perso) == 11) {
         joueur_attaque=1;
         numero_potion = 3;
-        textout_ex(buffer, font, "Potion 12 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 12 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[3].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[3].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -403,7 +403,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_1(p, tour_perso) == 12) {
         joueur_attaque=1;
         numero_potion = 0;
-        textout_ex(buffer, font, "Potion 13 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 13 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[0].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -415,7 +415,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_2(p, tour_perso) == 13) {
         joueur_attaque=1;
         numero_potion = 1;
-        textout_ex(buffer, font, "Potion 14 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 14 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[1].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -427,7 +427,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_3(p, tour_perso) == 14) {
         joueur_attaque=1;
         numero_potion = 2;
-        textout_ex(buffer, font, "Potion 15 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 15 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[2].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[2].intitule, 490, 510, makecol(255, 255, 25), -1);
@@ -439,7 +439,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_4(p, tour_perso) == 15) {
         joueur_attaque=1;
         numero_potion = 3;
-        textout_ex(buffer, font, "Potion 16 survolée", 100, 100, makecol(255, 255, 255), -1);
+        //textout_ex(buffer, font, "Potion 16 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[3].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
         textout_ex(buffer, font, p[tour_perso-1].pot[3].intitule, 490, 510, makecol(255, 255, 25), -1);

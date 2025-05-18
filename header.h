@@ -70,7 +70,7 @@ typedef struct {
     int pm, pa, pv;
     char nom[30];
     bool mort;
-    int equipe;
+    int equipe, cl;
     t_potion pot[NB_POTION];
     t_attaque att;
     BITMAP *img[5];
@@ -119,9 +119,9 @@ void passer(bool *passer_tour, BITMAP *buffer);
 void val_pa(bool *valider_pa, t_perso p);
 void barre_pv(t_perso p, BITMAP *buffer);
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
-void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts);
+void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int *nb_morts);
 void aff_morts(t_perso *p, bool *passer_tour);
-void fin(int nb_joueurs, int nb_morts, int *compteur);
+void fin(int nb_joueurs, int nb_morts, int *compteur, t_perso p[NB_PERSOS]);
 
 
 // MAP.C
@@ -188,7 +188,7 @@ t_attaque init_attaque(char nom[MAX_NOM]);
 void equiper_attaque(t_perso p[NB_PERSOS], int nb_joueurs);
 void afficher_attaque(BITMAP *buffer, t_perso p);
 int gerer_attaque(BITMAP *buffer, t_perso p);
-void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca);
+void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca, bool equipe);
 
 
 #endif //HEADER_H
