@@ -59,7 +59,19 @@ int main() {
 
 
         BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
-        BITMAP *fond=load_bitmap("Images\\fond2.bmp", NULL);
+        BITMAP *fond;
+        if(aleatoire==1) {
+            if(rand()%2==1)
+                fond=load_bitmap("Images\\fond2.bmp", NULL);
+            else
+                fond=load_bitmap("Images\\fond3.bmp", NULL);
+        }
+        else {
+            if(theme==0)
+                fond=load_bitmap("Images\\fond2.bmp", NULL);
+            else
+                fond=load_bitmap("Images\\fond3.bmp", NULL);
+        }
         BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
         BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
         stretch_blit(fond,decor,0,0,fond->w,fond->h,0, 0, SCREEN_W,SCREEN_H);
@@ -75,8 +87,7 @@ int main() {
         clock_t pause;
         clock_t tps_pause=0;
 
-        int changement_tour = tour_perso;
-
+        int changement_tour=tour_perso;
         tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
 
         while (quitter==0) {
