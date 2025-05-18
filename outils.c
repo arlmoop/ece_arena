@@ -14,7 +14,7 @@ void magenta (BITMAP* image, int r_max, int g_max, int b_max) {
             }
         }
     }
-    save_bitmap("Images\\nom.bmp", image,NULL);
+    save_bitmap("Images\\panneau_stop.bmp", image,NULL);
 }
 
 
@@ -29,4 +29,35 @@ void initialisation_allegro() {
         exit(EXIT_FAILURE);
     }
     show_mouse(screen);
+}
+
+int clic_gauche(int x1, int y1, int x2, int y2) {
+    int r=0;
+    if(mouse_b&1 && mouse_x<x2 && mouse_x>x1 && mouse_y<y2 && mouse_y>y1)
+        r=1;
+    return r;
+}
+
+int clic_droit(int x1, int y1, int x2, int y2) {
+    int r=0;
+    if(mouse_b&2 && mouse_x<x2 && mouse_x>x1 && mouse_y<y2 && mouse_y>y1)
+        r=1;
+    return r;
+}
+
+void jouer_musique (SAMPLE* musique) {
+    // Chargement et lecture de la musique
+    if (!musique) {
+        allegro_message("Erreur lors du chargement de la musique !");
+    } else {
+        play_sample(musique, 255, 128, 1000, 1); // volume, pan, freq, loop
+    }
+}
+
+void arreter_musique(SAMPLE* musique) {
+    if (musique) {
+        stop_sample(musique);
+        destroy_sample(musique);
+        musique=NULL;
+    }
 }
