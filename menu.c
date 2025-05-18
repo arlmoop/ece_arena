@@ -9,7 +9,7 @@
 t_spriteimmo init_spriteimmo() {
     t_spriteimmo s;
     s.x=0, s.y=0;
-    s.img=load_bitmap("logo_final.bmp", NULL);
+    s.img=load_bitmap("Images\\logo_final.bmp", NULL);
     s.tx=s.img->w;
     s.ty=s.img->h;
     return s;
@@ -83,7 +83,7 @@ int bouton_bas_droite(BITMAP *menu, int est_retour,int format_menu) {
     return (curseur && (mouse_b & 1));
 }
 
-int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut) {
+int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu) {
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -96,6 +96,7 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         rectfill(menu, menu_x, menu_y, menu_x + MENU_W, menu_y + MENU_H, makecol(60, 40, 20));
         rect(menu, menu_x, menu_y, menu_x + MENU_W, menu_y + MENU_H, makecol(255, 215, 0));
         textprintf_centre_ex(menu, font, menu_x + MENU_W / 2, menu_y + 20, makecol(255, 255, 0), -1, "MENU");
@@ -118,7 +119,8 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
                 break;
             }
             if (bouton_bas_droite(menu, 0 ,0)) {
-                exit(0);
+                choix=-1;
+
             }
         }
 
@@ -130,7 +132,9 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
     return choix;
 }
 
-int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire) {
+int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire, BITMAP *fond_menu) {
+    BITMAP *scene1=load_bitmap("Images\\scene1.bmp",NULL);
+    BITMAP *scene2=load_bitmap("Images\\scene2.bmp",NULL);
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -153,6 +157,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         int mx = mouse_x;
         int my = mouse_y;
 
@@ -198,16 +203,15 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
             int map_x = bouton_x + i*(map_w+espace_map);
             int curseur_map = (mx >= map_x && mx <= map_x + map_w && my >= map_y && my <= map_y + map_h);
             int couleur = curseur_map ? makecol(200, 150, 60) : makecol(120, 80, 30);
-            //int txt_couleur = curseur ? makecol(255, 255, 255) : makecol(220, 180, 100);
-            if(curseur_map) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
-            rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+            stretch_sprite(menu,scene1,225,map_y,map_w,map_h);
+            stretch_sprite(menu,scene2,407,map_y,map_w,map_h);
+            if(curseur_map) rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
+
             if(*theme==0&&!i){
-                rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
-                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+                rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(200, 150, 60));
             }
             else if(*theme==1&&i){
-                rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
-                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+                rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(200, 150, 60));
             }
             if (curseur_map && (mouse_b & 1)) {
                 *theme=i;
@@ -225,14 +229,15 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
         blit(menu, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
     }
+    destroy_bitmap(scene1);
+    destroy_bitmap(scene2);
     return choix;
 }
-
-int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe){
+int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu, BITMAP *bilie, BITMAP *byron, BITMAP *nita, BITMAP *leon, BITMAP *panneau_stop, int choix_joueurs[]){
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
         char filename[30];
-        sprintf(filename,"bouton_lancer%d.bmp",i);
+        sprintf(filename,"Images\\bouton_lancer%d.bmp",i);
         bouton_lancer[i]=load_bitmap(filename,NULL);
     }
 
@@ -257,6 +262,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         int mx = mouse_x;
         int my = mouse_y;
 
@@ -330,6 +336,12 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
             else couleur_joueur=makecol(255, 255, 255);
             textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, couleur_joueur,-1,j);
 
+            if(choix_joueurs[i]==-1) stretch_sprite(menu, panneau_stop, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==1) stretch_sprite(menu, nita, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==2) stretch_sprite(menu, leon, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==3) stretch_sprite(menu, byron, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==4) stretch_sprite(menu, bilie, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+
             if (curseur_cadre&&(mouse_b & 1)) {
                 choix = i;
                 while(mouse_b & 1);
@@ -352,23 +364,23 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
     return choix;
 }
 
-int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut) {
+int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu, BITMAP *bilie, BITMAP *byron, BITMAP *nita, BITMAP *leon) {
     BITMAP *banieres[4];
     BITMAP *bouton_choix[2];
     BITMAP *icone_skin[2];
     for(int i=0;i<4;i++){
         char filename[20];
-        sprintf(filename,"baniere%d.bmp",i);
+        sprintf(filename,"Images\\baniere%d.bmp",i);
         banieres[i]=load_bitmap(filename,NULL);
     }
     for(int i=0;i<2;i++){
         char filename[20];
-        sprintf(filename,"choix_classe%d.bmp",i);
+        sprintf(filename,"Images\\choix_classe%d.bmp",i);
         bouton_choix[i]=load_bitmap(filename,NULL);
     }
     for(int i=0;i<2;i++){
         char filename[20];
-        sprintf(filename,"icone_skin%d.bmp",i);
+        sprintf(filename,"Images\\icone_skin%d.bmp",i);
         icone_skin[i]=load_bitmap(filename,NULL);
     }
     clear_to_color(menu, makecol(25, 25, 25));
@@ -379,6 +391,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
     int n=0;
     while(!key[KEY_ESC]&&choix==-1){
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         rectfill(menu, cadre_total_x, cadre_total_y, cadre_total_x + MENU_CLASSES_W, cadre_total_y + MENU_CLASSES_H, makecol(40, 30, 20));
         rect(menu, cadre_total_x, cadre_total_y, cadre_total_x + MENU_CLASSES_W, cadre_total_y + MENU_CLASSES_H, makecol(255, 215, 0));
         textprintf_centre_ex(menu, font, SCREEN_W / 2, cadre_total_y + 10, makecol(255, 255, 0), -1, "CLASSES DES PERSONNAGES");
@@ -400,7 +413,6 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
             int icone_skin_y=y+0.60*cadre_h;
             int icone_skin_w=cadre_w/4;
             int icone_skin_h=cadre_h/10;
-
             int mx = mouse_x;
             int my = mouse_y;
             int curseur_bouton_choix = (mx >= bouton_choix_x && mx <= bouton_choix_x + bouton_choix_w && my >= bouton_choix_y && my <= bouton_choix_y + bouton_choix_h);
@@ -409,22 +421,28 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
             rect(menu, x, y, x + cadre_w, y + cadre_h, makecol(255, 215, 0));
 
             stretch_sprite(menu,banieres[i],x-5,y-20,cadre_w+10,75);
+            if(i==0)stretch_sprite(menu,nita,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
+            if(i==1)stretch_sprite(menu,leon,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
+            if(i==2)stretch_sprite(menu,byron,x-20,bouton_choix_y-cadre_h/1.5+12,cadre_w+30,cadre_h/1.5);
+            if(i==3)stretch_sprite(menu,bilie,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
             curseur_bouton_choix ? stretch_sprite(menu,bouton_choix[1],bouton_choix_x+6,bouton_choix_y+2,bouton_choix_w-12,bouton_choix_h-4) : stretch_sprite(menu,bouton_choix[0],bouton_choix_x,bouton_choix_y,bouton_choix_w,bouton_choix_h);
-            curseur_icone_skin ? stretch_sprite(menu,icone_skin[1],icone_skin_x,icone_skin_y+4,icone_skin_w,icone_skin_h-8) : stretch_sprite(menu,icone_skin[0],icone_skin_x,icone_skin_y,icone_skin_w,icone_skin_h);
+            //curseur_icone_skin ? stretch_sprite(menu,icone_skin[1],icone_skin_x,icone_skin_y+4,icone_skin_w,icone_skin_h-8) : stretch_sprite(menu,icone_skin[0],icone_skin_x,icone_skin_y,icone_skin_w,icone_skin_h);
 
-            const char* nom_classe[] = {"Guerrier", "Archer", "Mage", "Championne"};
+            const char* nom_classe[] = {"nita", "leon", "byron", "bilie"};
             textprintf_centre_ex(menu, font, x + cadre_w / 2, y + 20, makecol(255, 255, 255), -1, "%s", nom_classe[i]);
             textprintf_centre_ex(menu, font, bouton_choix_x+bouton_choix_w/2, bouton_choix_y+bouton_choix_h/2.5, makecol(0, 0, 0), -1, "Choisir");
 
             if(curseur_bouton_choix && (mouse_b & 1)){
-                choix=i;
+                choix=i+1;
+                while(mouse_b & 1);
                 break;
             }
-            if(curseur_icone_skin && (mouse_b & 1)){
-                choix=i+4;
+            /*if(curseur_icone_skin && (mouse_b & 1)){
+                choix=i+5;
+                while(mouse_b & 1);
                 break;
-            }
-        }
+            }*/
+        }//sas
 
 
         if (bouton_bas_droite(menu, 1, 1)) {
@@ -442,8 +460,14 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
 
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equipe) {
     BITMAP *menu = create_bitmap(SCREEN_W, SCREEN_H);
-    BITMAP *fond_nuage_bas = load_bitmap("fond_nuage_bas.bmp", NULL);
-    BITMAP *fond_nuage_haut = load_bitmap("fond_nuage_haut.bmp", NULL);
+    BITMAP *fond_menu=load_bitmap("Images\\fond_menu.bmp", NULL);
+    BITMAP *fond_nuage_bas = load_bitmap("Images\\fond_nuage_bas.bmp", NULL);
+    BITMAP *fond_nuage_haut = load_bitmap("Images\\fond_nuage_haut.bmp", NULL);
+    BITMAP *bilie=load_bitmap("Images\\bilie_1.bmp",NULL);
+    BITMAP *byron=load_bitmap("Images\\byron_5.bmp",NULL);
+    BITMAP *nita=load_bitmap("Images\\nita_1.bmp",NULL);
+    BITMAP *leon=load_bitmap("Images\\leon_5.bmp",NULL);
+    BITMAP *panneau_stop=load_bitmap("Images\\panneau_stop.bmp",NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
 
     int fin_du_jeu=0;
@@ -459,18 +483,18 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     while (!fin_du_jeu) {
         switch (etat_actuel) {
             case MENU_PRINCIPAL:
-                choix = afficher_menu_principal(menu,fond_nuage_bas,fond_nuage_haut);
+                choix = afficher_menu_principal(menu,fond_nuage_bas,fond_nuage_haut, fond_menu);
                 if (choix == 0) etat_actuel = CHOIX_MAP;
-                else if (choix == 1) return 0;// RAJOUTER CHARGER PARTIE
+                else if (choix == 1) return 3;
                 else if(choix==-2) fin_du_jeu=1;
                 break;
             case CHOIX_MAP:
-                choix_map = afficher_menu_map(menu,fond_nuage_bas,fond_nuage_haut,theme,aleatoire);
+                choix_map = afficher_menu_map(menu,fond_nuage_bas,fond_nuage_haut,theme,aleatoire, fond_menu);
                 if (choix_map == 0) etat_actuel = CHOIX_JOUEURS;
                 else if (choix_map == -2) etat_actuel = MENU_PRINCIPAL;
                 break;
             case CHOIX_JOUEURS:
-                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe);
+                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe, fond_menu, bilie, byron, nita, leon, panneau_stop, choix_joueurs);
                 if(joueurs>=0&&joueurs<4){
                     etat_actuel = CHOIX_CLASSES;
                 }
@@ -486,8 +510,8 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
                 }
                 break;
             case CHOIX_CLASSES:
-                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut);
-                if(classes>=0&&classes<4){
+                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut, fond_menu, bilie, byron, nita, leon);
+                if(classes>=1&&classes<5){
                     choix_joueurs[joueurs]=classes;
                     etat_actuel = CHOIX_JOUEURS;
                     anime_nuage=0;
@@ -503,5 +527,53 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     destroy_bitmap(menu);
     destroy_bitmap(fond_nuage_bas);
     destroy_bitmap(fond_nuage_haut);
+    destroy_bitmap(fond_menu);
+    destroy_bitmap(bilie);
+    destroy_bitmap(byron);
+    destroy_bitmap(nita);
+    destroy_bitmap(leon);
+    destroy_bitmap(panneau_stop);
     return 0;
+}
+
+void menu_nom (BITMAP *buffer, t_perso *p) {
+    int index=0;
+    p->nom[0]='\0';
+    BITMAP *fond_menu=load_bitmap("Images\\fond_menu.bmp", NULL);
+    while (!key[KEY_ENTER]) {
+        clear_bitmap(buffer);
+        blit(fond_menu, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        if (key[KEY_BACKSPACE] && index>0) {
+            index--;
+            p->nom[index]='\0';
+            rest(100);
+        }
+        for (int k=KEY_A; k<=KEY_Z; k++) {
+            if (key[k] && index<MAX_NOM-1) {
+                p->nom[index]=(char)(k-KEY_A+'A');
+                index++;
+                p->nom[index] = '\0';
+                rest(100);
+            }
+        }
+        for (int k=KEY_0; k<=KEY_9; k++) {
+            if (key[k] && index<MAX_NOM-1) {
+                p->nom[index]=(char)(k-KEY_0+'0');
+                index++;
+                p->nom[index]='\0';
+                rest(100);
+            }
+        }
+        textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2, makecol(0, 0, 0), -1, "Nom : %s", p->nom);
+        textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2+20, makecol(155, 0, 0), -1, "JOUEUR %d : Appuyez sur ENTREE pour valider", p->num);
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    }
+    destroy_bitmap(fond_menu);
+}
+
+void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs) {
+    for (int i=0; i<nb_joueurs; i++) {
+        menu_nom(buffer, &p[i]);
+        rest(150);
+    }
 }
