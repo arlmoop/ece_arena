@@ -132,7 +132,7 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
     return choix;
 }
 
-int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire) {
+int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire, BITMAP *fond_menu) {
     BITMAP *scene1=load_bitmap("Images\\scene1.bmp",NULL);
     BITMAP *scene2=load_bitmap("Images\\scene2.bmp",NULL);
     int menu_x = (SCREEN_W - MENU_W) / 2;
@@ -157,6 +157,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
 
     while (!key[KEY_ESC] && choix==-1) {
         clear_bitmap(menu);
+        blit(fond_menu, menu, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         int mx = mouse_x;
         int my = mouse_y;
 
