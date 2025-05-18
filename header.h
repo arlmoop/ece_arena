@@ -73,7 +73,7 @@ typedef struct {
     int equipe, cl;
     t_potion pot[NB_POTION];
     t_attaque att;
-    BITMAP *img[6];
+    BITMAP *img[5];
 }t_perso;
 
 typedef enum {
@@ -112,6 +112,7 @@ void menu_telechargement (SAMPLE* musique);
 // PERSOS.C
 t_perso init_perso(int n, int x, int y);
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]);
+void animer_statique(t_perso perso[NB_PERSOS], int nb_joueurs);
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], t_coord chemin[], int tour_perso, int ligne_actu, int colonne_actu, int *distance, int *deplacement_valide);
 void animer(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso *perso, t_coord chemin[], bool *valider_pm, int *distance);
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
