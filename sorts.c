@@ -475,8 +475,5 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
         p[tour_perso-1].pa -= p[tour_perso-1].pot[numero_potion].pa;
     }
-
-    //printf("%d", p[tour_perso-1].pot[numero_potion].type);
-
     bouton_appuye_avant = bouton_appuye;
 }

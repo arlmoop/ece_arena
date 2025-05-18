@@ -13,7 +13,6 @@ int main() {
         allegro_message("Erreur : impossible d'initialiser le son !");
         return -1;
     }
-
     SAMPLE* musique = load_sample("Images\\musique.wav");
     //jouer_musique(musique);
 
@@ -91,7 +90,6 @@ int main() {
         tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
 
         while (quitter==0) {
-
             if(compteur==0) {
                 clear_bitmap(buffer);
                 blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
