@@ -44,3 +44,20 @@ int clic_droit(int x1, int y1, int x2, int y2) {
         r=1;
     return r;
 }
+
+void jouer_musique (SAMPLE* musique) {
+    // Chargement et lecture de la musique
+    if (!musique) {
+        allegro_message("Erreur lors du chargement de la musique !");
+    } else {
+        play_sample(musique, 255, 128, 1000, 1); // volume, pan, freq, loop
+    }
+}
+
+void arreter_musique(SAMPLE* musique) {
+    if (musique) {
+        stop_sample(musique);
+        destroy_sample(musique);
+        musique=NULL;
+    }
+}

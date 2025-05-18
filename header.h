@@ -89,6 +89,9 @@ void initialisation_allegro();
 void magenta (BITMAP* image, int r_max, int g_max, int b_max);
 int clic_gauche(int x1, int y1, int x2, int y2);
 int clic_droit(int x1, int y1, int x2, int y2);
+void jouer_musique (SAMPLE* musique);
+void arreter_musique(SAMPLE* musique);
+
 
 
 // MENU.C
