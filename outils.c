@@ -14,7 +14,8 @@ void magenta (BITMAP* image, int r_max, int g_max, int b_max) {
             }
         }
     }
-    save_bitmap("Images\\serpent11.bmp", image,NULL);
+
+    save_bitmap("Images\\leon_3.bmp", image,NULL);
 }
 
 

@@ -5,8 +5,7 @@
 #include <stdio.h>
 #include <allegro.h>
 
-
-int main() {//sa
+int main() {
     srand(time(NULL));
     initialisation_allegro();
 
@@ -81,6 +80,7 @@ int main() {//sa
         tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
 
         while (quitter==0) {
+
             if(compteur==0) {
                 clear_bitmap(buffer);
                 blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
