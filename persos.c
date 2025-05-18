@@ -52,6 +52,7 @@ t_perso init_perso(int n, int x, int y) {
     b.pa=5, b.pm=PM, b.pv=100;
     b.num=0;
     b.mort=0;
+    b.equipe=-1;
     return b;
 }
 
@@ -67,6 +68,11 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
                 p[b].ligne=i, p[b].colonne=j;
                 p[b].num=b+1;
                 sprintf(p[b].nom, "Joueur %d", b+1);
+                if (p[b].num==1 || p[b].num==2) {
+                    p[b].equipe=1;
+                } else if (p[b].num==3 || p[b].num==4) {
+                    p[b].equipe=2;
+                }
                 b++;
             }
         }
