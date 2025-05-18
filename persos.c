@@ -12,7 +12,7 @@ t_perso init_perso(int n, int x, int y) {
     b.ligne=0, b.colonne=0;
     b.imgcourante=0;
     b.cptimg=0;
-    b.tmpimg=4;
+    b.tmpimg=100;
     b.dx=0, b.dy=0;
     b.classe=n;
     b.cl=-1;
@@ -147,7 +147,7 @@ void animer(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso *perso, t_coord chemin[], 
         }*/
 
     }
-    rest(100);
+    rest(500);
 }
 
 

@@ -63,13 +63,13 @@ int main() {
             if(rand()%2==1)
                 fond=load_bitmap("Images\\fond2.bmp", NULL);
             else
-                fond=load_bitmap("Images\\fond3.bmp", NULL);
+                fond=load_bitmap("Images\\fond_neige.bmp", NULL);
         }
         else {
             if(theme==0)
                 fond=load_bitmap("Images\\fond2.bmp", NULL);
             else
-                fond=load_bitmap("Images\\fond3.bmp", NULL);
+                fond=load_bitmap("Images\\fond_neige.bmp", NULL);
         }
         BITMAP *buffer=create_bitmap(SCREEN_W,SCREEN_H);
         BITMAP *decor=create_bitmap(SCREEN_W,SCREEN_H);
