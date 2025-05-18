@@ -24,21 +24,21 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
     int index = 0;
 
     char noms_potion[16][50] = {
-        "Potion électrique",
+        "Potion electrique",
         "Potion de soin",
         "Potion de gel",
         "Potion de rage",
-        "Potion sacrée",
+        "Potion sacree",
         "Potion toxique",
         "Potion naturelle",
         "Potion chauve-souris",
         "Potion d’illusion",
-        "Potion de rapidité",
+        "Potion de rapidite",
         "Potion toxique",
         "Potion de puissance",
-        "Potion des ténèbres",
+        "Potion des tenebres",
         "Potion temporelle",
-        "Potion de séisme",
+        "Potion de seisme",
         "Potion squelettique"
     };
 
@@ -126,7 +126,7 @@ void afficher_inventaire (BITMAP* buffer, t_perso p[NB_PERSOS], int tour_perso) 
         draw_sprite(buffer, p[tour_perso-1].pot[k].img, p[tour_perso-1].pot[k].x, p[tour_perso-1].pot[k].y);
     }
     textout_ex(buffer, font, "Potion :", 420, 510, makecol(255, 255, 255), -1);
-    textout_ex(buffer, font, "Dégats :", 420, 540, makecol(255, 255, 255), -1);
+    textout_ex(buffer, font, "Degats :", 420, 540, makecol(255, 255, 255), -1);
     textout_ex(buffer, font, "PA :", 420, 570, makecol(255, 255, 255), -1);
     point_vie(buffer, p, tour_perso);
 }
@@ -455,7 +455,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
 
     if (joueur_attaque==1 && bouton_appuye && !bouton_appuye_avant && (p[tour_perso-1].pa >= p[tour_perso-1].pot[numero_potion].pa)) {
 
-        int chance_fail_attaque = rand()%2;
+        int chance_fail_attaque = rand()%3;
 
         if (chance_fail_attaque>0) {
             attaque_potion(p, c, tab_attaque, tour_perso, numero_potion, equipe);
