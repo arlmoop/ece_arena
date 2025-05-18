@@ -37,7 +37,7 @@ int main() {//sa
         int tour_depart=tour_perso;
         int distance=0;
         int deplacement_valide=0;
-        t_coord chemin[3];
+        t_coord chemin[5];
         int numero_potion=0;
         int chance_attaque=3;
         int nb_morts=0;
@@ -86,7 +86,7 @@ int main() {//sa
                     changement_tour = tour_perso;
                 }
 
-                affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire_attaque, tour_perso, numero_potion);
+                affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire_attaque, tour_perso, numero_potion, equipe);
                 souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
                 if(!p[tour_perso-1].anim_en_cours){
                     afficher_chemin(c, p, chemin, tour_perso, ligne_actu, colonne_actu, &distance, buffer, &deplacement_valide);

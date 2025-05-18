@@ -15,6 +15,7 @@ t_potion init_inventaire (char nom_potion[20], int n) {
     pot.img = load_bitmap(nom_potion, NULL);
     pot.pa = 0;
     pot.degat_plus = pot.degat_min = pot.degat_pourcent = 0;
+    pot.type=0;
     return pot;
 }
 
@@ -51,10 +52,13 @@ void equiper_potion (t_perso p[NB_PERSOS], char nom_potion[20]) {
 
         if (p[i].classe == 1) {
             index = 0;
+            //p[i].pot[1].type = 1;
         } else if (p[i].classe == 2) {
            index = 4;
+            //p[i].pot[0].type = 2;
         } else if (p[i].classe == 3) {
             index = 8;
+            //p[i].pot[1].type = 3;
         } else if (p[i].classe == 4) {
             index = 12;
         }
@@ -207,21 +211,34 @@ void attaque_sur_perso (BITMAP* buffer,t_case c[TAILLE_MAP][TAILLE_MAP], int tab
     tab_attaque[x][y] = 2;
 }
 
-void attaque_potion (t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion) {
+void attaque_potion (t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP], int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion, int equipe) {
+
+    //int equipe_joueur = p[tour_perso-1].num+1%4;
+
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
             if (c[i][j].p > 0 && tab_attaque[i][j] > 0) {
-                for (int k = 0; k < NB_PERSOS; k++) {
-                    if (p[k].colonne == j && p[k].ligne == i ) {
-                        p[k].pv = p[k].pv - p[tour_perso-1].pot[numero_potion].degats;
+
+                if (equipe == 1) {
+                    for (int k = 0; k < NB_PERSOS; k++) {
+                        if (p[k].colonne == j && p[k].ligne == i && p[tour_perso-1].equipe != p[k].equipe) {
+                            p[k].pv = p[k].pv - p[tour_perso-1].pot[numero_potion].degats;
+                        }
+                    }
+                } else if (equipe == 0) {
+                    for (int k = 0; k < NB_PERSOS; k++) {
+                        if (p[k].colonne == j && p[k].ligne == i ) {
+                            p[k].pv = p[k].pv - p[tour_perso-1].pot[numero_potion].degats;
+                        }
                     }
                 }
+
             }
         }
     }
 }
 
-void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP],int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tab_aleatoire[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion) {
+void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MAP][TAILLE_MAP],int tab_attaque[TAILLE_MAP][TAILLE_MAP], int tab_aleatoire[TAILLE_MAP][TAILLE_MAP], int tour_perso, int numero_potion, int equipe) {
     char degats_potion[10];
     char pa_potion[5];
     int joueur_attaque=0;
@@ -251,6 +268,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_2(p, tour_perso) == 1 && p[tour_perso-1].classe == 1) {
         joueur_attaque=1;
         numero_potion = 1;
+        p[tour_perso-1].pot[numero_potion].type = 1;
         textout_ex(buffer, font, "Potion 2 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
@@ -287,6 +305,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_1(p, tour_perso) == 4 && p[tour_perso-1].classe == 2) {
         joueur_attaque=1;
         numero_potion = 0;
+        p[tour_perso-1].pot[numero_potion].type = 2;
         textout_ex(buffer, font, "Potion 5 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[0].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
@@ -347,6 +366,7 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
     } else if (potion_2(p, tour_perso) == 9) {
         joueur_attaque=1;
         numero_potion = 1;
+        p[tour_perso-1].pot[numero_potion].type = 3;
         textout_ex(buffer, font, "Potion 10 survolée", 100, 100, makecol(255, 255, 255), -1);
         sprintf(degats_potion, "%d", p[tour_perso-1].pot[1].degats);
         textout_ex(buffer, font, degats_potion, 493, 540, makecol(255, 255, 25), -1);
@@ -438,11 +458,25 @@ void affichage_potions (BITMAP* buffer, t_perso p[NB_PERSOS], t_case c[TAILLE_MA
         int chance_fail_attaque = rand()%2;
 
         if (chance_fail_attaque>0) {
-            attaque_potion(p, c, tab_attaque, tour_perso, numero_potion);
+            attaque_potion(p, c, tab_attaque, tour_perso, numero_potion, equipe);
+
+            if (p[tour_perso-1].pot[numero_potion].type == 1) {
+                p[tour_perso-1].pv += 20;
+            } else if (p[tour_perso-1].pot[numero_potion].type == 2) {
+                for (int i = 0; i < NB_POTION; i++) {
+                    if (p[tour_perso-1].pot[i].type == 0) {
+                        p[tour_perso-1].pot[i].degats += rand()%4+2;
+                    }
+                }
+            } else if (p[tour_perso-1].pot[numero_potion].type == 3) {
+                p[tour_perso-1].pm += 2;
+            }
         }
 
         p[tour_perso-1].pa -= p[tour_perso-1].pot[numero_potion].pa;
     }
+
+    //printf("%d", p[tour_perso-1].pot[numero_potion].type);
 
     bouton_appuye_avant = bouton_appuye;
 }
