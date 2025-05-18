@@ -133,6 +133,8 @@ int afficher_menu_principal(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nua
 }
 
 int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut,int *theme,int *etat_barre_aleatoire, BITMAP *fond_menu) {
+    BITMAP *scene1=load_bitmap("Images\\scene1.bmp",NULL);
+    BITMAP *scene2=load_bitmap("Images\\scene2.bmp",NULL);
     int menu_x = (SCREEN_W - MENU_W) / 2;
     int menu_y = (SCREEN_H - MENU_H) / 2;
 
@@ -201,16 +203,15 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
             int map_x = bouton_x + i*(map_w+espace_map);
             int curseur_map = (mx >= map_x && mx <= map_x + map_w && my >= map_y && my <= map_y + map_h);
             int couleur = curseur_map ? makecol(200, 150, 60) : makecol(120, 80, 30);
-            //int txt_couleur = curseur ? makecol(255, 255, 255) : makecol(220, 180, 100);
-            if(curseur_map) rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
-            rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+            stretch_sprite(menu,scene1,225,map_y,map_w,map_h);
+            stretch_sprite(menu,scene2,407,map_y,map_w,map_h);
+            if(curseur_map) rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, couleur);
+
             if(*theme==0&&!i){
-                rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
-                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+                rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(200, 150, 60));
             }
             else if(*theme==1&&i){
-                rectfill(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(0,0,255));
-                rectfill(menu, map_x, map_y, map_x + map_w, map_y + map_h, makecol(255,0,0));
+                rect(menu, map_x-3, map_y-3, map_x + map_w+3, map_y + map_h+3, makecol(200, 150, 60));
             }
             if (curseur_map && (mouse_b & 1)) {
                 *theme=i;
@@ -228,9 +229,10 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
         blit(menu, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
     }
+    destroy_bitmap(scene1);
+    destroy_bitmap(scene2);
     return choix;
 }
-
 int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu){
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
