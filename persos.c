@@ -17,6 +17,7 @@ t_perso init_perso(int n, int x, int y) {
     b.classe=n;
     b.frames_restantes=0;
     b.nb_images=5;
+    b.etape_courante=0;
     sprintf(b.nom, "NULL");
     if (n==1) {
         for(int i=0;i<b.nb_images;i++){
@@ -71,58 +72,67 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
     }
 }
 
-void animer(t_perso *perso, bool *valider_pm, int *distance) {
-    if (perso->anim_en_cours) {
-        perso->x += perso->dx;
-        perso->y += perso->dy;
-        perso->frames_restantes--;
-
-        perso->cptimg++;
-        if (perso->cptimg >= perso->tmpimg) {
-            perso->cptimg = 0;
-            perso->imgcourante++;
-            if (perso->imgcourante >= perso->nb_images) {
-                perso->imgcourante = 0;
+void animer(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso *perso, t_coord chemin[], bool *valider_pm, int *distance) {
+    if (perso->anim_en_cours && perso->etape_courante < *distance) {
+            if(perso->etape_courante!=0){
+                c[chemin[perso->etape_courante-1].ligne][chemin[perso->etape_courante-1].colonne].num_joueur = 0;
             }
-        }
+            if (perso->ligne < chemin[perso->etape_courante].ligne) {
+                perso->x -= 21;
+                perso->y += 12;
+                perso->ligne=perso->ligne+1;
+            }
+            if (perso->ligne > chemin[perso->etape_courante].ligne) {
+                perso->x += 21;
+                perso->y -= 12;
+                perso->ligne=perso->ligne-1;
+            }
 
-        if (perso->frames_restantes <= 0) {
+
+            if (perso->colonne < chemin[perso->etape_courante].colonne) {
+                perso->x += 21;
+                perso->y += 12;
+                perso->colonne=perso->colonne+1;
+            }
+            if (perso->colonne > chemin[perso->etape_courante].colonne) {
+                perso->x -= 21;
+                perso->y -= 12;
+                perso->colonne=perso->colonne-1;
+            }
+
+            perso->etape_courante++;
+            c[chemin[perso->etape_courante].ligne][chemin[perso->etape_courante].colonne].num_joueur = perso->num;
+        if (perso->etape_courante >= *distance) {
             perso->anim_en_cours = 0;
-            perso->dx = 0;
-            perso->dy = 0;
+            *valider_pm = 1;
+            perso->pm -= *distance;
+            perso->etape_courante = 0;
 
             perso->xcentre = perso->x + perso->tx / 2;
             perso->ycentre = perso->y + perso->ty / 2;
-
-            perso->pm-=*distance;
         }
+        /*perso->cptimg++;
+        if (perso->cptimg >= perso->tmpimg) {
+            perso->cptimg = 0;
+            perso->imgcourante = (perso->imgcourante + 1) % perso->nb_images;
+        }*/
+
     }
-    if(perso->pm==0)
-        *valider_pm=1;
-    rest(25);
+    rest(100);
 }
 
-void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance) {
+
+void deplacement(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], t_coord chemin[], int tour_perso, int ligne_actu, int colonne_actu, int *distance, int *deplacement_valide) {
     for (int i = 0; i < TAILLE_MAP; i++) {
         for (int j = 0; j < TAILLE_MAP; j++) {
-            if (tour_perso == c[i][j].num_joueur && mouse_b & 1 && chemin_valide(c, p, tour_perso, ligne_actu, colonne_actu, distance) && !p[tour_perso - 1].anim_en_cours)
+            if (tour_perso == c[i][j].num_joueur && mouse_b & 1 && *deplacement_valide)
             {
-                int x_depart = p[tour_perso - 1].x;
-                int y_depart = p[tour_perso - 1].y;
-                int x_arrivee = c[ligne_actu][colonne_actu].x;
-                int y_arrivee = c[ligne_actu][colonne_actu].y - 35;
                 int nb_frames = 10;
-
-                p[tour_perso - 1].dx = (x_arrivee - x_depart) / nb_frames;
-                p[tour_perso - 1].dy = (y_arrivee - y_depart) / nb_frames;
+                //p[tour_perso - 1].dx =(chemin[*distance-1].ligne - p[tour_perso-1].ligne);
+                //p[tour_perso - 1].dy =(chemin[*distance-1].colonne - p[tour_perso-1].colonne);
+                c[chemin[*distance-1].ligne][chemin[*distance-1].colonne].p=c[i][j].p;
                 p[tour_perso - 1].frames_restantes = nb_frames;
                 p[tour_perso - 1].anim_en_cours = 1;
-
-                p[tour_perso - 1].ligne = ligne_actu;
-                p[tour_perso - 1].colonne = colonne_actu;
-
-                c[ligne_actu][colonne_actu].num_joueur = tour_perso;
-                c[ligne_actu][colonne_actu].p=c[i][j].p;
                 c[i][j].num_joueur = 0;
                 c[i][j].p=0;
             }
