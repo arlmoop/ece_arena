@@ -214,9 +214,7 @@ void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int *nb_morts) {
         if(p[i].mort==0) {
             if(p[i].pv<=0) {
                 p[i].cl=nb_joueurs-*nb_morts;
-                printf("%d %d", p[i].cl, *nb_morts);
                 (*nb_morts)++;
-                printf("%d %d", p[i].cl, *nb_morts);
                 p[i].mort=1;
             }
         }
@@ -224,8 +222,9 @@ void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int *nb_morts) {
 }
 
 void aff_morts(t_perso *p, bool *passer_tour) {
-    if(p->mort==1)
+    if(p->mort==1) {
         *passer_tour=1;
+    }
 }
 
 void fin(int nb_joueurs, int nb_morts, int *compteur, t_perso p[NB_PERSOS]) {
