@@ -21,37 +21,37 @@ t_perso init_perso(int n, int x, int y) {
     b.etape_courante=0;
     sprintf(b.nom, "NULL");
     if (n==1) {
-        for(int i=1;i<=b.nb_images;i++){
+        for(int i=0;i<b.nb_images;i++){
             char filename[30];
-            sprintf(filename,"Images\\nita_%d.bmp",i);
+            sprintf(filename,"Images\\nita_%d.bmp",i+1);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==2) {
-        for(int i=1;i<=b.nb_images;i++){
-            char filename[20];
-            sprintf(filename,"Images\\leon_%d.bmp",i);
+        for(int i=0;i<b.nb_images;i++){
+            char filename[30];
+            sprintf(filename,"Images\\leon_%d.bmp",i+1);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==3) {
-        for(int i=1;i<=b.nb_images;i++){
-            char filename[20];
-            sprintf(filename,"Images\\byron_%d.bmp",i);
+        for(int i=0;i<b.nb_images;i++){
+            char filename[30];
+            sprintf(filename,"Images\\byron_%d.bmp",i+1);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==4) {
-        for(int i=1;i<=b.nb_images;i++){
-            char filename[20];
-            sprintf(filename,"Images\\bilie_%d.bmp",i);
+        for(int i=0;i<b.nb_images;i++){
+            char filename[30];
+            sprintf(filename,"Images\\bilie_%d.bmp",i+1);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else {
-        for(int i=1;i<=b.nb_images;i++){
-            char filename[20];
-            sprintf(filename,"Images\\bilie_%d.bmp",i);
+        for(int i=0;i<b.nb_images;i++){
+            char filename[30];
+            sprintf(filename,"Images\\bilie_%d.bmp",i+1);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
@@ -84,6 +84,18 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
                     p[b].equipe=2;
                 }
                 b++;
+            }
+        }
+    }
+}
+
+void animer_statique(t_perso perso[NB_PERSOS], int nb_joueurs){
+    for(int i=0;i<nb_joueurs;i++){
+        if (!perso[i].anim_en_cours){
+            perso[i].cptimg++;
+            if (perso[i].cptimg >= perso[i].tmpimg) {
+                perso[i].cptimg = 0;
+                perso[i].imgcourante = (perso[i].imgcourante + 1) % perso[i].nb_images;
             }
         }
     }
