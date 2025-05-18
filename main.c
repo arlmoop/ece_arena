@@ -36,8 +36,11 @@ int main() {//sa
         int tour_perso=1+rand()%nb_joueurs;
         int tour_depart=tour_perso;
         int distance=0;
+        int deplacement_valide=0;
+        t_coord chemin[3];
         int numero_potion=0;
         int chance_attaque=3;
+        int nb_morts=0;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -46,6 +49,7 @@ int main() {//sa
         int tab_map[TAILLE_MAP][TAILLE_MAP];
         int tab_attaque[TAILLE_MAP][TAILLE_MAP];
         int tab_aleatoire_attaque[TAILLE_MAP][TAILLE_MAP];
+        int classement[NB_PERSOS];
 
 
         BITMAP *inventaire = load_bitmap("Images\\inventaire.bmp", NULL);
@@ -83,11 +87,12 @@ int main() {//sa
 
                 affichage_potions(buffer, p, c, tab_attaque, tab_aleatoire_attaque, tour_perso, numero_potion);
                 souris_tab(c, buffer, &ligne_prec, &colonne_prec, &ligne_actu, &colonne_actu);
-                afficher_chemin(c, p, tour_perso, ligne_actu, colonne_actu, &distance, buffer);
-                deplacement(c, p, tour_perso, ligne_actu, colonne_actu, &distance);
-
+                if(!p[tour_perso-1].anim_en_cours){
+                    afficher_chemin(c, p, chemin, tour_perso, ligne_actu, colonne_actu, &distance, buffer, &deplacement_valide);
+                    deplacement(c, p, chemin, tour_perso, ligne_actu, colonne_actu, &distance, &deplacement_valide);
+                }
                 if (p[tour_perso - 1].anim_en_cours) {
-                    animer(&p[tour_perso - 1], &valider_pm, &distance);
+                    animer(c, &p[tour_perso - 1],chemin, &valider_pm, &distance);
                 }
 
                 afficher_obstacles_persos(buffer, c, obs, p);
@@ -98,6 +103,8 @@ int main() {//sa
                 afficher_infos(&secondes, depart, tps_pause, p, buffer, tour_perso, nb_joueurs);
                 barres(nb_joueurs, p, buffer);
                 attaques(buffer, p, nb_joueurs, tour_perso, &ca);
+                gerer_mort(p, nb_joueurs, classement, &nb_morts);
+                aff_morts(&p[tour_perso-1], &passer_tour);
             }
 
             afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
