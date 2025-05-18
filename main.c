@@ -41,7 +41,6 @@ int main() {//sa
         int numero_potion=0;
         int chance_attaque=3;
         int nb_morts=0;
-        bool cf=0;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -106,15 +105,14 @@ int main() {//sa
                 attaques(buffer, p, nb_joueurs, tour_perso, &ca);
                 gerer_mort(p, nb_joueurs, classement, &nb_morts);
                 aff_morts(&p[tour_perso-1], &passer_tour);
+                fin(nb_joueurs, nb_morts, &compteur);
             }
             afficher_pause(tab_obs, buffer, &compteur, &degats, nom_potion, &ligne_prec, &ligne_actu,
                 &colonne_prec, &colonne_actu, &valider_pm, &valider_pa, &passer_tour,
                 &tour_perso, &nb_joueurs, &distance, tab_map, c, &equipe, obs, p,
                 choix_joueurs, &tour_depart, &depart, &pause, &tps_pause, &quitter, &ca, &deplacement_valide,
-                &numero_potion, &chance_attaque, &nb_morts, &cf);
-            fin(buffer, p, nb_joueurs, classement, nb_morts, &cf, &compteur);
+                &numero_potion, &chance_attaque, &nb_morts);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        //printf("%d, %d \n", p[0].pot[0].pa, p[1].pot[0].pa);
         }
     }
 

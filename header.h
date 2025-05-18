@@ -118,7 +118,7 @@ void barre_pv(t_perso p, BITMAP *buffer);
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
 void gerer_mort(t_perso p[NB_PERSOS], int nb_joueurs, int classement[NB_PERSOS], int *nb_morts);
 void aff_morts(t_perso *p, bool *passer_tour);
-void fin(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs,int classement[NB_PERSOS], int nb_morts, bool *cf, int *compteur);
+void fin(int nb_joueurs, int nb_morts, int *compteur);
 
 
 // MAP.C
@@ -147,8 +147,7 @@ void recommencer(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], int *degats, char n
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, bool map, clock_t *depart, clock_t *tps_pause, bool *quitter,
-                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
-                bool *cf);
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts);
 void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, int *compteur, int *degats, char nom_potion[], int *ligne_prec, int *ligne_actu,
                 int *colonne_prec, int *colonne_actu,
                 bool *valider_pm, bool *valider_pa, bool *passer_tour,
@@ -156,8 +155,7 @@ void afficher_pause(t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], BITMAP *buffer, 
                 int tab_map[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int *equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS],
                 int choix_joueurs[], int *tour_depart, clock_t *depart, clock_t *pause, clock_t *tps_pause, bool *quitter,
-                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts,
-                bool *cf);
+                int *ca, int *deplacement_valide, int *numero_potion, int *chance_attaque, int *nb_morts);
 void sauvegarde(int tab_map[TAILLE_MAP][TAILLE_MAP], t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP], t_case c[TAILLE_MAP][TAILLE_MAP],
                 int equipe, t_obstacle obs[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int nb_joueurs, int choix_joueurs[],
                 char nom_potion[]);
