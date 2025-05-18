@@ -525,14 +525,14 @@ void menu_nom (BITMAP *buffer, t_perso *p) {
         if (key[KEY_BACKSPACE] && index>0) {
             index--;
             p->nom[index]='\0';
-            rest(150);
+            rest(100);
         }
         for (int k=KEY_A; k<=KEY_Z; k++) {
             if (key[k] && index<MAX_NOM-1) {
                 p->nom[index]=(char)(k-KEY_A+'A');
                 index++;
                 p->nom[index] = '\0';
-                rest(150);
+                rest(100);
             }
         }
         for (int k=KEY_0; k<=KEY_9; k++) {
@@ -540,7 +540,7 @@ void menu_nom (BITMAP *buffer, t_perso *p) {
                 p->nom[index]=(char)(k-KEY_0+'0');
                 index++;
                 p->nom[index]='\0';
-                rest(150);
+                rest(100);
             }
         }
         textprintf_centre_ex(buffer, font, SCREEN_W/2, SCREEN_H/2, makecol(0, 0, 0), -1, "Nom : %s", p->nom);

@@ -32,13 +32,12 @@ int main() {//sa
         bool valider_pm=0;
         bool valider_pa=0;
         bool passer_tour=0;
-        bool ca=0;
+        int ca=0;
         int tour_perso=1+rand()%nb_joueurs;
         int tour_depart=tour_perso;
         int distance=0;
         int numero_potion=0;
         int chance_attaque=3;
-        int chance_fail=5;
 
         t_perso p[NB_PERSOS];
         t_obstacle tab_obs[TAILLE_MAP][TAILLE_MAP];
@@ -93,9 +92,8 @@ int main() {//sa
 
                 afficher_obstacles_persos(buffer, c, obs, p);
                 afficher_attaque(buffer,p[tour_perso-1]);
-                gerer_attaque(buffer,p[tour_perso-1]);
                 passer(&passer_tour, buffer);
-                val_pa(&valider_pa, buffer);
+                val_pa(&valider_pa, p[tour_perso-1]);
                 gerer_tours(&tour_perso, &p[tour_perso-1], &valider_pm, &valider_pa, &passer_tour, nb_joueurs, &secondes, &depart, &tps_pause, &ca);
                 afficher_infos(&secondes, depart, tps_pause, p, buffer, tour_perso, nb_joueurs);
                 barres(nb_joueurs, p, buffer);

@@ -64,7 +64,7 @@ typedef struct {
 }t_attaque;
 
 typedef struct {
-    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, equipe, ligne, colonne, num;
+    int x, y, dx, dy, tx, ty, xcentre, ycentre, classe, ligne, colonne, num;
     int imgcourante, cptimg, tmpimg, anim_en_cours, frames_restantes, nb_images;
     int pm, pa, pv;
     char nom[30];
@@ -108,9 +108,9 @@ void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int c
 void deplacement (t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int tour_perso, int ligne_actu, int colonne_actu, int *distance);
 void animer(t_perso* perso, bool *valider_pm, int *distance);
 void gerer_tours(int *tour_perso, t_perso *p, bool *valider_pm, bool *valider_pa, bool *passer_tour,
-    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, bool *ca);
+    int nb_joueurs, double *secondes, clock_t *depart, clock_t *tps_pause, int *ca);
 void passer(bool *passer_tour, BITMAP *buffer);
-void val_pa(bool *valider_pa, BITMAP *buffer);
+void val_pa(bool *valider_pa, t_perso p);
 void barre_pv(t_perso p, BITMAP *buffer);
 void barres (int nb_persos, t_perso p[NB_PERSOS], BITMAP *buffer);
 
@@ -177,7 +177,7 @@ t_attaque init_attaque(char nom[MAX_NOM]);
 void equiper_attaque(t_perso p[NB_PERSOS], int nb_joueurs);
 void afficher_attaque(BITMAP *buffer, t_perso p);
 int gerer_attaque(BITMAP *buffer, t_perso p);
-void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, bool *ca);
+void attaques(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs, int tour_perso, int *ca);
 
 
 #endif //HEADER_H
