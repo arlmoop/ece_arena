@@ -10,6 +10,14 @@ int main() {//sa
     srand(time(NULL));
     initialisation_allegro();
 
+    if (install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) != 0) {
+        allegro_message("Erreur : impossible d'initialiser le son !");
+        return -1;
+    }
+
+    SAMPLE* musique = load_sample("Images\\musique.wav");
+    jouer_musique(musique);
+
     while(!key[KEY_ESC]) {
 
         int aleatoire=0;
@@ -119,6 +127,7 @@ int main() {//sa
     }
 
     allegro_exit();
+    arreter_musique(musique);
     return 0;
 }
 END_OF_MAIN();
