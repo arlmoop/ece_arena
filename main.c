@@ -5,8 +5,7 @@
 #include <stdio.h>
 #include <allegro.h>
 
-
-int main() {//sa
+int main() {
     srand(time(NULL));
     initialisation_allegro();
 
@@ -16,7 +15,7 @@ int main() {//sa
     }
 
     SAMPLE* musique = load_sample("Images\\musique.wav");
-    jouer_musique(musique);
+    //jouer_musique(musique);
 
     while(!key[KEY_ESC]) {
 
@@ -83,6 +82,7 @@ int main() {//sa
         tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
 
         while (quitter==0) {
+
             if(compteur==0) {
                 clear_bitmap(buffer);
                 blit(decor, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);

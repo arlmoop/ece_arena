@@ -558,3 +558,7 @@ void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs) {
         rest(150);
     }
 }
+
+void menu_telechargement (SAMPLE* musique) {
+    jouer_musique(musique);
+}
