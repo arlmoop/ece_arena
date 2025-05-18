@@ -233,7 +233,7 @@ int afficher_menu_map(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_hau
     destroy_bitmap(scene2);
     return choix;
 }
-int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu){
+int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, int n,int *nb_joueurs,int *lancer,int *equipe, BITMAP *fond_menu, BITMAP *bilie, BITMAP *byron, BITMAP *nita, BITMAP *leon, BITMAP *panneau_stop, int choix_joueurs[]){
     BITMAP *bouton_lancer[2];
     for(int i=0;i<2;i++){
         char filename[30];
@@ -336,6 +336,12 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
             else couleur_joueur=makecol(255, 255, 255);
             textprintf_centre_ex(menu,font,cadre_x+cadre_w/2,cadre_y, couleur_joueur,-1,j);
 
+            if(choix_joueurs[i]==-1) stretch_sprite(menu, panneau_stop, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==1) stretch_sprite(menu, nita, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==2) stretch_sprite(menu, leon, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==3) stretch_sprite(menu, byron, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+            if(choix_joueurs[i]==4) stretch_sprite(menu, bilie, cadre_x+20, cadre_y+5,cadre_w-40,cadre_h-10);
+
             if (curseur_cadre&&(mouse_b & 1)) {
                 choix = i;
                 while(mouse_b & 1);
@@ -358,7 +364,7 @@ int afficher_choix_joueurs(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuag
     return choix;
 }
 
-int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu) {
+int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fond_nuage_haut, BITMAP *fond_menu, BITMAP *bilie, BITMAP *byron, BITMAP *nita, BITMAP *leon) {
     BITMAP *banieres[4];
     BITMAP *bouton_choix[2];
     BITMAP *icone_skin[2];
@@ -407,7 +413,6 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
             int icone_skin_y=y+0.60*cadre_h;
             int icone_skin_w=cadre_w/4;
             int icone_skin_h=cadre_h/10;
-
             int mx = mouse_x;
             int my = mouse_y;
             int curseur_bouton_choix = (mx >= bouton_choix_x && mx <= bouton_choix_x + bouton_choix_w && my >= bouton_choix_y && my <= bouton_choix_y + bouton_choix_h);
@@ -416,10 +421,14 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
             rect(menu, x, y, x + cadre_w, y + cadre_h, makecol(255, 215, 0));
 
             stretch_sprite(menu,banieres[i],x-5,y-20,cadre_w+10,75);
+            if(i==0)stretch_sprite(menu,nita,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
+            if(i==1)stretch_sprite(menu,leon,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
+            if(i==2)stretch_sprite(menu,byron,x-20,bouton_choix_y-cadre_h/1.5+12,cadre_w+30,cadre_h/1.5);
+            if(i==3)stretch_sprite(menu,bilie,x-20,bouton_choix_y-cadre_h/1.5,cadre_w+30,cadre_h/1.5);
             curseur_bouton_choix ? stretch_sprite(menu,bouton_choix[1],bouton_choix_x+6,bouton_choix_y+2,bouton_choix_w-12,bouton_choix_h-4) : stretch_sprite(menu,bouton_choix[0],bouton_choix_x,bouton_choix_y,bouton_choix_w,bouton_choix_h);
-            curseur_icone_skin ? stretch_sprite(menu,icone_skin[1],icone_skin_x,icone_skin_y+4,icone_skin_w,icone_skin_h-8) : stretch_sprite(menu,icone_skin[0],icone_skin_x,icone_skin_y,icone_skin_w,icone_skin_h);
+            //curseur_icone_skin ? stretch_sprite(menu,icone_skin[1],icone_skin_x,icone_skin_y+4,icone_skin_w,icone_skin_h-8) : stretch_sprite(menu,icone_skin[0],icone_skin_x,icone_skin_y,icone_skin_w,icone_skin_h);
 
-            const char* nom_classe[] = {"Guerrier", "Archer", "Mage", "Championne"};
+            const char* nom_classe[] = {"nita", "leon", "byron", "bilie"};
             textprintf_centre_ex(menu, font, x + cadre_w / 2, y + 20, makecol(255, 255, 255), -1, "%s", nom_classe[i]);
             textprintf_centre_ex(menu, font, bouton_choix_x+bouton_choix_w/2, bouton_choix_y+bouton_choix_h/2.5, makecol(0, 0, 0), -1, "Choisir");
 
@@ -428,11 +437,11 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
                 while(mouse_b & 1);
                 break;
             }
-            if(curseur_icone_skin && (mouse_b & 1)){
+            /*if(curseur_icone_skin && (mouse_b & 1)){
                 choix=i+5;
                 while(mouse_b & 1);
                 break;
-            }
+            }*/
         }//sas
 
 
@@ -454,6 +463,11 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     BITMAP *fond_menu=load_bitmap("Images\\fond_menu.bmp", NULL);
     BITMAP *fond_nuage_bas = load_bitmap("Images\\fond_nuage_bas.bmp", NULL);
     BITMAP *fond_nuage_haut = load_bitmap("Images\\fond_nuage_haut.bmp", NULL);
+    BITMAP *bilie=load_bitmap("Images\\bilie_1.bmp",NULL);
+    BITMAP *byron=load_bitmap("Images\\byron_5.bmp",NULL);
+    BITMAP *nita=load_bitmap("Images\\nita_1.bmp",NULL);
+    BITMAP *leon=load_bitmap("Images\\leon_5.bmp",NULL);
+    BITMAP *panneau_stop=load_bitmap("Images\\panneau_stop.bmp",NULL);
     EtatMenu etat_actuel = MENU_PRINCIPAL;
 
     int fin_du_jeu=0;
@@ -480,7 +494,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
                 else if (choix_map == -2) etat_actuel = MENU_PRINCIPAL;
                 break;
             case CHOIX_JOUEURS:
-                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe, fond_menu);
+                joueurs = afficher_choix_joueurs(menu,fond_nuage_bas,fond_nuage_haut,anime_nuage,nb_joueurs,&lancer,equipe, fond_menu, bilie, byron, nita, leon, panneau_stop, choix_joueurs);
                 if(joueurs>=0&&joueurs<4){
                     etat_actuel = CHOIX_CLASSES;
                 }
@@ -496,7 +510,7 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
                 }
                 break;
             case CHOIX_CLASSES:
-                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut, fond_menu);
+                classes = afficher_classes_personnages(menu,fond_nuage_bas,fond_nuage_haut, fond_menu, bilie, byron, nita, leon);
                 if(classes>=1&&classes<5){
                     choix_joueurs[joueurs]=classes;
                     etat_actuel = CHOIX_JOUEURS;
@@ -514,6 +528,11 @@ int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[],int *equi
     destroy_bitmap(fond_nuage_bas);
     destroy_bitmap(fond_nuage_haut);
     destroy_bitmap(fond_menu);
+    destroy_bitmap(bilie);
+    destroy_bitmap(byron);
+    destroy_bitmap(nita);
+    destroy_bitmap(leon);
+    destroy_bitmap(panneau_stop);
     return 0;
 }
 
