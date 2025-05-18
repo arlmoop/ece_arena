@@ -52,6 +52,7 @@ typedef struct {
     char intitule[50];
     int degats, pa;
     int degat_plus, degat_min, degat_pourcent;
+    int type;
     BITMAP* img;
 } t_potion;
 
