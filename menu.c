@@ -560,5 +560,13 @@ void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs) {
 }
 
 void menu_telechargement (SAMPLE* musique) {
+    BITMAP* supercell = load_bitmap("Images\\supercell.bmp", NULL);
+    BITMAP* telechargement = load_bitmap("Images\\telechargement.bmp", NULL);
+    blit(supercell, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     jouer_musique(musique);
+    rest(2000);
+    clear_bitmap(screen);
+    blit(telechargement, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    rest(2500);
+    arreter_musique(musique);
 }

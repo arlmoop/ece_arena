@@ -12,7 +12,7 @@ t_perso init_perso(int n, int x, int y) {
     b.ligne=0, b.colonne=0;
     b.imgcourante=0;
     b.cptimg=0;
-    b.tmpimg=2;
+    b.tmpimg=4;
     b.dx=0, b.dy=0;
     b.classe=n;
     b.cl=-1;
@@ -21,29 +21,39 @@ t_perso init_perso(int n, int x, int y) {
     b.etape_courante=0;
     sprintf(b.nom, "NULL");
     if (n==1) {
-        for(int i=0;i<b.nb_images;i++){
-            char filename[20];
-            sprintf(filename,"Images\\barbare_%d.bmp",i);
+        for(int i=1;i<=b.nb_images;i++){
+            char filename[30];
+            sprintf(filename,"Images\\nita_%d.bmp",i);
             b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==2) {
-        for(int i=0;i<b.nb_images;i++){
-            b.img[i]=load_bitmap("Images\\squelette_1.bmp",NULL);
+        for(int i=1;i<=b.nb_images;i++){
+            char filename[20];
+            sprintf(filename,"Images\\leon_%d.bmp",i);
+            b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==3) {
-        for(int i=0;i<b.nb_images;i++){
-            b.img[i]=load_bitmap("Images\\archere_1.bmp",NULL);
+        for(int i=1;i<=b.nb_images;i++){
+            char filename[20];
+            sprintf(filename,"Images\\byron_%d.bmp",i);
+            b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else if (n==4) {
-        for(int i=0;i<b.nb_images;i++){
-            b.img[i]=load_bitmap("Images\\geant_1.bmp",NULL);
+        for(int i=1;i<=b.nb_images;i++){
+            char filename[20];
+            sprintf(filename,"Images\\bilie_%d.bmp",i);
+            b.img[i]=load_bitmap(filename,NULL);
         }
     }
     else {
-        b.img[0]=load_bitmap("Images\\poubelle.bmp", NULL);// on l'affiche pas sa
+        for(int i=1;i<=b.nb_images;i++){
+            char filename[20];
+            sprintf(filename,"Images\\bilie_%d.bmp",i);
+            b.img[i]=load_bitmap(filename,NULL);
+        }
     }
     b.tx=b.img[0]->w;
     b.ty=b.img[0]->h;
@@ -56,7 +66,6 @@ t_perso init_perso(int n, int x, int y) {
     b.equipe=-1;
     return b;
 }
-
 
 void placer_persos(t_case c[TAILLE_MAP][TAILLE_MAP], t_perso p[NB_PERSOS], int choix_joueurs[]) {
     int b=0;

@@ -73,7 +73,7 @@ typedef struct {
     int equipe, cl;
     t_potion pot[NB_POTION];
     t_attaque att;
-    BITMAP *img[5];
+    BITMAP *img[6];
 }t_perso;
 
 typedef enum {
@@ -106,6 +106,7 @@ int afficher_classes_personnages(BITMAP *menu,BITMAP *fond_nuage_bas,BITMAP *fon
 int menu(int *aleatoire,int *theme,int *nb_joueurs,int choix_joueurs[], int *equipe);
 void menu_nom (BITMAP *buffer, t_perso *p);
 void saisir_noms(BITMAP *buffer, t_perso p[NB_PERSOS], int nb_joueurs);
+void menu_telechargement (SAMPLE* musique);
 
 
 // PERSOS.C

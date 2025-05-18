@@ -1,7 +1,7 @@
 #include "header.h"
 
 #include <time.h>
-#include <stdlib.h>  
+#include <stdlib.h>
 #include <stdio.h>
 #include <allegro.h>
 
@@ -15,7 +15,7 @@ int main() {
     }
 
     SAMPLE* musique = load_sample("Images\\musique.wav");
-    //jouer_musique(musique);
+    menu_telechargement(musique);
 
     while(!key[KEY_ESC]) {
 
@@ -88,7 +88,10 @@ int main() {
         clock_t tps_pause=0;
 
         int changement_tour=tour_perso;
+
         tableau_aleatoire(tab_aleatoire_attaque, chance_attaque);
+
+
 
         while (quitter==0) {
 
@@ -135,7 +138,7 @@ int main() {
     }
 
     allegro_exit();
-    arreter_musique(musique);
+
     return 0;
 }
 END_OF_MAIN();
